@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../print.css" type="text/css" media="print">
+<meta content="Router,org.puremvc.as3.multicore.utilities.fabrication.routing.Router,firewall,firewallLocked,junction,teeMerge,teeMergeListener,connect,disconnect,dispose,handlePipeMessage,install,lockFirewall,route" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.routing.Router</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Router - Fabrication';
+				var baseRef = '../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../index-list.html')" href="../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/routing/Router.html&amp;org/puremvc/as3/multicore/utilities/fabrication/routing/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;Router</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class Router"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.routing</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class Router</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="../interfaces/IRouter.html">IRouter</a></td>
+</tr>
+</table>
+<p></p>
+  Router transports messages between <code>IFabrications</code>. A firewall
+  is used if assigned to verify the message being routed. 
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a><a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#firewall">firewall</a> : <a href="../interfaces/IRouterFirewall.html">IRouterFirewall</a>
+<div class="summaryTableDescription">
+   Firewall used to verify message before being routed
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#firewallLocked">firewallLocked</a> : Boolean = false<div class="summaryTableDescription">
+   Indicates if the firewall can be changed.</div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#junction">junction</a> : <a href="../plumbing/DynamicJunction.html">DynamicJunction</a>
+<div class="summaryTableDescription">
+   Pipes Junction used to send messages 
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#teeMerge">teeMerge</a> : TeeMerge<div class="summaryTableDescription">
+   Pipes TeeMerge to connect to a module's input
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#teeMergeListener">teeMergeListener</a> : PipeListener<div class="summaryTableDescription">
+   Pipes listener to listen to messages sent via the module's output pipe
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#Router()">Router</a>()</div>
+<div class="summaryTableDescription">
+   Creates a new fabrication Router object
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#connect()">connect</a>(cable:<a href="../interfaces/IRouterCable.html">IRouterCable</a>):void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#disconnect()">disconnect</a>(cable:<a href="../interfaces/IRouterCable.html">IRouterCable</a>):void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#dispose()">dispose</a>():void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#install()">install</a>(firewall:<a href="../interfaces/IRouterFirewall.html">IRouterFirewall</a>):void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#lockFirewall()">lockFirewall</a>():void</div>
+<div class="summaryTableDescription">
+   Prevents the firewall from being reassigned.</div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#route()">route</a>(message:<a href="../interfaces/IRouterMessage.html">IRouterMessage</a>):void</div>
+<div class="summaryTableDescription">
+   Routes a message from source to destination module after
+   processing the message
+   
+   </div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#handlePipeMessage()">handlePipeMessage</a>(message:IPipeMessage):void</div>
+<div class="summaryTableDescription">
+   Routes a message received via a pipe fitting at the tee merge
+   if it is a router message.</div>
+</td><td class="summaryTableOwnerCol">Router</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="firewall"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">firewall</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var firewall:<a href="../interfaces/IRouterFirewall.html">IRouterFirewall</a></code><p>
+   Firewall used to verify message before being routed
+   </p></div>
+<a name="firewallLocked"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">firewallLocked</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var firewallLocked:Boolean = false</code><p>
+   Indicates if the firewall can be changed. 
+   </p></div>
+<a name="junction"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">junction</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var junction:<a href="../plumbing/DynamicJunction.html">DynamicJunction</a></code><p>
+   Pipes Junction used to send messages 
+   </p></div>
+<a name="teeMerge"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">teeMerge</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var teeMerge:TeeMerge</code><p>
+   Pipes TeeMerge to connect to a module's input
+   </p></div>
+<a name="teeMergeListener"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">teeMergeListener</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var teeMergeListener:PipeListener</code><p>
+   Pipes listener to listen to messages sent via the module's output pipe
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="Router()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Router</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function Router()</code><p>
+   Creates a new fabrication Router object
+   </p></div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="connect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">connect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function connect(cable:<a href="../interfaces/IRouterCable.html">IRouterCable</a>):void</code><p>
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cable</span>:<a href="../interfaces/IRouterCable.html">IRouterCable</a></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">IRouter.connect</div>
+</div>
+<a name="disconnect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">disconnect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function disconnect(cable:<a href="../interfaces/IRouterCable.html">IRouterCable</a>):void</code><p>
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cable</span>:<a href="../interfaces/IRouterCable.html">IRouterCable</a></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">IRouter.disconnect</div>
+</div>
+<a name="dispose()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dispose</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function dispose():void</code><p>
+   </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../interfaces/IDisposable.html#dispose()" target="">org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable.dispose()</a>
+</div>
+</div>
+<a name="handlePipeMessage()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">handlePipeMessage</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function handlePipeMessage(message:IPipeMessage):void</code><p>
+   Routes a message received via a pipe fitting at the tee merge
+   if it is a router message.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">message</span>:IPipeMessage</code></td>
+</tr>
+</table>
+<br>
+<span class="label">Throws</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code></code> &mdash; Routers can only handle messages of type IRouterMessage.
+   </td>
+</tr>
+</table>
+</div>
+<a name="install()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">install</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function install(firewall:<a href="../interfaces/IRouterFirewall.html">IRouterFirewall</a>):void</code><p>
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">firewall</span>:<a href="../interfaces/IRouterFirewall.html">IRouterFirewall</a></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">IRouter.install</div>
+</div>
+<a name="lockFirewall()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lockFirewall</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function lockFirewall():void</code><p>
+   Prevents the firewall from being reassigned. This provides simple
+   security solution to prevent modules which do not have restricted
+   access from modifying the router they have a reference to.
+   </p></div>
+<a name="route()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">route</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function route(message:<a href="../interfaces/IRouterMessage.html">IRouterMessage</a>):void</code><p>
+   Routes a message from source to destination module after
+   processing the message
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">message</span>:<a href="../interfaces/IRouterMessage.html">IRouterMessage</a></code> &mdash; The message object to send from the source to the destination module.
+   </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

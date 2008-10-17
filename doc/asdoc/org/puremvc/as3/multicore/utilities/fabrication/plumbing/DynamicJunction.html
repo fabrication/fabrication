@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../print.css" type="text/css" media="print">
+<meta content="DynamicJunction,org.puremvc.as3.multicore.utilities.fabrication.plumbing.DynamicJunction,calcModuleAddress,calcPipeClassName,describePipeName,isLoopback,retrieveOutputPipesByClassName,sendMessage" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.plumbing.DynamicJunction</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'DynamicJunction - Fabrication';
+				var baseRef = '../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../index-list.html')" href="../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/plumbing/DynamicJunction.html&amp;org/puremvc/as3/multicore/utilities/fabrication/plumbing/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;DynamicJunction</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class DynamicJunction"); titleBar_setSubNav(false,false,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.plumbing</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class DynamicJunction</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">DynamicJunction <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../../images/inherit-arrow.gif"> org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction</td>
+</tr>
+</table>
+<p></p>
+  DynamicJunction is a Pipes junction that transports a message
+  from source module to destination module.
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#DynamicJunction()">DynamicJunction</a>()</div>
+<div class="summaryTableDescription">
+   Creates a new DynamicJunction object.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#sendMessage()">sendMessage</a>(outputPipeName:String, message:IPipeMessage):Boolean</div>
+<div class="summaryTableDescription">
+   Sends the message to the output pipe.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#calcModuleAddress()">calcModuleAddress</a>(pipeName:String):<a href="../vo/ModuleAddress.html">ModuleAddress</a>
+</div>
+<div class="summaryTableDescription">
+   Returns the module address object from the full pipe name
+   
+   </div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#calcPipeClassName()">calcPipeClassName</a>(pipeName:String):String</div>
+<div class="summaryTableDescription">
+   Returns the classname of a pipe from its fullname.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#describePipeName()">describePipeName</a>(pipeName:String):PipeDescriptor</div>
+<div class="summaryTableDescription">
+   Splits a complete pipe name into its module address.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isLoopback()">isLoopback</a>(outputPipeName:String, inputPipeName:String):Boolean</div>
+<div class="summaryTableDescription">
+   Returs true if the output and input pipes are for the same module.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#retrieveOutputPipesByClassName()">retrieveOutputPipesByClassName</a>(className:String):Array</div>
+<div class="summaryTableDescription">
+   Returns an array of all output pipes for the specified classname.</div>
+</td><td class="summaryTableOwnerCol">DynamicJunction</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="DynamicJunction()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DynamicJunction</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function DynamicJunction()</code><p>
+   Creates a new DynamicJunction object.
+   </p></div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="calcModuleAddress()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">calcModuleAddress</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function calcModuleAddress(pipeName:String):<a href="../vo/ModuleAddress.html">ModuleAddress</a></code><p>
+   Returns the module address object from the full pipe name
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pipeName</span>:String</code> &mdash; The full name of the pipe.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../vo/ModuleAddress.html">ModuleAddress</a></code> &mdash; 
+                        The parsed module address object.
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="calcPipeClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">calcPipeClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function calcPipeClassName(pipeName:String):String</code><p>
+   Returns the classname of a pipe from its fullname.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pipeName</span>:String</code> &mdash; The full name of the pipe.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="describePipeName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">describePipeName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function describePipeName(pipeName:String):PipeDescriptor</code><p>
+   Splits a complete pipe name into its module address.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pipeName</span>:String</code> &mdash; The full name of the pipe to split. 
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>PipeDescriptor</code></td>
+</tr>
+</table>
+</div>
+<a name="isLoopback()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isLoopback</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function isLoopback(outputPipeName:String, inputPipeName:String):Boolean</code><p>
+   Returs true if the output and input pipes are for the same module. 
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">outputPipeName</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">inputPipeName</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="retrieveOutputPipesByClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">retrieveOutputPipesByClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function retrieveOutputPipesByClassName(className:String):Array</code><p>
+   Returns an array of all output pipes for the specified classname.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">className</span>:String</code> &mdash; The classname whose output pipes need to be looked up.  
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code></td>
+</tr>
+</table>
+</div>
+<a name="sendMessage()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sendMessage</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function sendMessage(outputPipeName:String, message:IPipeMessage):Boolean</code><p>
+   Sends the message to the output pipe. The message route is expanded
+   from to the target modules here. Messages are dropped if the source
+   and destination module is the same.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">outputPipeName</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">message</span>:IPipeMessage</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction.sendMessage</div>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->
