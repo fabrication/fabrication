@@ -41,6 +41,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		protected var _fabricator:FlexModuleFabricator;
 
 		/**
+		 * Default route address assigned to this Module
+		 */
+		private var _defaultRouteAddress:IModuleAddress;
+
+		/**
 		 * Creates the FlexModule and initializes its fabricator.
 		 */
 		public function FlexModule() {
@@ -97,6 +102,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */
 		public function set router(_router:IRouter):void {
 			fabricator.router = _router;
+		}
+
+		/**
+		 * The default route address to be assigned to the child module.
+		 */
+		public function get defaultRouteAddress():IModuleAddress {
+			return _defaultRouteAddress;
+		}
+
+		public function set defaultRouteAddress(_defaultRouteAddress:IModuleAddress):void {
+			this._defaultRouteAddress = _defaultRouteAddress;
+			defaultRoute = _defaultRouteAddress.getInputName();
 		}
 
 		/**

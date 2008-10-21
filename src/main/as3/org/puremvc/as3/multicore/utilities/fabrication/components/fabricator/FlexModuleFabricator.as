@@ -71,8 +71,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * system notification.
 		 */
 		override protected function initializeEnvironment():void {
-			module.router = moduleLoader.router;
-			module.defaultRoute = moduleLoader.defaultRoute;
+			if (router == null && moduleLoader != null) {
+				module.router = moduleLoader.router;
+			}
+			
+			if (defaultRoute == null && moduleLoader != null) {
+				module.defaultRoute = moduleLoader.defaultRoute;
+			}
+			
+			if (router == null) {
+				throw new Error("Router was not set on the module.");
+			}
 			
 			facade.registerCommand(FabricationNotification.STARTUP, ModuleStartupCommand);
 		}
