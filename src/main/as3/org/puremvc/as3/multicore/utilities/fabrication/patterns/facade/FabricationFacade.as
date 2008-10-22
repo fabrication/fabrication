@@ -224,9 +224,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * @param noteName The name of the notification to send
 		 * @param noteBody The body of the notification to send
 		 * @param noteType The type of the notification to send
-		 * @param to The target destination module address of the notification 
+		 * @param to The target destination module address of the notification.
+		 * 			  to can be a ModuleAddress object or a string with the route
+		 * 			  in the form ModuleName/InstanceName. If InstanceName is *
+		 * 			  the message will be routed to all instances of the ModuleName.
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:String = null):void {
+		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			var wrapper:Object = new Object();
 			wrapper.noteName = noteName;
 			wrapper.noteBody = noteBody;

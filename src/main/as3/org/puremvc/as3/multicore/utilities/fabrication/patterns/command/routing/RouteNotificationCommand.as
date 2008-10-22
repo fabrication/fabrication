@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
@@ -32,7 +33,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 	 * @author Darshan Sawardekar
 	 */
 	public class RouteNotificationCommand extends SimpleFabricationCommand {
-
+		
+		/**
+		 * Regular expression used to match a Module/* route
+		 * @private
+		 */
+		static private var allInstanceRegExp:RegExp = new RegExp(".*\/\\*", "");
+		
 		/**
 		 * Extracts the wrapped source notification from the body of the
 		 * main notification and attaches it to a router message object.
@@ -52,7 +59,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 			var noteBody:Object = wrapper.noteBody;
 			
 			var message:IRouterMessage = new RouterMessage(Message.NORMAL);
-			var to:String = wrapper.to;
+			var to:Object = wrapper.to;
 			
 			if (to == null) {
 				to = fabrication.defaultRoute;
@@ -60,11 +67,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 				if (to == null) {
 					to = "*";
 				}
+			} else if (to is String && !allInstanceRegExp.test(to as String)  && !ModuleAddress.inputSuffixRegExp.test(to as String)) {
+				to = (to as String) + ModuleAddress.INPUT_SUFFIX;
+			} else if (to is IModuleAddress) {
+				to = to.getInputName();
 			}
 			
 			//trace("Sending message " + noteName + ", from=" + moduleAddress.getOutputName() + ", to=" + to);
 			message.setFrom(moduleAddress.getOutputName());
-			message.setTo(to);
+			message.setTo(to as String);
 			
 			message.setBody(wrapper.noteBody);
 			message.setHeader({

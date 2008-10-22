@@ -170,7 +170,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * 
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#routeNotification()
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:String = null):void {
+		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
 		}
 

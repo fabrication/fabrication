@@ -27,6 +27,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;	
 
 	/**
+	 * Dispatched when the fabrication of the flex module loaded by this
+	 * module loader is created.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_CREATED
+	 */
+	[Event(name="fabricationCreated", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
+	 * Dispatched when the fabrication of the flex module loaded by this 
+	 * module loader is removed.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_REMOVED
+	 */
+	[Event(name="fabricationRemoved", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
 	 * FlexModuleLoader is the concrete application fabrication for
 	 * loading flex modules. It implements IFabrication to allow
 	 * configuration of the module prior to it has completed loading.

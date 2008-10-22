@@ -30,6 +30,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;		
 
 	/**
+	 * Dispatched when a component was resolved from an expression.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent.COMPONENT_RESOLVED 
+	 */
+	[Event(name="componentResolved", type="org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent")]
+
+	/**
+	 * Dispatched when a component that was previously resolved was 
+	 * desolved after it was removed.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent.COMPONENT_DESOLVED 
+	 */
+	[Event(name="componentDesolved", type="org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent")]
+
+	/**
 	 * ComponentResolver resolves expressions into their component objects
 	 * on demand.
 	 * 

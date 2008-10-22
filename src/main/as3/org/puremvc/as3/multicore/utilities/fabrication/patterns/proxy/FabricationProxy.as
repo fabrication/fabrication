@@ -55,6 +55,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		static private const classRegExp:RegExp = new RegExp(".*::(.*)$", "");
 		
 		/**
+		 * Indicates whether to use notification expansion when custom
+		 * named Proxies are used. The default behaviour is to true.
+		 */
+		public var expansion:Boolean = true;
+		
+		/**
 		 * Creates a new FabricationProxy object.
 		 */
 		public function FabricationProxy(name:String = null, data:Object = null) {
@@ -77,6 +83,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		 * 			the notification Changed becomes, MySampleProxy/Changed 
 		 */
 		public function getNotificationName(note:String):String {
+			if (!expansion) {
+				return note;
+			}
+			
 			var proxyName:String = getProxyName();
 			if (proxyName == getDefaultProxyName() || proxyName == Proxy.NAME) {
 				return note;
@@ -142,7 +152,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		/**
 		 * Routes a notification to all modules using facade.routeNotification.
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:String = null):void {
+		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			if (fabFacade != null) {
 				fabFacade.routeNotification(noteName, noteBody, noteType, to);
 			}

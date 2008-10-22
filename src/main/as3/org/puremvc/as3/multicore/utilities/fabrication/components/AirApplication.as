@@ -27,6 +27,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;	
 
 	/**
+	 * Dispatched when the AIR application's fabrication is created.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_CREATED
+	 */
+	[Event(name="fabricationCreated", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
+	 * Dispatched when the AIR application's fabrication is removed.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_REMOVED
+	 */
+	[Event(name="fabricationRemoved", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
 	 * AirApplication is the base application class for AIR applications
 	 * that use fabrication. It uses the AirApplicationFabricator to
 	 * provide AIR environment specific configuration. 

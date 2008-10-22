@@ -27,6 +27,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;	
 
 	/**
+	 * Dispatched when the flex application's fabrication is created.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_CREATED
+	 */
+	[Event(name="fabricationCreated", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
+	 * Dispatched when the flex application's fabrication is removed.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_REMOVED
+	 */
+	[Event(name="fabricationRemoved", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
+
+	/**
 	 * FlexApplication is the concrete fabrication for Flex applications.
 	 * It creates the FlexApplicationFabricator to configure the fabrication
 	 * to the flex environment.

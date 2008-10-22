@@ -33,6 +33,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.CloneUtils;	
 
 	/**
+	 * Dispatched when a component resolution resulted in the creation and
+	 * registration of a new mediator with the fabrication facade.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent.REGISTRATION_COMPLETED
+	 */
+	[Event(name="registrationCompleted", type="org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent")]
+	
+	/**
+	 * Dispatched when a component desolution resulted in the removal
+	 * of the previously registered mediator.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent.REGISTRATION_CANCELED
+	 */
+	[Event(name="registrationCanceled", type="org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent")]
+
+	/**
 	 * MediatorRegistrar registers the mediator associated with the component
 	 * once it becomes available. It also removes the mediator once the component
 	 * is removed. For multimode matches the mediator is either cloned or

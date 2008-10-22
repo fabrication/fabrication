@@ -33,7 +33,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 		static public const REGISTRATION_COMPLETED:String = "registrationCompleted";
 		
 		/**
-		 * Dispatcher when the mediator registration was cancelled.
+		 * Dispatched when the mediator registration was cancelled.
 		 */
 		static public const REGISTRATION_CANCELED:String = "registrationCanceled";
 		

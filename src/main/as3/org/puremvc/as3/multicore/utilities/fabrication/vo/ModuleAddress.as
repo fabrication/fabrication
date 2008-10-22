@@ -26,6 +26,26 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 	public class ModuleAddress implements IModuleAddress {
 		
 		/**
+		 * The input pipe name suffix.
+		 */
+		static public var INPUT_SUFFIX:String = "/INPUT";
+		
+		/**
+		 * The output pipe name suffix.
+		 */
+		static public var OUTPUT_SUFFIX:String = "/OUTPUT";
+		
+		/**
+		 * Regular expression used to test if an input suffix is present
+		 */
+		static public var inputSuffixRegExp:RegExp = new RegExp("\\" + INPUT_SUFFIX, "");
+
+		/**
+		 * Regular expression used to test if an output suffix is present 
+		 */
+		static public var outputSuffixRegExp:RegExp = new RegExp("\\" + OUTPUT_SUFFIX, "");
+
+		/**
 		 * The name of the module
 		 * @private
 		 */
@@ -66,14 +86,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		 * Returns the name of the input message pipe.
 		 */
 		public function getInputName():String {
-			return getClassName() + "/" + getInstanceName() + "/INPUT";
+			return getClassName() + "/" + getInstanceName() + INPUT_SUFFIX;
 		}
 		
 		/**
 		 * Returns the name of the output message pipe.
 		 */
 		public function getOutputName():String {
-			return getClassName() + "/" + getInstanceName() + "/OUTPUT";
+			return getClassName() + "/" + getInstanceName() + OUTPUT_SUFFIX;
 		}
 		
 		/**

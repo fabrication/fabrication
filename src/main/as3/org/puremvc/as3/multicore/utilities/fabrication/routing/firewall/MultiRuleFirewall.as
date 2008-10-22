@@ -23,6 +23,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
 
 	/**
+	 * Dispatched when a message is allowed to be forwarded after checking
+	 * against all rules in the firewall.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.RouterFirewallEvent.ALLOWED_MESSAGE
+	 */
+	[Event(name="allowedMessage", type="org.puremvc.as3.multicore.utilities.fabrication.events.RouterFirewallEvent")]
+
+	/**
+	 * Dispatched when a message is blocked by any one of the rules in 
+	 * the firewall.
+	 * 
+	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.RouterFirewallEvent.BLOCKED_MESSAGE
+	 */
+	[Event(name="blockedMessage", type="org.puremvc.as3.multicore.utilities.fabrication.events.RouterFirewallEvent")]
+
+	/**
 	 * MultiRuleFirewall is a router firewall to process a router message 
 	 * against multiple application rules before forwarding it to the target
 	 * module.
