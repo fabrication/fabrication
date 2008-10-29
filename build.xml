@@ -58,6 +58,51 @@
 		</svn>
 	</target>
 	
+	<target name="zip" description="Generates a zip file from the trunk">
+		<delete file="${fabrication.source.zip}" failonerror="no"/>
+		<zip destfile="${fabrication.source.zip}">
+			<fileset dir="${basedir}">
+				<exclude name="user.properties" />
+				<exclude name=".settings/**" />
+				<exclude name=".*" />
+				<exclude name="bin/*.swc" />
+				<exclude name="**/*.zip" />
+				<include name="**/*.*" />
+				<include name="COPYING" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="bin/fabrication-${fabrication.version}.swc"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="publish-to-googlecode" description="Publishes the current zource to the google code downloads">
+		<echo>Uploading ${fabrication.version} swc</echo>
+		<property name="fabrication.swc.file" location="${bin}/fabrication-${fabrication.version}.swc" />
+		<property name="fabrication.src.file" location="${bin}/fabrication-trunk-src.zip" />
+		
+		<gcupload 
+			username="${svn.username}"
+			password="${svn.password}"
+			projectname="fabrication"
+			filename="${fabrication.swc.file}"
+			targetfilename="fabrication-${fabrication.version}.swc"
+			summary="Fabrication ${fabrication.version} swc"
+			labels="Featured, Type-Package, OpSys-All"
+		/>
+
+		<echo>Uploading ${fabrication.version} source zip</echo>
+		<gcupload 
+			username="${svn.username}"
+			password="${svn.password}"
+			projectname="fabrication"
+			filename="${fabrication.src.file}"
+			targetfilename="fabrication-${fabrication.version}-src.zip"
+			summary="Fabrication ${fabrication.version} Source Zip"
+			labels="Featured, Type-Package, OpSys-All"
+		/>
+	</target>
+	
 	<target name="all" depends="clean, build, asdoc" 
 		description="Removes previous compiled files and rebuilds the main application and generates asdocs">
 	</target>
