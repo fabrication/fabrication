@@ -97,7 +97,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			var clazz:Class = fabrication.getClassByName(classpath);
 			var clazzInfo:XML = describeType(clazz);
-			var constructorNode:XMLList = clazzInfo..constructor; 
+			var constructorNode:XMLList = clazzInfo..constructor as XMLList; 
 			var requiredParameters:XMLList = constructorNode.parameter.(@optional = "false"); 
 			var requiredParametersCount:int = requiredParameters.length();
 			var mediator:FlexMediator = CloneUtils.newInstance(clazz, requiredParametersCount) as FlexMediator;
@@ -172,7 +172,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * can use this method to react to mediator registration as needed. 
 		 */
 		protected function registrationCompletedListener(event:MediatorRegistrarEvent):void {
-			var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
+			//var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
 			//trace("AutoRegistration completed for mediator " + event.mediator.getMediatorName());
 			//trace("\tviewComponent = " + event.mediator.getViewComponent());
 		}
@@ -182,7 +182,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Subclasses can use this method to react to mediator cancellation as needed.
 		 */
 		protected function registrationCanceledListener(event:MediatorRegistrarEvent):void {
-			var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
+			//var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
 			//trace("AutoRegistration removed for mediator " + event.mediator.getMediatorName());
 		}
 		

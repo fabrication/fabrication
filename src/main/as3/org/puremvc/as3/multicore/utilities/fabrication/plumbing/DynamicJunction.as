@@ -45,7 +45,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		override public function sendMessage(outputPipeName:String, message:IPipeMessage):Boolean {
 			var descriptor:PipeDescriptor = describePipeName(outputPipeName);
 			var routerMessage:IRouterMessage = message as IRouterMessage;
-			var moduleAddress:ModuleAddress = new ModuleAddress();
+			
 			var pipeName:String;
 			//trace("DynamicJunction.sendMessage " + outputPipeName + ", from : " + (message as IRouterMessage).getFrom());
 			if (outputPipeName == "*") {

@@ -219,7 +219,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 */
 		public function rex(pattern:String, multimode:Boolean = true):Expression {
 			var descendantsExpression:Expression = Expression.reExpression(baseExpression, Expression.descendantRegExp);
-			var reExpression:Expression = Expression.reExpression(descendantsExpression, new RegExp(pattern, ""));
+			Expression.reExpression(descendantsExpression, new RegExp(pattern, ""));
 			
 			return setBaseExpression(descendantsExpression, multimode);
 		}
@@ -345,7 +345,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 */
 		private function runExpression(sourceComponent:UIComponent):Boolean {
 			if (sourceComponent != null && baseExpression != null && !hasResolved(sourceComponent)) {
-				var iterator:ExpressionIterator = baseExpression.getIterator();
 				var basePattern:RegExp = baseExpression.expand();
 				var componentPath:String = calcPathFromComponent(sourceComponent);
 				var matchResult:Object = basePattern.exec(componentPath);
@@ -384,7 +383,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				
 				for (var i:int = 0; i < n; i++) {
 					route = routes[i];
-					sourceComponent = calcComponentFromPath(route.path, true);
+					sourceComponent = calcComponentFromPath(route.path);
 					
 					if (sourceComponent != null) {
 						runExpression(sourceComponent);
@@ -397,7 +396,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Calculates the unique id of the component as specified in MXML.
 		 * @private
 		 */
-		private function calcID(component:UIComponent, autoname:Boolean = false):String {
+		private function calcID(component:UIComponent):String {
 			if (component == null) {
 				return null;
 			}
@@ -424,11 +423,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		private function calcPathFromComponent(component:UIComponent):String {
 			var currentComponent:UIComponent = component;
 			var rootComponent:UIComponent = baseComponent;
-			var componentID:String;
 			var path:String = "";
 
 			while (currentComponent != null && currentComponent.parent != null && currentComponent != rootComponent) {
-				path = calcID(currentComponent, true) + (path != "" ? "." + path : path);
+				path = calcID(currentComponent) + (path != "" ? "." + path : path);
 				currentComponent = currentComponent.parent as UIComponent;				
 			}
 			
@@ -438,7 +436,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		/**
 		 * Calculates the component from the path specified.
 		 */
-		private function calcComponentFromPath(path:String, ignore:Boolean = false):UIComponent {
+		private function calcComponentFromPath(path:String):UIComponent {
 			var pathArray:Array = path.split(".");
 			var currentID:String;
 			var currentIDInt:int;

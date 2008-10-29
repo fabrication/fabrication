@@ -67,7 +67,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 				if (to == null) {
 					to = "*";
 				}
-			} else if (to is String && !allInstanceRegExp.test(to as String)  && !ModuleAddress.inputSuffixRegExp.test(to as String)) {
+			} else if (
+				to is String &&
+				to != "*" && 
+				!allInstanceRegExp.test(to as String)  && 
+				!ModuleAddress.inputSuffixRegExp.test(to as String)
+				) {
 				to = (to as String) + ModuleAddress.INPUT_SUFFIX;
 			} else if (to is IModuleAddress) {
 				to = to.getInputName();

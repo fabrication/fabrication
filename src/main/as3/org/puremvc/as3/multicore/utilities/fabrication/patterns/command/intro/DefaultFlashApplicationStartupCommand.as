@@ -16,9 +16,7 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro {
 	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.components.FlashApplication;
-	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexApplication;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;	
 
 	/**
 	 * DefaultFlashApplicationStartupCommand displays intro text if
@@ -32,7 +30,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro {
 		 * Just shows a trace at the moment. TODO improve this. 
 		 */
 		override public function execute(note:INotification):void {
-			var app:FlashApplication = note.getBody() as FlashApplication;
+			//var app:FlashApplication = note.getBody() as FlashApplication;
 			
 			trace("You are seeing this because you haven't provided " +
 				"a Startup Command class.\r" +

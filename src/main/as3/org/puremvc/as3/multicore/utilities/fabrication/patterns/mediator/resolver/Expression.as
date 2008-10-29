@@ -98,7 +98,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 */
 		static public function descendantsExpression(baseExpression:Expression, name:String):Expression {
 			var descendantsExpression:Expression = reExpression(baseExpression, descendantRegExp);
-			var nameExpression:Expression = nameExpression(descendantsExpression, name);
+			nameExpression(descendantsExpression, name);
 			
 			return descendantsExpression; 		
 		}
@@ -206,6 +206,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		public function resolve(name:String, multimode:Boolean = false):Expression {
 			var expr:Expression = nameExpression(this, name);
 			expr.root = root;
+			
+			if (root != null) {
+				root.setMultimode(multimode);
+			}
 			
 			return expr;
 		}

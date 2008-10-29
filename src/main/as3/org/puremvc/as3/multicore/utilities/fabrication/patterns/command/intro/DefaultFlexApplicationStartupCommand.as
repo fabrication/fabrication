@@ -15,15 +15,12 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro {
-	import mx.core.UIComponent;	
-	
-	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.intro.DefaultFlexIntroPanel;	
-	
-	import mx.controls.Text;
-	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexApplication;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;		
+	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.intro.DefaultFlexIntroPanel;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
+	
+	import mx.core.UIComponent;		
 
 	/**
 	 * DefaultFlexApplicationStartupCommand displays intro text if

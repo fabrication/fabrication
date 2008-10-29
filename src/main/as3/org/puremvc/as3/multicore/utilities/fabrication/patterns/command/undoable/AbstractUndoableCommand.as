@@ -15,16 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import flash.utils.getQualifiedClassName;
-	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
-	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
+	
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * AbstractUndoableCommand is the base class for all fabrication

@@ -86,7 +86,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		 * @param rule The firewall rule to remove
 		 */
 		public function removeRule(rule:IFirewallRule):void {
-			var index:int = rules.getItemIndex(rule);
+			var index:int = findRuleIndex(rule);
 			if (index >= 0) {
 				rules.splice(index, 1);
 			}

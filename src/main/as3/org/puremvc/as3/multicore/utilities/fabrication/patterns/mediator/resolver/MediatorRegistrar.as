@@ -266,8 +266,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			var fabrication:IFabrication = facade.getFabrication();
 			var clazz:Class = fabrication.getClassByName(classpath);
 			var clazzInfo:XML = describeType(clazz);
-			var implementsInterfaces:XMLList = clazzInfo..implementsInterface;
-			var constructorNode:XMLList = clazzInfo..constructor; 
+			var constructorNode:XMLList = clazzInfo..constructor as XMLList; 
 			var requiredParameters:XMLList = constructorNode.parameter.(@optional == "false"); 
 			
 			defaultMediator = mediator;

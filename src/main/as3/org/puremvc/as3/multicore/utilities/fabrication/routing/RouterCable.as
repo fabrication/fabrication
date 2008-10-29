@@ -15,9 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.routing {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.INamedPipeFitting;	
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;	
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterCable;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.INamedPipeFitting;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterCable;		
 
 	/**
 	 * RouterCable wraps the input and output pipe fittings of an fabrication

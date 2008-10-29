@@ -15,18 +15,17 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.utils.getQualifiedClassName;
-
-	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.NameUtils;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;		
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
+	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * ApplicationFabricator is the base class for all fabrication 
