@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project name="Fabrication" default="main">
+	
+	<!-- load user properties -->
+	<property file="user.properties" />
+	
+	<!-- load standard build properties -->
+	<property file="build.properties" />
+	
+	<!-- import fabrication build file -->
+	<import file="${fabrication.build.dir}/common.xml" />
+
+	<target name="clean" description="Removes all build generated files">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="build" description="Compiles the fabrication swc">
+		<flex-comp output="${fabrication.swc}">
+			<fileset dir="${src.main.flash}">
+				<include name="**/*.mxml" />
+				<include name="**/*.as" />
+			</fileset>
+		</flex-comp>
+	</target>
+	
+	<target name="run" />
+	
+	<target name="asdoc" description="Generates asdocs">
+		<asdoc 
+			window-title="${asdoc.window-title}" 
+			destdir="${doc.asdoc}">
+			<fileset dir="${src.main.flash}">
+				<include name="**/*.as" />
+				<include name="**/*.mxml" />
+			</fileset>
+		</asdoc>
+	</target>
+	
+	<target name="all" depends="clean, build, asdoc" 
+		description="Removes previous compiled files and rebuilds the main application and generates asdocs">
+	</target>
+	
+	<target name="main" depends="build" 
+		description="Default target, build">
+	</target>
+	
+</project>
