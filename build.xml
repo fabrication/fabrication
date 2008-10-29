@@ -37,6 +37,27 @@
 		</asdoc>
 	</target>
 	
+	<target name="publish-asdoc" description="Publishes asdocs to the svn">
+		<svn username="${svn.username}" password="${svn.password}">
+			<revert dir="${doc.asdoc}" recurse="yes" />
+			<delete dir="${doc.asdoc}" />
+			<commit dir="${doc.asdoc}" message="Removed old asdocs."/>
+		</svn>
+		<delete dir="${doc.asdoc}" failonerror="no" />
+		<antcall target="asdoc" />
+		<svn username="${svn.username}" password="${svn.password}">
+			<add dir="${doc.asdoc}" recurse="yes" />
+		</svn>
+		<set-mimetypes>
+			<fileset dir="${doc.asdoc}">
+				<include name="**/*.*" />
+			</fileset>
+		</set-mimetypes>
+		<svn username="${svn.username}" password="${svn.password}">
+			<commit dir="${doc.asdoc}" message="Added updated asdocs." />
+		</svn>
+	</target>
+	
 	<target name="all" depends="clean, build, asdoc" 
 		description="Removes previous compiled files and rebuilds the main application and generates asdocs">
 	</target>
