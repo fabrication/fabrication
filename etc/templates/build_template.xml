@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project name="@project.name@" default="main">
+
+	<!-- load user properties -->
+	<property file="user.properties" />
+	
+	<!-- load standard build properties -->
+	<property file="build.properties" />
+	
+	<!-- import fabrication build file -->
+	<import file="${fabrication.dir}/common.xml" />
+	
+	<target name="clean" description="Removes all build generated files">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="build" description="Compiles the project's main application">
+		<flex-app 
+			mainclass="${project.mainclass}" output="${bin}/${project.output}" 
+			width="${project.output.width}" height="${project.output.height}" 
+		/>
+	</target>
+	
+	<target name="run" description="Runs the project's main application">
+		<launch-flex-app file="${bin}/${project.output}"/>
+	</target>
+	
+	<target name="all" depends="clean, build, run" 
+		description="Removes previous compiled files and rebuilds the main application">
+	</target>
+	
+	<target name="main" depends="build, run"
+		description="Default target, build and run">
+	</target>
+	
+</project>

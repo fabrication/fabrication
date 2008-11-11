@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="fabrication.flex.paths">
+
+	<!-- path to the flex framework
+		 should be specified in the build/user properties -->
+	<property name="flex.dir" location="" />
+	
+	<!-- flex compiler properties -->
+    <property name="flex.frameworks.dir" location="${flex.dir}/frameworks" />
+
+	<!-- mxml compiler -->
+	<condition property="flex.mxmlc" value="${flex.dir}/bin/mxmlc.exe" else="${flex.dir}/bin/mxmlc">
+		<os family="windows" />
+	</condition>
+	
+	<!-- swc compiler -->
+	<condition property="flex.compc" value="${flex.dir}/bin/compc.exe" else="${flex.dir}/bin/compc">
+		<os family="windows" />
+	</condition>
+
+	<!-- asdoc generator -->
+	<condition property="flex.asdoc" value="${flex.dir}/bin/asdoc.exe" else="${flex.dir}/bin/asdoc">
+		<os family="windows" />
+	</condition>
+	
+	<!-- additional options to pass to the compilers -->
+    <property name="flex.mxmlc.options" value="" />
+    <property name="flex.compc.options" value="" />
+	<property name="flex.asdoc.options" value="" />
+	
+	<!-- path to the flex config file -->
+    <property name="flex.config" value="${flex.frameworks.dir}/flex-config.xml" />
+
+    <!-- standalone player for the current sdk -->
+	<property name="flex.standalone.player" location="${flex.dir}/runtimes/player/win/FlashPlayer.exe" />
+	
+	<!-- /usr/bin/open for mac -->
+	<property name="mac.open" value="/usr/bin/open" />
+
+	<!-- target player version -->
+	<property name="flashplayer.version" value="9.0.0.0" />
+	
+	<!-- calculates the base flash player runtime version -->
+	<propertyregex property="flashplayer.runtime" input="${flashplayer.version}" 
+		regexp="([0-9]+)" select="\1" />
+	
+</project>

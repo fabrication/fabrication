@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<project name="fabrication.default.paths">
+
+	<!-- top level directories -->
+	<property name="src" location="src" />
+	<property name="libs" location="libs" />
+	<property name="bin" location="bin" />
+	<property name="etc" location="etc" />
+	<property name="doc" location="doc" />
+	<property name="dist" location="dist" />
+	
+	<!-- build dir -->
+	<property name="build.dir" location="build" />
+	
+	<!-- creates the build directory -->
+	<mkdir dir="${build.dir}" />
+	
+	<!-- the libs directory must be present -->
+	<mkdir dir="${libs}" />
+	
+	<!-- generated asdocs -->
+	<property name="doc.asdoc" location="${doc}/asdoc" />
+	
+	<!-- for flex projects the main source folder is src/main/flex
+		 for flash projects the main source folder is src/main/as3 -->
+	<condition property="src.main.flash" value="${src}/main/flex" else="${src}/main/as3">
+		<available file="${src}/main/flex" />
+	</condition>
+	
+	<!-- for flex project the main test folder is src/test/flex
+		 for flash projects the main test folder is src/test/as3 -->
+	<condition property="src.test.flash" value="${src}/test/flex" else="${src}/test/as3">
+		<available file="${src}/test/flex" />	
+	</condition>
+	
+	<!-- for flex projects optional path to any project specific swcs --> 
+	<property name="src.main.swc" location="${src}/main/swc" />
+	
+	<!-- path to the common library source folder -->
+	<property name="src.common.dir" location="${build.dir}/src_common_dir" />
+	
+	<!-- path to the common swc library folder -->
+	<property name="swc.common.dir" location="${build.dir}/swc_common_dir" />
+	
+	<!-- main source path --> 
+	<path id="src.main.path">
+		<pathelement location="${src.main.flash}" />
+	</path>
+	
+	<!-- common source path 
+		 add additional common source directories here -->
+	<path id="src.common.path">
+		<pathelement location="${src.common.dir}" />
+	</path>
+	
+	<!-- test source path -->
+	<path id="src.test.path">
+		<pathelement location="${src.test.flash}" />
+		<pathelement location="${src.main.flash}" />
+	</path>
+	
+	<!-- main swc paths -->
+	<path id="swc.main.path">
+		<fileset dir="${libs}">
+			<include name="**/*.swc" />
+		</fileset>
+	</path>
+
+	<!-- common swc paths
+		 add additional common swc directories here -->
+	<path id="swc.common.path">
+		<pathelement location="${swc.common.dir}" />
+	</path>
+	
+	<!-- flex framework swc paths -->
+	<path id="swc.flex.path">
+		<fileset dir="${flex.frameworks.dir}/libs">
+			<exclude name="**/*global.swc" />
+			<exclude name="**/air/*.swc" />
+			<include name="**/*.swc" />
+		</fileset>
+	</path>
+	
+	<!-- air framework swc paths -->
+	<path id="swc.air.path">
+		<fileset dir="${flex.frameworks.dir}/libs">
+			<include name="**/air/*.swc" />
+		</fileset>
+	</path>
+	
+	<!-- flash player runtime library paths 
+		 these are generally named *global.swc -->
+	<path id="swc.runtime.path">
+		<fileset dir="${flex.frameworks.dir}/libs">
+			<include name="**/${flashplayer.runtime}/*global.swc" />
+		</fileset>
+	</path>
+
+	<!-- runtime linked external library paths 
+		 runtime libraries are not compiled into the application, 
+		 they are loaded into it at runtime -->
+	<path id="swc.linked.path">
+		<fileset dir="${libs}">
+			<include name="**/*.swc" />
+		</fileset>
+		<fileset dir="${flex.frameworks.dir}/libs">
+			<include name="**/*.swc" />
+		</fileset>
+	</path>
+	
+	<!-- converts the pathrefs to delimited lists 
+		 all macrodefs use pathlists -->
+	<pathconvert refid="src.main.path" property="src.main.pathlist" />
+	<pathconvert refid="src.common.path" property="src.common.pathlist" />
+	<pathconvert refid="src.test.path" property="src.test.pathlist" />
+	
+	<pathconvert refid="swc.main.path" property="swc.main.pathlist" />
+	<pathconvert refid="swc.common.path" property="swc.common.pathlist" />
+	
+	<pathconvert refid="swc.flex.path" property="swc.flex.pathlist" />
+	<pathconvert refid="swc.air.path" property="swc.air.pathlist" />
+	
+	<pathconvert refid="swc.runtime.path" property="swc.runtime.pathlist" />
+	<pathconvert refid="swc.linked.path" property="swc.linked.pathlist" />
+
+</project>
