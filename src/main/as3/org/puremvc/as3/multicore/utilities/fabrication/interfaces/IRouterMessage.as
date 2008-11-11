@@ -15,7 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
+	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;			
 
 	/**
 	 * An interface to describe a message sent from a module to another
@@ -44,5 +45,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * Changes the module that will receive this message.
 		 */
 		function setTo(to:String):void;
+
+		/**
+		 * Saves the source notification that triggered this message.
+		 */
+		function setNotification(notification:TransportNotification):void;
+
+		/**
+		 * Returns the source notification that triggered this message. 
+		 */
+		function getNotification():TransportNotification;
 	}
 }

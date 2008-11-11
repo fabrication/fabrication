@@ -15,17 +15,18 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.INamedPipeFitting;	
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;	
-	import org.puremvc.as3.multicore.utilities.pipes.plumbing.Pipe;	
-	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.INamedPipeFitting;
+	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;
+	import org.puremvc.as3.multicore.utilities.pipes.plumbing.Pipe;		
+
 	/**
 	 * NamedPipe is a custom pipe fitting which can be assigned a name for
 	 * later retrieval.
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class NamedPipe extends Pipe implements INamedPipeFitting {
+	public class NamedPipe extends Pipe implements INamedPipeFitting, IDisposable {
 
 		/**
 		 * Stores the pipe name
@@ -58,5 +59,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			this.name = name;
 		}
 		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			name = null;
+			disconnect();
+		}
 	}
 }

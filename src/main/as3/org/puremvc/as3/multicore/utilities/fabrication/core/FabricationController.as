@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
+	import org.puremvc.as3.multicore.patterns.observer.Notification;	
 	import org.puremvc.as3.multicore.core.Controller;
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
@@ -83,8 +84,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			view = null;	
 			
-			instanceMap[multitonKey] = null;
+			removeController(multitonKey);
 		}
+		
+		/**
+		 * Overrides Controller to use the FabricationView
+		 */
+		override protected function initializeController():void {
+			view = FabricationView.getInstance(multitonKey);
+		} 
 
 		/**
 		 * Override registerCommand to support multiple commands mapped to
@@ -123,7 +131,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 					undoableCommand.initializeUndoableCommand(note);					
 				}
 				
-				//trace("Running Command " + getQualifiedClassName(commandClassRef));
 				commandInstance.execute(note);
 				
 				if (commandInstance is IUndoableCommand) {
@@ -133,9 +140,33 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 				}				
 			}
 		}
-
+		
 		/**
-		 * Fabrication allows multiple commands can be mapped to the same notification. This
+		 * Executes the command class specified and returns its instance.
+		 * 
+		 * @param clazz The command class to execute
+		 * @param body The optional body of the notification
+		 * @param note The optional notification object to use when executing the command
+		 */
+		public function executeCommandClass(clazz:Class, body:Object = null, note:INotification = null):ICommand {
+			if (note == null) {
+				note = new Notification(null, body);
+			}
+			
+			var command:ICommand = new clazz();
+			command.initializeNotifier(multitonKey);
+			
+			if (command is IUndoableCommand) {
+				(command as IUndoableCommand).initializeUndoableCommand(note);
+			}
+			
+			command.execute(note);
+			
+			return command;
+		}
+		
+		/**
+		 * Fabrication allows multiple commands to be mapped to the same notification. This
 		 * method provides the means to remove a specific command to notification mapping.
 		 * 
 		 * @param notificationName The notification to unmap
@@ -173,18 +204,32 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		}
 
 		/**
+		 * The current size of the undo stack
+		 */
+		public function undoSize():int {
+			return undoStack.length();
+		}
+		
+		/**
+		 * The current size of the redo stack
+		 */
+		public function redoSize():int {
+			return redoStack.length();
+		}
+
+		/**
 		 * Undo's the commands in the undo stack upto the steps specified.
 		 * A COMMAND_HISTORY_CHANGED notification is sent if any command was undone.
 		 * 
 		 * @param steps The number of steps to undo. Default is 1.
 		 */
-		public function undo(steps:int = 1):void {
+		public function undo(steps:int = 1):Boolean {
 			var changed:Boolean = false;
 			var command:IUndoableCommand;
 			for (var i:int = 0;i < steps; i++) {
 				if (!undoStack.isEmpty()) {
 					command = undoStack.pop() as IUndoableCommand;
-					command.unexecute(command.getNotification());
+					unexecuteCommand(command, command.getNotification());
 					
 					redoStack.push(command);
 					changed = true;
@@ -194,6 +239,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			if (changed) {
 				notifyCommandHistoryChanged();
 			}
+			
+			return changed;
 		}
 
 		/**
@@ -202,7 +249,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		 * 
 		 * @param steps The number of steps to redo. Default is 1.
 		 */
-		public function redo(steps:int = 1):void {
+		public function redo(steps:int = 1):Boolean {
 			var changed:Boolean = false;
 			var command:IUndoableCommand;
 			for (var i:int = 0;i < steps; i++) {
@@ -218,6 +265,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			if (changed) {
 				notifyCommandHistoryChanged();
 			}
+			
+			return changed;
 		}
 
 		/**

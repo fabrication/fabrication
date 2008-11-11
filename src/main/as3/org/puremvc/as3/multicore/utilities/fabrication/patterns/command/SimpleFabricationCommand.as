@@ -15,17 +15,16 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
-	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;		
 
 	/**
 	 * SimpleFabricationCommand is the base class for all fabrication commands.
@@ -40,15 +39,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces#executeCommand()
 		 */
 		public function executeCommand(clazz:Class, body:Object = null, note:INotification = null):ICommand {
-			if (note == null) {
-				note = new Notification(null, body);
-			}
-			
-			var command:ICommand = new clazz();
-			command.initializeNotifier(multitonKey);
-			command.execute(note);
-			
-			return command;
+			return fabFacade.executeCommandClass(clazz, body, note);
 		}
 		
 		/**
@@ -69,7 +60,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		 * Reference to the main fabrication application class
 		 */
 		public function get fabrication():IFabrication {
-			return fabFacade.getApplication() as IFabrication;
+			return fabFacade.getFabrication();
 		}
 
 		/**
@@ -187,7 +178,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		 * 
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#routeNotification
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
+		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
 		}
 	}

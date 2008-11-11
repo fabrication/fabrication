@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.shutdown {
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterCableListener;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing.ConfigureRouterCommand;	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
@@ -40,9 +42,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.shutdow
 			var inputPipe:NamedPipe = new NamedPipe(moduleAddress.getInputName());
 			var outputPipe:NamedPipe = new NamedPipe(moduleAddress.getOutputName());
 			var routerCable:RouterCable = new RouterCable(inputPipe, outputPipe);
+			var cableListener:RouterCableListener = fabFacade.removeInstance(ConfigureRouterCommand.routerCableListenerKey) as RouterCableListener;
 			
-			// TODO :: Improve cleanup, The cable listener is currently 
-			// hanging to the inputPipe
+			cableListener.dispose();
 			applicationRouter.disconnect(routerCable);
 		}
 		

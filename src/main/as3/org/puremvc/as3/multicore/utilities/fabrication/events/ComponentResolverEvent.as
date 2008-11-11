@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.events {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
 	import flash.events.Event;
 	
 	import mx.core.UIComponent;		
@@ -25,8 +27,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 	 *  
 	 * @author Darshan Sawardekar
 	 */
-	public class ComponentResolverEvent extends Event {
-		
+	public class ComponentResolverEvent extends Event implements IDisposable {
+
 		/**
 		 * Dispatched when a component was resolved.
 		 */
@@ -53,11 +55,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 		 * @param type The event type name
 		 * @param component Reference to the component that was resolved.
 		 */
-		public function ComponentResolverEvent(type:String, component:UIComponent, multimode:Boolean) {
+		public function ComponentResolverEvent(type:String, component:UIComponent, multimode:Boolean = false) {
 			super(type, false, false);
 			
 			this.component = component;
 			this.multimode = multimode;
 		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			component = null;
+		} 
+		
 	}
 }

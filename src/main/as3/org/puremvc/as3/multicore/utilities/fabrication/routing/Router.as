@@ -23,10 +23,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.plumbing.DynamicJunction;
 	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.PipeListener;
-	import org.puremvc.as3.multicore.utilities.pipes.plumbing.TeeMerge;		
+	import org.puremvc.as3.multicore.utilities.pipes.plumbing.TeeMerge;	
 
 	/**
 	 * Router transports messages between <code>IFabrications</code>. A firewall
@@ -67,7 +66,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		public function Router() {
 			junction = new DynamicJunction();
 			teeMerge = new TeeMerge();
-			teeMerge.connect(new PipeListener(this, handlePipeMessage));
+			//teeMerge.connect(new PipeListener(this, handlePipeMessage));
 		}
 		
 		/**
@@ -90,10 +89,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 			var input:INamedPipeFitting = cable.getInput();
 			var output:INamedPipeFitting = cable.getOutput();
 			
-			//trace("Router.connect ");
-			//trace("\tinput : " + input.getName());
-			//trace("\toutput : " + output.getName());
-			
 			teeMerge.connectInput(output);
 			junction.registerPipe(input.getName(), Junction.OUTPUT, input);
 			junction.registerPipe(output.getName(), Junction.INPUT, input);
@@ -105,10 +100,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		public function disconnect(cable:IRouterCable):void {
 			var input:INamedPipeFitting = cable.getInput();
 			var output:INamedPipeFitting = cable.getOutput();
-			
-			//trace("Router.disconnect ");
-			//trace("\tinput : " + input.getName());
-			//trace("\toutput : " + output.getName());
 			
 			junction.removePipe(output.getName());
 			junction.removePipe(input.getName());
@@ -132,6 +123,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		 * access from modifying the router they have a reference to.
 		 */
 		public function lockFirewall():void {
+			if (firewall == null) {
+				throw new SecurityError("Cannot lock firewall, A router must be installed before lockFirewall can be called.");
+			}
+			
 			firewallLocked = true;
 		} 
 		
@@ -144,7 +139,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		public function route(message:IRouterMessage):void {
 			var from:String = message.getFrom();
 			var to:String = message.getTo();
-			//Debug.trace("route " + message.getHeader().noteName + ", from=" + from + ", to=" + to);
 
 			var processedMessage:IRouterMessage = message;
 			if (firewall != null) {
@@ -162,6 +156,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		 * 
 		 * @throws SecurityError Routers can only handle messages of type IRouterMessage.
 		 */
+		/* * Deprecated :: Message transport now happens with the direct route call
 		protected function handlePipeMessage(message:IPipeMessage):void {
 			if (message is IRouterMessage) {
 				var routerMessage:IRouterMessage = message as IRouterMessage;
@@ -170,6 +165,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 				throw new SecurityError("Routers can only handle messages of type IRouterMessage.");
 			}
 		}
+		/* */
 		
 	}
 }

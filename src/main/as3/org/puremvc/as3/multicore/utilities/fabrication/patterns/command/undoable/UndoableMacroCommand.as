@@ -40,7 +40,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class UndoableMacroCommand extends AbstractUndoableCommand implements IUndoableCommand {
+	public class UndoableMacroCommand extends AbstractUndoableCommand {
 
 		/**
 		 * Stores the subcommand classes and their corresponding notifications
@@ -56,6 +56,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 		 * The redoable command stack
 		 */
 		protected var redoStack:Stack;
+		
+		/**
+		 * Creates a new UndoableMacroCommand instance.
+		 */
+		public function UndoableMacroCommand() {
+			super();
+			
+			undoStack = new Stack();
+			redoStack = new Stack();
+			subCommands = new Array();			
+		}
 
 		/**
 		 * Initializes the undo and redo stacks and the array of sub commands.
@@ -64,10 +75,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 		 */
 		override public function initializeUndoableCommand(notification:INotification):void {
 			super.initializeUndoableCommand(notification);
-			
-			undoStack = new Stack();
-			redoStack = new Stack();
-			subCommands = new Array();
 			
 			// override and add subcommands in subclasses
 		}
@@ -89,9 +96,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 				var commandNote:INotification;
 				for (var i:int = 0;i < n; i++) {
 					wrapper = subCommands[i];
-					commandClazz = wrapper.clazz as Class;
-					internalNote = wrapper.note as INotification;
-					internalBody = wrapper.body as Object;
+					commandClazz = wrapper["clazz"] as Class;
+					internalNote = wrapper["note"] as INotification;
+					internalBody = wrapper["body"] as Object;
 					
 					if (internalNote != null) {
 						commandNote = internalNote;
@@ -105,8 +112,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 						commandNote = new Notification(null, internalBody);
 					}
 					
-					command = executeCommand(commandClazz, commandNote) as IUndoableCommand;
-					
+					command = executeCommand(commandClazz, null, commandNote) as IUndoableCommand;
 					undoStack.push(command);
 				}
 			} else {

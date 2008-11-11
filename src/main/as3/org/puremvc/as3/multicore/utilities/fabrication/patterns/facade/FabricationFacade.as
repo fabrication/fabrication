@@ -15,18 +15,22 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;	
-	
-	import flash.utils.getQualifiedClassName;
-
+	import org.puremvc.as3.multicore.interfaces.ICommand;
+	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.facade.Facade;
 	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationController;
+	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationModel;
+	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationView;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationRedoCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationUndoCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
+	
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * FabricationFacade is a concrete PureMVC facade implementation that
@@ -91,15 +95,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * The calculated name of the current application.
 		 */
 		protected var applicationName:String;
-
+		
 		/**
-		 * Stores cached notification interests of a mediator. The
-		 * notification interests of a mediator are store here the first
-		 * time they are created. When additional instances of this
-		 * mediator are created the cached notification interests are 
-		 * used.
+		 * The custom singleton object instances map
 		 */
-		protected var cachedNotificationInterests:Object;
+		protected var singletonInstanceMap:HashMap;
 
 		/**
 		 * Creates a new FabricationFacade object.
@@ -107,7 +107,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function FabricationFacade(key:String) {
 			super(key);
 			
-			cachedNotificationInterests = new Object();
+			singletonInstanceMap = new HashMap();
 		}
 
 		/**
@@ -129,8 +129,39 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 				(view as IDisposable).dispose();
 			}
 			
-			cachedNotificationInterests = null;
+			if (model is IDisposable) {
+				(model as IDisposable).dispose();
+			}
+			
+			singletonInstanceMap.dispose();
+			singletonInstanceMap = null;
+			
+			removeCore(multitonKey);
 		}
+
+		/**
+		 * Overrides the initializeModel to create FabricationModel instead of
+		 * the PureMVC default.
+		 */
+		override protected function initializeModel():void {
+			if (model != null) {
+				return;
+			}
+			
+			model = FabricationModel.getInstance(multitonKey);
+		}
+		
+		/**
+		 * Override the initializeView to create a FabricationView instead of
+		 * the PureMVC default
+		 */
+		override protected function initializeView():void {
+			if (view != null) {
+				return;
+			}
+			
+			view = FabricationView.getInstance(multitonKey);
+		}		
 
 		/**
 		 * Overrides initializeController to create a FabricationController
@@ -218,6 +249,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		}
 
 		/**
+		 * Returns the multiton key for the current facade.
+		 */
+		public function getMultitonKey():String {
+			return multitonKey;
+		}
+
+		/**
 		 * Wraps the notification and triggers a send via the router
 		 * using a notification.
 		 * 
@@ -229,50 +267,57 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * 			  in the form ModuleName/InstanceName. If InstanceName is *
 		 * 			  the message will be routed to all instances of the ModuleName.
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
-			var wrapper:Object = new Object();
-			wrapper.noteName = noteName;
-			wrapper.noteBody = noteBody;
-			wrapper.noteType = noteType;
-			wrapper.to = to;
-			
-			sendNotification(RouterNotification.SEND_MESSAGE_VIA_ROUTER, wrapper);
+		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
+			var transportNotification:TransportNotification = new TransportNotification(
+				noteName, noteBody, noteType, to
+			);
+			sendNotification(RouterNotification.SEND_MESSAGE_VIA_ROUTER, transportNotification);
 		}
 		
 		/**
-		 * Stores the notification interests in the application interests.
-		 * 
-		 * @param classpath The path to the mediator class
-		 * @param interests The notification interests of the mediator
+		 * Alias to fabricationController.registerCommandClass
 		 */
-		public function saveNotificationInterests(classpath:String, interests:NotificationInterests):void {
-			cachedNotificationInterests[classpath] = interests;
+		public function executeCommandClass(clazz:Class, body:Object = null, note:INotification = null):ICommand {
+			return fabricationController.executeCommandClass(clazz, body, note);
+		}
+		
+		/**
+		 * Stores the instance with the specified key in the singleton hash map.
+		 * 
+		 * @param key The unique key of the singleton instance
+		 * @param instance The object to store
+		 */
+		public function saveInstance(key:String, instance:Object):Object {
+			return singletonInstanceMap.put(key, instance);
+		}
+		
+		/**
+		 * Returns the singleton instance for the corresponding key.
+		 * 
+		 * @param key The unique key of the singleton instance to lookup.
+		 */
+		public function findInstance(key:String):Object {
+			return singletonInstanceMap.find(key);
+		}
+		
+		/**
+		 * Returns a boolean depending on whether an instance for the specified key 
+		 * exists in the singleton hash map.
+		 * 
+		 * @param key The unique key for the singleton instance to verify.
+		 */
+		public function hasInstance(key:String):Object {
+			return singletonInstanceMap.exists(key);
+		}
+		
+		/**
+		 * Removes the instance for the specified key from the singleton hash map
+		 * 
+		 * @param key The unique key for the singleton instance to remove.
+		 */
+		public function removeInstance(key:String):Object {
+			return singletonInstanceMap.remove(key);
 		}
 
-		/**
-		 * Removes the cached notification interests for the specified classpath.
-		 * 
-		 * @param classpath The classpath whose notification interests need to removed.
-		 */
-		public function clearNotificationInterests(classpath:String):void {
-			delete(cachedNotificationInterests[classpath]);
-		}
-		
-		/**
-		 * Returns the notification interests for the specified mediator
-		 * 
-		 * @param classpath The classpath to the mediator
-		 */
-		public function getNotificationInterests(classpath:String):NotificationInterests {
-			return cachedNotificationInterests[classpath];	
-		}
-		
-		/**
-		 * Returns a boolean depending on whether the specified mediator's
-		 * notification interests are cached.
-		 */
-		public function hasNotificationInterests(classpath:String):Boolean {
-			return getNotificationInterests(classpath) != null;
-		}
 	}
 }

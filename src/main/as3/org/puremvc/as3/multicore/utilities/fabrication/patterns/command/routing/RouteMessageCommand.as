@@ -15,10 +15,12 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessageStore;	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;	
 
 	/**
 	 * RouteMessageCommand translates an inter-module message into a
@@ -33,16 +35,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 		 * and sends it as a system notification within this module.
 		 */
 		override public function execute(note:INotification):void {
-			var message:IRouterMessage = note.getBody() as IRouterMessage;
-			var header:Object = message.getHeader();
-			var notification:RouterNotification = new RouterNotification(
-				header.noteName,
-				message.getBody(),
-				header.noteType,
-				message
-			);
+			var routerNote:RouterNotification = note as RouterNotification;
+			var message:IRouterMessage = routerNote.getMessage();
+			var transport:TransportNotification = message.getNotification();
+			var customNotification:INotification = transport.getCustomNotification();
+			var notificationToSend:INotification;
 			
-			fabFacade.notifyObservers(notification);
+			if (customNotification == null) {
+				notificationToSend = new RouterNotification(
+					transport.getName(),
+					transport.getBody(),
+					transport.getType(),
+					message
+				);
+			} else {
+				notificationToSend = customNotification;
+				if (notificationToSend is IRouterMessageStore) {
+					(notificationToSend as IRouterMessageStore).setMessage(message);
+				}
+			}
+			
+			fabFacade.notifyObservers(notificationToSend);
 		}
 	}
 }

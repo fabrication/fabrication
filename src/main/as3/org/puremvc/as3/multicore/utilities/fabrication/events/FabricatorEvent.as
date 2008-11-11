@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.events {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
 	import flash.events.Event;	
 	
 	/**
@@ -23,8 +25,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class FabricatorEvent extends Event {
-		
+	public class FabricatorEvent extends Event implements IDisposable {
+
 		/**
 		 * Dispatched when the fabrication creation is complete.
 		 */
@@ -40,6 +42,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 		 */
 		public function FabricatorEvent(type:String) {
 			super(type);
+		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable
+		 */
+		public function dispose():void {
+			
 		}
 		
 	}

@@ -27,7 +27,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		/**
 		 * Stores the base names and their counters
 		 */
-		static private var namesMap:Object = new Object();
+		static public var namesMap:Object = new Object();
 		
 		/**
 		 * Calculates the next name for the specified base name

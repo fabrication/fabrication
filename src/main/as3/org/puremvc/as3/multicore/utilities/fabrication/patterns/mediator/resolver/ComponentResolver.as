@@ -15,6 +15,10 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;	
+	
+	import mx.core.Application;	
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -75,7 +79,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * @private
 		 */
 		static private var removeEventName:String = ChildExistenceChangedEvent.CHILD_REMOVE;
-
+		
 		/**
 		 * The base component to start resolution from.
 		 * @private
@@ -103,17 +107,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * List of components that have been resolved so far
 		 */
 		private var resolvedComponents:Dictionary;
+		
+		/**
+		 * Reference to the fabrication facade.
+		 */
+		private var facade:FabricationFacade;
+		
+		/**
+		 * Route mapper instance cached to the current facade
+		 */
+		private var routeMapper:ComponentRouteMapper;
 
 		/**
 		 * Creates a new ComponentResolver for the base component specified
 		 * and starts listening for component creation and removal on that component.
 		 */
-		public function ComponentResolver(baseComponent:UIComponent) {
+		public function ComponentResolver(baseComponent:UIComponent, facade:FabricationFacade, routeMapper:ComponentRouteMapper) {
 			this.baseComponent = baseComponent;
+			this.facade = facade;
+			this.routeMapper = routeMapper;
 			
 			resolvedComponents = new Dictionary(true);
 			eventDispatcher = new EventDispatcher(this);
-			
+						
 			baseComponent.addEventListener(createEventName, handleCreateEvent, true);
 			baseComponent.addEventListener(removeEventName, handleRemoveEvent, true);
 		}
@@ -146,9 +162,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				delete(resolvedComponents[component]);				
 			}
 			
+			routeMapper = null;
 			resolvedComponents = null;
 		}
-
+		
 		/**
 		 * @see flash.events.EventDispatcher#addEventListener()
 		 */
@@ -196,6 +213,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			baseExpression.root = this;
 			
+			return baseExpression;
+		}
+		
+		/**
+		 * Returns the base expression on the component resolver chain
+		 */
+		public function getBaseExpression():Expression {
 			return baseExpression;
 		}
 
@@ -249,10 +273,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Starts matching the expression against the descriptors. 
 		 */
 		public function run():void {
-			//trace("baseExpression = " + baseExpression.expand().source);
-			//trace("\tmultimode = " + multimode);
-			
 			runExpressionOnDescriptors(baseComponent);
+			if (baseComponent is Application && baseComponent["controlBar"] != null) {
+				runExpression(baseComponent["controlBar"]);
+			}
 		}
 		
 		/**
@@ -317,7 +341,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * @private
 		 */
 		private function handleReadyEvent(event:FlexEvent):void {
-			if (event.target.initialized) {
+			if (event.target["initialized"]) {
 				runExpressionOnDescriptors(baseComponent);
 			} 
 			
@@ -349,12 +373,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				var componentPath:String = calcPathFromComponent(sourceComponent);
 				var matchResult:Object = basePattern.exec(componentPath);
 				
+				//debug("runExpression regex=" + basePattern.source + ", sourceComponent=" + sourceComponent);
+				//debug("\tmatchResult=" + matchResult);
 				if (matchResult != null) {
 					var matchedGroup:String = matchResult[1];
 					var matchedComponent:UIComponent = calcComponentFromPath(matchedGroup);
 					
+					//debug("\tmatchComponent=" + matchedComponent);
 					if (matchedComponent == sourceComponent) {
 						if (matchedComponent.initialized) {
+							//debug("\tinitialized=" + matchedComponent.initialized);
 							markAsResolved(matchedComponent);
 							return true;
 						} else {
@@ -373,7 +401,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 */
 		private function runExpressionOnDescriptors(component:UIComponent):void {
 			if (baseExpression != null && !hasResolved(component)) {
-				var routes:Array = ComponentRouteMapper.getComponentRoutes(component);
+				var routes:Array = routeMapper.fetchComponentRoutes(component);
 				
 				//printRoutes(routes);
 				
@@ -421,6 +449,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * @private
 		 */
 		private function calcPathFromComponent(component:UIComponent):String {
+			if (baseComponent is Application && baseComponent["controlBar"] == component) {
+				return calcID(component);
+			}
+			
 			var currentComponent:UIComponent = component;
 			var rootComponent:UIComponent = baseComponent;
 			var path:String = "";
@@ -437,6 +469,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Calculates the component from the path specified.
 		 */
 		private function calcComponentFromPath(path:String):UIComponent {
+			if (baseComponent is Application && baseComponent["controlBar"] != null && baseComponent["controlBar"]["id"] == path) {
+				return baseComponent["controlBar"];
+			}
+			
 			var pathArray:Array = path.split(".");
 			var currentID:String;
 			var currentIDInt:int;
@@ -464,6 +500,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				}
 			}
 			
+			//debug("calcComponentFromPath path=" + path + ", component=" + currentComponent);
 			return currentComponent;
 		}
 		
@@ -471,6 +508,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Flags a component as resolved and sends an event indicating the same.
 		 */
 		private function markAsResolved(component:UIComponent):void {
+			//debug("\tmarkAsResolved component=" + component);
 			component.removeEventListener(readyEventName, handleReadyEvent);
 			
 			resolvedComponents[component] = true;
@@ -496,13 +534,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		/* *
 		private function printRoutes(routes:Array):void {
 			var n:int = routes.length;
-			trace("Total Routes = " + n);
+			//debug("Total Routes = " + n);
 			
 			var route:ComponentRoute;
 			for (var i:int = 0; i < n; i++) {
 				route = routes[i];
-				trace("\t[" + route.id + " : " + route.path + "]");
+				//debug("\t[" + route.id + " : " + route.path + "]");
 			}
+		}
+		/* */
+		
+		/* *
+		public function debug (...params):void {
+			trace.apply(this, params);
 		}
 		/* */
 

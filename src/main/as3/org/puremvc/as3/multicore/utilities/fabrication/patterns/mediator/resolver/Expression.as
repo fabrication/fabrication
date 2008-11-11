@@ -136,8 +136,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			pattern = null;
 			root = null;
 			
-			child.dispose();
-			child = null;
+			if (child != null) {
+				child.dispose();
+				child = null;
+			}
 		}
 
 		/**
@@ -266,7 +268,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			fullPattern = "(" + fullPattern + ")";
 			
-			//trace("expand (" + fullPattern + ")");
+			iterator.dispose();
+			iterator = null;
+			
 			return new RegExp(fullPattern, "");
 		}
 

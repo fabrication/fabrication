@@ -16,7 +16,9 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessageStore;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterNotification;		
 
 	/**
@@ -24,7 +26,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class RouterNotification extends Notification implements IRouterNotification {
+	public class RouterNotification extends Notification implements IRouterNotification, IRouterMessageStore, IDisposable {
 
 		/**
 		 * Notification name to send a message to another module via the 
@@ -66,6 +68,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		 */
 		public function setMessage(message:IRouterMessage):void {
 			this.message = message;
+		}
+
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			setMessage(null);
+			setBody(null);
+			setType(null);
 		}
 	}
 }

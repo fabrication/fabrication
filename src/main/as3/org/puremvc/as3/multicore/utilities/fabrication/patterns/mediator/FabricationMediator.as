@@ -15,9 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
-	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
@@ -28,8 +25,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;	
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
+	
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;		
 
 	/**
 	 * FabricationMediator is the base mediator class for all application mediator
@@ -50,17 +52,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		/**
 		 * Regular expression used to match notification interest in a specific proxy name
 		 */ 
-		static public	var proxyNameRegExp:RegExp = new RegExp(".*Proxy.*", "");
+		static public var proxyNameRegExp:RegExp = new RegExp(".*Proxy.*", "");
 
 		/**
 		 * Regular expression used to check if a notification is qualified
 		 */
-		static public	var notePartRegExp:RegExp = new RegExp("\/", "");
+		static public var notePartRegExp:RegExp = new RegExp("\/", "");
 		
 		/**
 		 * Regular expression used for case conversion
 		 */
 		static public var firstCharRegExp:RegExp = new RegExp("^(.)", "");
+		
+		/**
+		 * Key used to store cached notification with the facade. 
+		 */
+		static public var notificationCacheKey:String = "notificationCache";
+		
+		/**
+		 * Singleton key name for the component resolver within this facade. 
+		 */
+		static public var routeMapperKey:String = "routeMapper"; 
 
 		/**
 		 * Stores list of qualified notifications. Notifications should be
@@ -74,11 +86,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * is respondTo.  
 		 */
 		protected var notificationHandlerPrefix:String = DEFAULT_NOTIFICATION_HANDLER_PREFIX;
+		
+		/**
+		 * Reference to the facade instance specified notification cache object.
+		 */
+		protected var notificationCache:HashMap;
+		
+		/**
+		 * Reference to the component route mapper for this facade.
+		 */
+		protected var routeMapper:ComponentRouteMapper;
 
 		/**
 		 * Creates a new FabricationMediator object.
 		 */
-		public function FabricationMediator(name:String, viewComponent:Object) {
+		public function FabricationMediator(name:String = null, viewComponent:Object = null) {
 			super(name, viewComponent);
 		}
 
@@ -170,14 +192,47 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * 
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#routeNotification()
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
+		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
+		}
+		
+		/**
+		 * Overrides the initializeNotifier to initialize local references to the notification
+		 * cache and route mapper.
+		 */
+		override public function initializeNotifier(key:String):void {
+			super.initializeNotifier(key);
+
+			initializeNotificationCache();
+			initializeRouteMapper();			
+		}
+		
+		/**
+		 * Creates a local reference to the notification cache object for the current facade 
+		 */
+		protected function initializeNotificationCache():void {
+			if (!fabFacade.hasInstance(notificationCacheKey)) { 
+				notificationCache = fabFacade.saveInstance(notificationCacheKey, new HashMap()) as HashMap;
+			} else {
+				notificationCache = fabFacade.findInstance(notificationCacheKey) as HashMap;
+			}
+		}
+
+		/**
+		 * Creates the singleton route mapper for the current facade.
+		 */
+		protected function initializeRouteMapper():void {
+			if (!fabFacade.hasInstance(routeMapperKey)) {
+				routeMapper = fabFacade.saveInstance(routeMapperKey, new ComponentRouteMapper()) as ComponentRouteMapper;
+			} else {
+				routeMapper = fabFacade.findInstance(routeMapperKey) as ComponentRouteMapper;
+			}
 		}
 
 		/**
 		 * Calculates the notification interests of the current mediator
 		 * using reflection. The fabrication's getClassByName is used
-		 * to workaround the sandboxing of the getDefinitionByName.
+		 * to workaround the sandboxing of getDefinitionByName.
 		 * 
 		 * <p>
 		 * The notification interests are cached after reflection. Any
@@ -194,12 +249,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		override public function listNotificationInterests():Array {
 			var qpath:String = getQualifiedClassName(this);
-			var notificationInterests:NotificationInterests = fabFacade.getNotificationInterests(qpath);
+			var notificationInterests:NotificationInterests = notificationCache.find(qpath) as NotificationInterests;
 			if (notificationInterests != null) {
 				qualifiedNotifications = notificationInterests.qualifications;
-				
-				//trace("Cached notification interests");
-				//trace("\t" + interests.join("\r\t"));
 				
 				return notificationInterests.interests;
 			}
@@ -215,9 +267,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			var clazzInfo:XML = describeType(clazz);
 			
-			// FDT bug, shows exec not found on RegExp inside the E4X predicate			
-			var methodNameRe:Object = new RegExp("^" + notificationHandlerPrefix + "(.*)$", ""); 
-			var respondToMethods:XMLList = clazzInfo..method.(methodNameRe.exec(@name) != null);
+			var methodNameRe:RegExp = new RegExp("^" + notificationHandlerPrefix + "(.*)$", ""); 
+			var respondToMethods:XMLList = clazzInfo..method.((methodNameRe as RegExp).exec(@name) != null);
 			var respondToMethodsCount:int = respondToMethods.children().length();
 			var proxyNameRegExpMatch:Object;
 			var methodNameReMatch:Object;
@@ -257,15 +308,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				interests.push(FabricationProxy.NOTIFICATION_FROM_PROXY);
 			}			
 			
-			//trace(clazzInfo);
-			/* *
-			if (interests.length > 0) {
-			trace(getMediatorName() + " Reflected notification interests");
-			trace("\t" + interests.join("\r\t"));
-			}
-			/* */
-
-			fabFacade.saveNotificationInterests(classpath, new NotificationInterests(qpath, interests, qualifiedNotifications));
+			respondToMethods = null;
+			clazzInfo = null;
+			
+			notificationCache.put(qpath, new NotificationInterests(qpath, interests, qualifiedNotifications));
 			
 			return interests;
 		}
@@ -277,7 +323,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * a NOTIFICATION_FROM_PROXY interest the notification is  
 		 */
 		override public function handleNotification(note:INotification):void {
-			//trace("handleNotification note=" + note.getName());
 			var noteName:String = note.getName();
 			var noteParts:Array;
 			var notePrefix:String;
@@ -364,7 +409,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		protected function invokeNotificationHandler(name:String, note:INotification):void {
 			if (this.hasOwnProperty(name)) {
-				//trace(name + "(" + note.getName() + ")");
 				this[name](note);
 			}
 		}

@@ -15,15 +15,16 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.vo {
-
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
 	/**
 	 * A value object to store a mediators notification interests and
 	 * any qualified prefixes.
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class NotificationInterests {
-	
+	public class NotificationInterests implements IDisposable {
+
 		/**
 		 * The full path to the mediator
 		 */	
@@ -50,6 +51,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			this.classpath = classpath;
 			this.interests = interests;
 			this.qualifications = qualifications;
+		}
+		
+		public function dispose():void {
+			classpath = null;
+			interests = null;
+			qualifications = null;
 		}
 	}
 }

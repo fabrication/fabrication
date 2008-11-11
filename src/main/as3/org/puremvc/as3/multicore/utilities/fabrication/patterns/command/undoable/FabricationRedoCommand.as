@@ -15,31 +15,34 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;	
-	import org.puremvc.as3.multicore.interfaces.INotification;	
-	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;	
-	
+	import org.puremvc.as3.multicore.interfaces.INotification;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;		
+
 	/**
 	 * FabricationRedoCommand performs a redo command operation on the
 	 * fabrication facade.
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class FabricationRedoCommand extends SimpleCommand {
+	public class FabricationRedoCommand extends SimpleFabricationCommand {
 		
 		/**
 		 * Redo's the current operation for the number of steps specified.
 		 * Default number of steps to undo is 1.
 		 */
 		override public function execute(note:INotification):void {
-			var fabFacade:FabricationFacade = facade as FabricationFacade;
-			var steps:int = 1;
-			
-			if (note.getBody() != null && !isNaN(note.getBody() as int)) {
-				steps = note.getBody() as int;
+			if (note.getBody() == null) {
+				fabFacade.redo();
+			} else {
+				var steps:int = 1;
+				
+				if (note.getBody() != null && !isNaN(note.getBody() as int)) {
+					steps = note.getBody() as int;
+				}
+				
+				fabFacade.redo(steps);
 			}
-			
-			fabFacade.redo(steps);
 		}
 	}
 }

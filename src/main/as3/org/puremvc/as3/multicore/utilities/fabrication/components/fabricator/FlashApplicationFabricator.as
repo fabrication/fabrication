@@ -57,10 +57,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 */
 		override protected function initializeEnvironment():void {
 			if (router == null) {
-				//trace(fabrication + " is a shell");
 				facade.registerCommand(FabricationNotification.STARTUP, ApplicationStartupCommand);
 			} else {
-				//trace(fabrication + " is a module");
 				facade.registerCommand(FabricationNotification.STARTUP, ModuleStartupCommand);
 			}
 		}

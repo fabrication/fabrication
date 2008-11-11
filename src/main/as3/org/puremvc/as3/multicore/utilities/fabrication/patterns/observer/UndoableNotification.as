@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 	import org.puremvc.as3.multicore.patterns.observer.Notification;	
 	
 	/**
@@ -23,7 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class UndoableNotification extends Notification {
+	public class UndoableNotification extends Notification implements IDisposable {
 
 		/**
 		 * Notified when a new command is added to the stack or an undo or 
@@ -77,6 +78,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 			return "UndoableNotification : " +
 				"\r\tundoable : " + undoable +
 				"\r\tredoable : " + redoable;
+		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			setBody(null);
+			setType(null);
+			
+			undoableCommands = null;
+			redoableCommands = null;
+			undoCommand = null;
+			redoCommand = null;
 		}
 		
 	}

@@ -15,12 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
-	import flash.events.EventDispatcher;
-	
+	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.RouterFirewallEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFirewallRule;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterFirewall;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
+	
+	import flash.events.EventDispatcher;	
 
 	/**
 	 * Dispatched when a message is allowed to be forwarded after checking
@@ -108,8 +109,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		public function process(message:IRouterMessage):IRouterMessage {
 			var n:int = rules.length;
 			var rule:IFirewallRule;
-			var header:Object = message.getHeader();
-			var notification:String = header.noteName;
+			var notificationToRoute:INotification = message.getNotification();
+			var notification:String = notificationToRoute.getName();
 			var from:String = message.getFrom();
 			var to:String = message.getTo();
 			var result:Boolean = true;
@@ -118,31 +119,25 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 			for (var i:int = 0;i < n; i++) {
 				rule = rules[i] as IFirewallRule;
 				ruleResult = rule.process(notification, from, to, message);
-				if (ruleResult) {
-					//trace("Allowed " + notification + ", from=" + from + ", to=" + to);
-					dispatchEvent(new RouterFirewallEvent(RouterFirewallEvent.ALLOWED_MESSAGE, message));
-				} else {
-					//trace("Blocked " + notification + ", from=" + from + ", to=" + to);
-					dispatchEvent(new RouterFirewallEvent(RouterFirewallEvent.BLOCKED_MESSAGE, message));
-				}
-				
 				result = result && ruleResult;
 			}
 			
 			if (result) {
+				dispatchEvent(new RouterFirewallEvent(RouterFirewallEvent.ALLOWED_MESSAGE, message));
 				return message;
 			} else {
+				dispatchEvent(new RouterFirewallEvent(RouterFirewallEvent.BLOCKED_MESSAGE, message));
 				return null;
 			}
 		}
-		
+
 		/**
 		 * Helper to get the index of a specific rule in the rules
 		 */
 		private function findRuleIndex(rule:IFirewallRule):int {
 			var n:int = rules.length;
 			var ruleItem:IFirewallRule;
-			for (var i:int = 0; i < n; i++) {
+			for (var i:int = 0;i < n; i++) {
 				ruleItem = rules[i];
 				if (ruleItem == rule) {
 					return i;

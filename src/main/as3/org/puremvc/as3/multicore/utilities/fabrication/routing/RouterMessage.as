@@ -15,8 +15,9 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.routing {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
-	import org.puremvc.as3.multicore.utilities.pipes.messages.Message;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
+	import org.puremvc.as3.multicore.utilities.pipes.messages.Message;		
 
 	/**
 	 * RouterMessage is the object used to send messages between modules
@@ -36,15 +37,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		 * @private
 		 */
 		private var to:String;
+		
+		/**
+		 * Stores the source notification object that triggered this message
+		 * @private
+		 */
+		private var notification:TransportNotification;
 
 		/**
 		 * Creates a new RouterMessage object.
 		 */
-		public function RouterMessage(type:String, body:Object = null, from:String = null, to:String = null) {
+		public function RouterMessage(type:String, body:Object = null, from:String = null, to:String = null, notification:TransportNotification = null) {
 			super(type, null, body);
 			
 			setFrom(from);
 			setTo(to);
+			setNotification(notification);
 		}
 
 		/**
@@ -53,6 +61,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		public function dispose():void {
 			setFrom(null);
 			setTo(null);
+			
+			setBody(null);
+			setType(null);
+			setHeader(null);
 		}
 
 		/**
@@ -81,6 +93,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		 */
 		public function setTo(to:String):void {
 			this.to = to;
+		}
+		
+		/**
+		 * Returns the source notification that was the source of this message
+		 */
+		public function getNotification():TransportNotification {
+			return notification;
+		}
+		
+		/**
+		 * Saves the source notification that was the source of this message.
+		 */
+		public function setNotification(notification:TransportNotification):void {
+			this.notification = notification;
 		}
 	}
 }

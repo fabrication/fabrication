@@ -74,11 +74,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		 */
 		public function clear():void {
 			var n:int = elements.length;
-			var element:IDisposable;
+			var element:Object;
 			for (var i:int = 0;i < n; i++) {
 				element = elements[i];
 				if (element is IDisposable) {
-					element.dispose();
+					(element as IDisposable).dispose();
 				}
 			}
 			

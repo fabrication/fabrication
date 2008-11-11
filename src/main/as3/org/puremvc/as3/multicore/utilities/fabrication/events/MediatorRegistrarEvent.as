@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.events {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
 	import flash.events.Event;
 	
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FlexMediator;	
@@ -25,8 +27,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class MediatorRegistrarEvent extends Event {
-		
+	public class MediatorRegistrarEvent extends Event implements IDisposable {
+
 		/**
 		 * Dispatched when the mediator registration was completed.
 		 */
@@ -52,6 +54,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 			super(type);
 			
 			this.mediator = mediator;
+		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			mediator = null;
 		}
 		
 	}

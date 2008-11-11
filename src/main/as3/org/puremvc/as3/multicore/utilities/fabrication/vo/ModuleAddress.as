@@ -38,12 +38,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		/**
 		 * Regular expression used to test if an input suffix is present
 		 */
-		static public var inputSuffixRegExp:RegExp = new RegExp("\\" + INPUT_SUFFIX, "");
+		static public var inputSuffixRegExp:RegExp = new RegExp("\\" + INPUT_SUFFIX + "$", "");
 
 		/**
 		 * Regular expression used to test if an output suffix is present 
 		 */
-		static public var outputSuffixRegExp:RegExp = new RegExp("\\" + OUTPUT_SUFFIX, "");
+		static public var outputSuffixRegExp:RegExp = new RegExp("\\" + OUTPUT_SUFFIX + "$", "");
 
 		/**
 		 * The name of the module
@@ -109,6 +109,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 				instanceName = parts[1] as String;
 			} else if (length == 1) {
 				className = parts[0] as String;
+				instanceName = null;
 			}
 		}
 		

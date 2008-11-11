@@ -15,7 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
@@ -104,8 +103,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 			var classpath:String = getQualifiedClassName(this);
 			var classname:String = classpath.split("::")[1];
 			
-			classname = classname.replace(/Command$/, "");			
-			classname = classname.replace(/([A-Z])/g, " \1");
+			classname = classname.replace(/Command/, "");			
+			classname = classname.replace(/([A-Z])/g, " $1");
 			classname = classname.replace(/^ /, "");
 			
 			return classname;
@@ -130,28 +129,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 		 */
 		public function getRedoPresentationName():String {
 			return "Redo " + getPresentationName();
-		}
-		
-		/**
-		 * Overrides executeCommand to initialize undoable commands before
-		 * they are executed.
-		 */
-		override public function executeCommand(clazz:Class, body:Object = null, note:INotification = null):ICommand {
-			if (note == null) {
-				note = getNotification();
-			}
-			
-			var command:ICommand = new clazz();
-			command.initializeNotifier(multitonKey);
-			
-			if (command is IUndoableCommand) {
-				var undoableCommand:IUndoableCommand = command as IUndoableCommand;
-				undoableCommand.initializeUndoableCommand(note);
-			}
-			
-			command.execute(note);
-			
-			return command;
 		}
 		
 		/**

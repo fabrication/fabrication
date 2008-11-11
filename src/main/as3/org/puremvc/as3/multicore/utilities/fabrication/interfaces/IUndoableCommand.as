@@ -24,7 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public interface IUndoableCommand extends ICommand {
+	public interface IUndoableCommand extends ICommand, IDisposable {
 
 		/**
 		 * Saves the notification for this undoable command and 

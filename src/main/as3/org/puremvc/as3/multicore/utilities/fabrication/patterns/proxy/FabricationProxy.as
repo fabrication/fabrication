@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;	
+	
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 	
@@ -45,21 +47,26 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		static public const NOTIFICATION_FROM_PROXY:String = "notificationFromProxy";
 		
 		/**
-		 * Stores the default proxy names calculated using reflection.
+		 * Key for the facade scope singleton proxy name cache.
 		 */
-		static public var cachedProxyNames:Object = new Object();
+		static public var proxyNameCacheKey:String = "proxyNameCache";
 		
 		/**
 		 * Regular expression used to extract the classname from the classpath.
 		 */
-		static private const classRegExp:RegExp = new RegExp(".*::(.*)$", "");
+		static public const classRegExp:RegExp = new RegExp(".*::(.*)$", "");
 		
 		/**
 		 * Indicates whether to use notification expansion when custom
-		 * named Proxies are used. The default behaviour is to true.
+		 * named Proxies are used. The default behaviour is to do expansion.
 		 */
 		public var expansion:Boolean = true;
 		
+		/**
+		 * The proxy names cache object.
+		 */
+		protected var proxyNameCache:HashMap;
+
 		/**
 		 * Creates a new FabricationProxy object.
 		 */
@@ -72,6 +79,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		 */
 		public function dispose():void {
 			data = null;
+			proxyNameCache = null;
 		}
 		
 		/**
@@ -117,7 +125,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 			
 			classpath.replace("::", ".");
 			
-			var fabrication:IFabrication = fabFacade.getApplication() as IFabrication;
+			var fabrication:IFabrication = fabFacade.getFabrication();
 			var clazz:Class = fabrication.getClassByName(classpath);
 			var clazzInfo:XML = describeType(clazz);
 			var constants:XMLList = clazzInfo..constant.(@name == "NAME");
@@ -129,7 +137,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 				proxyName = classname;
 			}
 			
-			cachedProxyNames[qpath] = proxyName;
+			proxyNameCache.put(qpath, proxyName);
+			
+			constants = null;
+			clazzInfo = null;
+			clazz = null;
+			matchResult = null;
 			
 			return proxyName;
 		}
@@ -152,9 +165,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		/**
 		 * Routes a notification to all modules using facade.routeNotification.
 		 */
-		public function routeNotification(noteName:String, noteBody:Object = null, noteType:String = null, to:Object = null):void {
+		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			if (fabFacade != null) {
 				fabFacade.routeNotification(noteName, noteBody, noteType, to);
+			}
+		}
+
+		/**
+		 * Overrides initializeNotifier to create the proxy name cache.
+		 */
+		override public function initializeNotifier(key:String):void {
+			super.initializeNotifier(key);
+			
+			initializeProxyNameCache();
+		}
+		
+		/**
+		 * Creates the proxy name cache specific to the current facade. 
+		 */
+		protected function initializeProxyNameCache():void {
+			if (!fabFacade.hasInstance(proxyNameCacheKey)) {
+				proxyNameCache = fabFacade.saveInstance(proxyNameCacheKey, new HashMap()) as HashMap;
+			} else {
+				proxyNameCache = fabFacade.findInstance(proxyNameCacheKey) as HashMap;
 			}
 		}
 
@@ -176,7 +209,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		 * Returns the cached default proxy name.
 		 */
 		protected function getCachedDefaultProxyName():String {
-			return cachedProxyNames[getQualifiedClassName(this)];
+			return proxyNameCache.find(getQualifiedClassName(this)) as String;
 		}
 	}
 }

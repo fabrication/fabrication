@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IIterator;	
 	
@@ -24,8 +25,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class ExpressionIterator implements IIterator {
-		
+	public class ExpressionIterator implements IIterator, IDisposable {
+
 		/**
 		 * Indicates forward expression iteration.
 		 */
@@ -76,6 +77,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		}
 		
 		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfacase.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			iteration = null;
+			expression = null;
+			source = null;
+			direction = null;
+		}		
+		
+		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#hasNext()
 		 */
 		public function hasNext():Boolean {
@@ -97,6 +108,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		}
 		
 		/**
+		 * Returns the current expression evaluation direction 
+		 */
+		public function getDirection():String {
+			return direction;
+		}
+		
+		/**
 		 * Builds the iteration array from the expression chain
 		 * @private
 		 */
@@ -107,11 +125,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			while (nextExpression != null) {
 				expressions.push(nextExpression);
-				source += source != "" ? "." + nextExpression.source : nextExpression.source;
+				if (direction == FORWARD) {
+					source += source != "" ? "." + nextExpression.source : nextExpression.source;
+				}
 				nextExpression = nextExpression.child;
-			}			
+			}
 			
-			return direction == FORWARD ? expressions : expressions.reverse();
+			if (direction == BACKWARD) {
+				expressions.reverse();
+				source = "";
+				var n:int = expressions.length;
+				for (var i:int = 0; i < n; i++) {
+					nextExpression = expressions[i];
+					source += source != "" ? "." + nextExpression.source : nextExpression.source;
+				}
+			}
+			
+			return expressions;
 		}
 		
 		

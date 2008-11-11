@@ -36,6 +36,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 	public class ConfigureRouterCommand extends SimpleFabricationCommand {
 
 		/**
+		 * The cable listener is stored on the facade for later removal.
+		 */
+		static public var routerCableListenerKey:String = "routerCableListener";
+
+		/**
 		 * Creates an input and output pipe fitting and wraps it with a
 		 * router cable. The router cable is then connected to the router
 		 * specified.
@@ -56,6 +61,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 
 			inputPipe.connect(cableListener);
 			router.connect(routerCable);
+			
+			fabFacade.saveInstance(routerCableListenerKey, cableListener);
 		}
 	}
 }

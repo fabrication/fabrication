@@ -39,14 +39,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	public class FlexMediator extends FabricationMediator implements ICloneable {
 
 		/**
+		 * Default name of this mediator
+		 */
+		static public const NAME:String = "FlexMediator";
+
+		/**
 		 * Stores the registrars used in this mediator
 		 */
 		protected var registrars:Array;
 		
 		/**
+		 * Flag indicates whether the mediator has been disposed
+		 */
+		public var disposed:Boolean = false;
+		
+		/**
 		 * Creates a new FlexMediator object and initializes the registrars.
 		 */
-		public function FlexMediator(name:String, viewComponent:Object) {
+		public function FlexMediator(name:String = null, viewComponent:Object = null) {
 			super(name, viewComponent);
 			
 			registrars = new Array();
@@ -58,6 +68,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		override public function dispose():void {
+			if (disposed) {
+				return;
+			}
+			
+			disposed = true;
 			var n:int = registrars.length;
 			var registrar:MediatorRegistrar;
 			
@@ -105,6 +120,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			mediator.setMediatorName(getMediatorName());
 			mediator.setViewComponent(getViewComponent());
 			
+			requiredParameters = null;
+			constructorNode = null;
+			clazzInfo = null;
+			clazz = null;
+			
 			return mediator;
 		}
 
@@ -124,7 +144,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public function resolve(baseComponent:Object):ComponentResolver {
 			if (baseComponent is UIComponent) {
-				return new ComponentResolver(baseComponent as UIComponent);
+				return new ComponentResolver(baseComponent as UIComponent, fabFacade, routeMapper);
 			} else {
 				throw new Error("Incorrect baseComponent, " + baseComponent + ", resolve needs a valid baseComponent.");
 			}

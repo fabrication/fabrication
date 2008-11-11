@@ -15,15 +15,15 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRoute;
-	import flash.utils.Dictionary;
-
+	
 	import mx.core.ComponentDescriptor;
 	import mx.core.Container;
 	import mx.core.UIComponent;
 	import mx.core.UIComponentDescriptor;
-
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
+	import flash.utils.Dictionary;	
 
 	/**
 	 * ComponentRouteMapper walks the UIComponentDescriptor tree to
@@ -32,20 +32,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	 * @author Darshan Sawardekar
 	 */
 	public class ComponentRouteMapper implements IDisposable {
-
-		static private var instance:ComponentRouteMapper = null;
-
-		static public function getInstance():ComponentRouteMapper {
-			if (instance == null) {
-				instance = new ComponentRouteMapper();
-			}
-			
-			return instance;
-		}
-
-		static public function getComponentRoutes(component:UIComponent, path:String = ""):Array {
-			return getInstance().fetchComponentRoutes(component, path);
-		}
 
 		private var cachedRoutes:Dictionary;
 
@@ -61,7 +47,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			if (hasCachedRoutes(component)) {
 				return getCachedRoutes(component);
 			} else {
-				return mapComponentRoutes(component, path);
+				var routes:Array = mapComponentRoutes(component, path);
+				cachedRoutes[component] = routes;
+				return routes;
 			}
 		}
 
@@ -101,7 +89,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				return false;
 			}
 		}
-
+		
 		public function getCachedRoutes(component:UIComponent):Array {
 			return cachedRoutes[component];
 		}
@@ -138,7 +126,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				if (propertiesFactory != null) {
 					nestedChildDescriptors = propertiesFactory().childDescriptors;
 					if (nestedChildDescriptors != null && nestedChildDescriptors.length > 0) {
-						routes.push.apply(this, calcRoutesFromDescriptors(nestedChildDescriptors, childPath));
+						routes.push..apply(this, calcRoutesFromDescriptors(nestedChildDescriptors, childPath));
 					}
 				}
 			}

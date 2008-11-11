@@ -46,7 +46,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		 */
 		public function PolicyFirewall(_policyFunction:Function = null):void {
 			if (_policyFunction != null) {
-				this.policyFunction = policyFunction;
+				this.policyFunction = _policyFunction;
 			}
 		}
 		

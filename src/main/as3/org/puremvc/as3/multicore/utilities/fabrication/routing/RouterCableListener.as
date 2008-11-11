@@ -59,7 +59,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		 * @param message The message object to translate
 		 */
 		protected function handleMessage(message:IRouterMessage):void {
-			facade.notifyObservers(new RouterNotification(RouterNotification.RECEIVED_MESSAGE_VIA_ROUTER, message));
+			facade.notifyObservers(new RouterNotification(RouterNotification.RECEIVED_MESSAGE_VIA_ROUTER, null, null, message));
 		}
 		
 	}

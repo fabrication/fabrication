@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
 	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;	
@@ -26,7 +27,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class DynamicJunction extends Junction {
+	public class DynamicJunction extends Junction implements IDisposable {
 
 		/**
 		 * Creates a new DynamicJunction object.
@@ -45,16 +46,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		override public function sendMessage(outputPipeName:String, message:IPipeMessage):Boolean {
 			var descriptor:PipeDescriptor = describePipeName(outputPipeName);
 			var routerMessage:IRouterMessage = message as IRouterMessage;
-			
 			var pipeName:String;
-			//trace("DynamicJunction.sendMessage " + outputPipeName + ", from : " + (message as IRouterMessage).getFrom());
+			
 			if (outputPipeName == "*") {
 				// send the message to everyone
 				for (pipeName in pipesMap) {
 					if (!isLoopback(pipeName, routerMessage.getFrom())) {
 						super.sendMessage(pipeName, message);
-					} else {
-						//trace("Dropped message to self");
 					}
 				}
 				
@@ -69,18 +67,30 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 
 					if (!isLoopback(pipeName, routerMessage.getFrom())) {
 						super.sendMessage(pipeName, message);
-					} else {
-						//trace("Dropped message from module to module");
 					}
 				}
 				
 				return n > 0;
 			} else {
-				return super.sendMessage(outputPipeName, message);
+				if (!isLoopback(outputPipeName, routerMessage.getFrom())) {
+					return super.sendMessage(outputPipeName, message);
+				} else {
+					return false;
+				}
 			}
 			
 			return false;
 		}		
+
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			pipesMap = null;
+			outputPipes = null;
+			pipeTypesMap = null;
+			inputPipes = null;
+		}
 
 		/**
 		 * Returns an array of all output pipes for the specified classname.
@@ -141,7 +151,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		}
 
 		/**
-		 * Returs true if the output and input pipes are for the same module. 
+		 * Returns true if the output and input pipes are for the same module. 
 		 */
 		protected function isLoopback(outputPipeName:String, inputPipeName:String):Boolean {
 			var outputModuleAddress:ModuleAddress = calcModuleAddress(outputPipeName);

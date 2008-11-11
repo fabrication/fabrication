@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 	import org.puremvc.as3.multicore.patterns.observer.Notification;	
 	
 	/**
@@ -22,7 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class FabricationNotification extends Notification {
+	public class FabricationNotification extends Notification implements IDisposable {
 
 		/**
 		 * Application startup notification
@@ -64,6 +65,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		 */
 		public function steps():int {
 			return getBody() as int;
+		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification
+		 */
+		public function dispose():void {
+			setBody(null);
+			setType(null);
 		}
 		
 	}

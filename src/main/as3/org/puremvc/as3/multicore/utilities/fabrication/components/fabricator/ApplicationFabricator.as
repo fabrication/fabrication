@@ -146,9 +146,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			_startupCommand = null;
 			_router = null;
-			_moduleAddress = null;
 			
 			notifyFabricationRemoved();
+			
+			if (_moduleAddress != null) {
+				_moduleAddress.dispose();
+				_moduleAddress = null;
+			}
+			
 			_fabrication = null;			
 		}
 
@@ -195,8 +200,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			return _moduleAddress;
 		}
 
-		public function set moduleAddress(moduleAddress:IModuleAddress):void {
-			this._moduleAddress = moduleAddress;
+		public function set moduleAddress(_moduleAddress:IModuleAddress):void {
+			this._moduleAddress = _moduleAddress;
 		}
 
 		/**
@@ -221,7 +226,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * Calculates the current application's name from its startup command class. 
 		 */
 		public function get applicationClassName():String {
-			if (_applicationClassName == null) {
+			if (_applicationClassName == null && _startupCommand != null) {
 				_applicationClassName = FabricationFacade.calcApplicationName(_startupCommand);
 			}
 			
@@ -232,7 +237,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * Calculates the current application's instance name.
 		 */
 		public function get applicationInstanceName():String {
-			if (_applicationInstanceName == null) {
+			if (_applicationInstanceName == null && applicationClassName != null) {
 				_applicationInstanceName = NameUtils.nextName(applicationClassName);
 			} 
 			

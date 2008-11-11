@@ -115,11 +115,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		public function dispose():void {
 			facade = null;
 			
-			resolver.removeEventListener(ComponentResolverEvent.COMPONENT_RESOLVED, componentResolvedListener);
-			resolver.removeEventListener(ComponentResolverEvent.COMPONENT_DESOLVED, componentDesolvedListener);
-			
-			resolver.dispose();
-			resolver = null; 
+			if (resolver != null) {
+				resolver.removeEventListener(ComponentResolverEvent.COMPONENT_RESOLVED, componentResolvedListener);
+				resolver.removeEventListener(ComponentResolverEvent.COMPONENT_DESOLVED, componentDesolvedListener);
+				
+				resolver.dispose();
+				resolver = null;
+			} 
 			
 			defaultMediator = null;
 			mediatorsMap = null;
@@ -211,7 +213,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		private function unregisterMediator(mediator:FlexMediator):void {
 			dispatchEvent(new MediatorRegistrarEvent(MediatorRegistrarEvent.REGISTRATION_CANCELED, mediator));
 			
-			delete(mediatorsMap[mediator.getViewComponent().id]);
+			delete(mediatorsMap[mediator.getViewComponent()["id"]]);
 			
 			if (!getUseSuffix()) {
 				defaultMediator = null;
@@ -274,6 +276,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			defaultMediatorClass = clazz;
 			defaultMediatorCloneable = (clazzInfo..implementsInterface.(@type == cloneableClass)).length() == 1;
 			defaultMediatorParams = requiredParameters.length();
+			
+			requiredParameters = null;
+			constructorNode = null;
+			clazzInfo = null;
+			clazz = null;
 		}
 		
 		/**

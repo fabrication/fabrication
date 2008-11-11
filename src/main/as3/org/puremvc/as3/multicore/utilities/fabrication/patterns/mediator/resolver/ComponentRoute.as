@@ -15,15 +15,16 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
-
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	
 	/**
 	 * ComponentRoute is a value object to describe the path to a
 	 * component in the DisplayObject tree.
 	 * 
 	 * @author Darshan Sawardekar
 	 */
-	public class ComponentRoute {
-		
+	public class ComponentRoute implements IDisposable {
+
 		/**
 		 * The unique id of the component.
 		 */
@@ -43,6 +44,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		public function ComponentRoute(id:String, path:String) {
 			this.id = id;
 			this.path = path;
+		}
+		
+		/**
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 */
+		public function dispose():void {
+			id = null;
+			path = null;
 		}
 		
 	}

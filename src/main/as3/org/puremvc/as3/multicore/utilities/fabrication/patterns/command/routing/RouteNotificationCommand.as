@@ -15,14 +15,15 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMessage;
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
 	import org.puremvc.as3.multicore.utilities.pipes.messages.Message;	
 
 	/**
@@ -33,13 +34,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 	 * @author Darshan Sawardekar
 	 */
 	public class RouteNotificationCommand extends SimpleFabricationCommand {
-		
+
 		/**
 		 * Regular expression used to match a Module/* route
 		 * @private
 		 */
 		static private var allInstanceRegExp:RegExp = new RegExp(".*\/\\*", "");
-		
+
 		/**
 		 * Extracts the wrapped source notification from the body of the
 		 * main notification and attaches it to a router message object.
@@ -52,15 +53,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 		override public function execute(note:INotification):void {
 			var moduleAddress:IModuleAddress = fabrication.moduleAddress;
 			var router:IRouter = fabrication.router;
-			
-			var wrapper:Object = note.getBody();
-			var noteName:String = wrapper.noteName;
-			var noteType:String = wrapper.noteType;
-			var noteBody:Object = wrapper.noteBody;
-			
+			var transport:TransportNotification = note.getBody() as TransportNotification;
+			var to:Object = transport.getTo();
 			var message:IRouterMessage = new RouterMessage(Message.NORMAL);
-			var to:Object = wrapper.to;
 			
+			// The if condition below is optimized in the order of the most likely 
+			// "to" destination address.			
 			if (to == null) {
 				to = fabrication.defaultRoute;
 				
@@ -68,28 +66,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 					to = "*";
 				}
 			} else if (
-				to is String &&
-				to != "*" && 
-				!allInstanceRegExp.test(to as String)  && 
-				!ModuleAddress.inputSuffixRegExp.test(to as String)
+				to is String && to != "*" && !allInstanceRegExp.test(to as String) && !ModuleAddress.inputSuffixRegExp.test(to as String)
 				) {
 				to = (to as String) + ModuleAddress.INPUT_SUFFIX;
 			} else if (to is IModuleAddress) {
-				to = to.getInputName();
+				to = (to as IModuleAddress).getInputName();
 			}
 			
-			//trace("Sending message " + noteName + ", from=" + moduleAddress.getOutputName() + ", to=" + to);
 			message.setFrom(moduleAddress.getOutputName());
 			message.setTo(to as String);
-			
-			message.setBody(wrapper.noteBody);
-			message.setHeader({
-				noteName : noteName,
-				noteType : noteType
-			});
+			message.setNotification(transport);
 			
 			router.route(message);
 		}	
-		
 	}
 }
