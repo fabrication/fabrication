@@ -212,12 +212,16 @@
 	</target>
 	
 	<target name="publish-to-googlecode" description="Publishes the current source to the google code downloads">
+		<property name="fabrication.flex.swc.location" location="${dist}/fabrication-${fabrication.version}-flex.swc" />
+		<property name="fabrication.air.swc.location" location="${dist}/fabrication-${fabrication.version}-air.swc" />
+		<property name="fabrication.source.zip.location" location="${dist}/fabrication-${fabrication.version}-src.zip" />
+		
 		<publish-file-to-googlecode 
-			file="${fabrication.flex.swc}"
+			file="${fabrication.flex.swc.location}"
 			summary="Fabrication ${fabrication.version} swc for Flex"
 		/>
 		<publish-file-to-googlecode 
-			file="${fabrication.air.swc}"
+			file="${fabrication.air.swc.location}"
 			summary="Fabrication ${fabrication.version} swc for AIR"
 		/>
 		<!--
@@ -227,7 +231,7 @@
 		/>
 		-->
 		<publish-file-to-googlecode 
-			file="${fabrication.source.zip}"
+			file="${fabrication.source.zip.location}"
 			summary="Fabrication ${fabrication.version} Source Zip"
 		/>
 	</target>

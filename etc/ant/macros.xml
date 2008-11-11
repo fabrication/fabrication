@@ -814,16 +814,16 @@
 		
 		<sequential>
 			<echo level="info">Uploading @{summary}</echo>
-			<!--
+			<var-basename file="@{file}" variable="targetfile" />
 			<gcupload 
 				username="${svn.username}"
 				password="${svn.password}"
 				projectname="fabrication"
 				filename="@{file}"
+				targetfilename="${targetfile}"
 				summary="@{summary}"
 				labels="@{labels}"
 			/>
-			-->
 		</sequential>
 	</macrodef>
 	
