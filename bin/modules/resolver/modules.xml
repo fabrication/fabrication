@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modules base="modules/resolver/layouts/">
+<module path="n_level_hbox.swf"/>
+<module path="n_level_vbox.swf"/>
+<module path="named_one_level_vbox.swf"/>
+<module path="one_level_vbox.swf"/>
+<module path="simple_shallow_layout.swf"/>
+<module path="two_level_vbox.swf"/>
+</modules>
