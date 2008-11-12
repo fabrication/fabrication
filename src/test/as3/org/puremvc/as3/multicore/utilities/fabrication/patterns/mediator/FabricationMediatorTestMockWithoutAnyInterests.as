@@ -17,8 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import com.anywebcam.mock.Mock;
 	
-	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;	
 
 	/**

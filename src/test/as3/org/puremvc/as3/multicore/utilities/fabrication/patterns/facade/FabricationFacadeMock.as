@@ -23,8 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationController;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;	
 
 	/**
 	 * @author Darshan Sawardekar

@@ -17,7 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 	import com.anywebcam.mock.Mock;
 	
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMessage;
 	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;
 	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;	

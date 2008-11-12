@@ -16,12 +16,11 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.components {
 	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.EventListenerMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.Router;
 	
 	import mx.events.ModuleEvent;
 	
-	import flash.events.Event;		
+	import flash.events.Event;	
 
 	/**
 	 * @author Darshan Sawardekar

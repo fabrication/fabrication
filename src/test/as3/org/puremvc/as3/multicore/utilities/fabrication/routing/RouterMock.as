@@ -20,8 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterCable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterFirewall;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
 
 	/**
 	 * @author Darshan Sawardekar

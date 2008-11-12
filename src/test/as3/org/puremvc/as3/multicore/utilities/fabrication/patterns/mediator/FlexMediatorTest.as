@@ -87,6 +87,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			flexMediator.resolve(new Object());
 		}
 		
+		public function testFlexMediatorHasRouteMapperKey():void {
+			assertNotNull(FlexMediator.routeMapperKey);
+			assertType(String, FlexMediator.routeMapperKey);
+		}
+		
 		public function testFlexMediatorAllowsRegistrationOfFlexMediatorsWithPendingComponentResolutions():void {
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			var notificationCache:HashMap = new HashMap();
@@ -94,7 +99,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
+			facade.mock.method("findInstance").withArgs(FlexMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 

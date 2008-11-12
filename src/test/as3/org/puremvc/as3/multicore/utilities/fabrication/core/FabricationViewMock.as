@@ -15,15 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;	
-	
 	import com.anywebcam.mock.Mock;
 	
 	import org.puremvc.as3.multicore.core.View;
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IObserver;
-	import org.puremvc.as3.multicore.interfaces.IView;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;		
 
 	/**
 	 * @author Darshan Sawardekar

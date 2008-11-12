@@ -25,13 +25,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
 	
 	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;		
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * FabricationMediator is the base mediator class for all application mediator
@@ -70,11 +69,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		static public var notificationCacheKey:String = "notificationCache";
 		
 		/**
-		 * Singleton key name for the component resolver within this facade. 
-		 */
-		static public var routeMapperKey:String = "routeMapper"; 
-
-		/**
 		 * Stores list of qualified notifications. Notifications should be
 		 * qualified if there are multiple notifications with the same
 		 * sub part name.
@@ -93,11 +87,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		protected var notificationCache:HashMap;
 		
 		/**
-		 * Reference to the component route mapper for this facade.
-		 */
-		protected var routeMapper:ComponentRouteMapper;
-
-		/**
 		 * Creates a new FabricationMediator object.
 		 */
 		public function FabricationMediator(name:String = null, viewComponent:Object = null) {
@@ -109,6 +98,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public function dispose():void {
 			qualifiedNotifications = null;
+			notificationCache = null;
 		}
 
 		/**
@@ -204,7 +194,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			super.initializeNotifier(key);
 
 			initializeNotificationCache();
-			initializeRouteMapper();			
 		}
 		
 		/**
@@ -215,17 +204,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				notificationCache = fabFacade.saveInstance(notificationCacheKey, new HashMap()) as HashMap;
 			} else {
 				notificationCache = fabFacade.findInstance(notificationCacheKey) as HashMap;
-			}
-		}
-
-		/**
-		 * Creates the singleton route mapper for the current facade.
-		 */
-		protected function initializeRouteMapper():void {
-			if (!fabFacade.hasInstance(routeMapperKey)) {
-				routeMapper = fabFacade.saveInstance(routeMapperKey, new ComponentRouteMapper()) as ComponentRouteMapper;
-			} else {
-				routeMapper = fabFacade.findInstance(routeMapperKey) as ComponentRouteMapper;
 			}
 		}
 

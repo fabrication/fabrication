@@ -150,18 +150,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			assertType(String, FabricationMediator.notificationCacheKey);
 		}
 		
-		public function testFabricationMediatorHasRouteMapperKey():void {
-			assertNotNull(FabricationMediator.routeMapperKey);
-			assertType(String, FabricationMediator.routeMapperKey);
-		}
-		
 		public function testFabricationMediatorNotificationReflectionIsValidWithRespondToNoteAndRespondToProxySyntax():void {
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			
@@ -187,11 +180,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function testFabricationMediatorNotificationReflectionIsValidWithOnlyRespondToNoteSyntax():void {
 			var mediator:FabricationMediator = new FabricationMediatorTestMockWithoutProxyInterests(methodName);
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			
@@ -216,11 +207,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function testFabricationMediatorNotificationReflectionIsValidWithOnlyRespondToProxySyntax():void {
 			var mediator:FabricationMediator = new FabricationMediatorTestMockWithOnlyProxyInterests(methodName);
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			
@@ -244,7 +233,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			
@@ -264,7 +252,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			
@@ -296,11 +283,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function testFabricationMediatorExecutesRespondToProxySyntax():void {
 			var mediator:FabricationMediator = new FabricationMediatorTestMockWithQualifiedProxyInterests(methodName);
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			
 			var qualifications:Object = {
@@ -344,11 +329,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function testFabricationMediatorExecutesRespondToNotificationSyntax():void {
 			var mediator:FabricationMediator = new FabricationMediatorTestMock(methodName);
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			
 			mediator.initializeNotifier(multitonKey);
@@ -382,14 +365,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			verifyMock(fabrication.mock);			
 		}
 		
+		public function testFabricationMediatorDoesNotHaveRouterKey():void {
+			assertFalse((FabricationMediator as Class).hasOwnProperty("routerKey"));
+		}
+		
 		public function testFabricationProxyCachesNotificationInterests():void {
 			var notificationCache:HashMap = new HashMap();
-			var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();
 			var sampleSize:int = 25;
 			
 			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
 			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
-			facade.mock.method("findInstance").withArgs(FabricationMediator.routeMapperKey).returns(routeMapper).atLeast(1);
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 			fabrication.mock.method("getClassByName").withArgs(String).returns(FabricationMediatorTestMock).atLeast(1);
 			

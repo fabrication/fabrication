@@ -22,8 +22,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.AbstractFabricationCommandTest;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.routing.firewall.MultiRuleFirewall;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.firewall.MultiRuleFirewall;	
 
 	/**
 	 * @author Darshan Sawardekar

@@ -38,7 +38,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxyMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxyMock;
 	
 	import mx.core.Application;	
 

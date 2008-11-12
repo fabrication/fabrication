@@ -54,7 +54,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	public class FabricationControllerTest extends SimpleTestCase {
 
 		private var controller:FabricationController = null;
-		private var classesToLink:Array = [
+		public var classesToLink:Array = [
 			SimpleUndoableCommandMock1,
 			SimpleUndoableCommandMock2,
 			SimpleUndoableCommandMock3,

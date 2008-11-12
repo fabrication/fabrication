@@ -126,7 +126,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			assertEquals(mappedRoutes, mapper.fetchComponentRoutes(module));
 		}
 		
-		private function printRoutes(routes:Array):void {
+		public function printRoutes(routes:Array):void {
 			var n:int = routes.length;
 			trace("Total Routes = " + n);
 			

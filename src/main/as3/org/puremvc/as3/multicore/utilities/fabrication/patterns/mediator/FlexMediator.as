@@ -15,19 +15,20 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
-	
-	import mx.core.UIComponent;
-	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.MediatorRegistrar;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FabricationMediator;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.CloneUtils;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.MediatorRegistrar;
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.CloneUtils;
+	
+	import mx.core.UIComponent;
+	
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * FlexMediator is the base mediator class for all Flex based application
@@ -53,6 +54,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public var disposed:Boolean = false;
 		
+		/**
+		 * Singleton key name for the component resolver within this facade. 
+		 */
+		static public var routeMapperKey:String = "routeMapper"; 
+
+		/**
+		 * Reference to the component route mapper for this facade.
+		 */
+		protected var routeMapper:ComponentRouteMapper;
+
 		/**
 		 * Creates a new FlexMediator object and initializes the registrars.
 		 */
@@ -87,10 +98,32 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			}
 			
 			registrars = null;
+			routeMapper = null;
 			
 			super.dispose();
 		}
 		
+		/**
+		 * Overrides the initializeNotifier to initialize local references to the route mapper.
+		 */
+		override public function initializeNotifier(key:String):void {
+			super.initializeNotifier(key);
+
+			initializeRouteMapper();			
+		}
+		
+		/**
+		 * Creates the singleton route mapper for the current facade.
+		 * @private
+		 */
+		protected function initializeRouteMapper():void {
+			if (!fabFacade.hasInstance(routeMapperKey)) {
+				routeMapper = fabFacade.saveInstance(routeMapperKey, new ComponentRouteMapper()) as ComponentRouteMapper;
+			} else {
+				routeMapper = fabFacade.findInstance(routeMapperKey) as ComponentRouteMapper;
+			}
+		}
+
 		// Needs to be overridden if the the mediator is other than
 		// (name:String, viewComponent:Object)
 		// or (viewComponent:Object)

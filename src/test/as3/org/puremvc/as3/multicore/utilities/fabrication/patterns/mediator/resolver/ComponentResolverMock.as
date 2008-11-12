@@ -17,7 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
 	import com.anywebcam.mock.Mock;
 	
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 	
 	import mx.core.UIComponent;

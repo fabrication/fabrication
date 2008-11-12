@@ -16,8 +16,7 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.shutdown {
 	import flexunit.framework.SimpleTestCase;
-	import flexunit.framework.TestSuite;
-
+	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;

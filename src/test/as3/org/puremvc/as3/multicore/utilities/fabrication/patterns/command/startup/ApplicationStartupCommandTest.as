@@ -29,9 +29,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.routing.firewall.MultiRuleFirewall;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;		
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;	
 
 	/**
 	 * @author Darshan Sawardekar

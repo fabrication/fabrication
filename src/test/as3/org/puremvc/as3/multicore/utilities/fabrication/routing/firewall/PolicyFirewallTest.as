@@ -17,8 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 	import flexunit.framework.SimpleTestCase;
 	
-	import com.anywebcam.mock.Mock;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterFirewall;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;

@@ -15,8 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import flexunit.framework.TestSuite;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoaderMock;
 	
