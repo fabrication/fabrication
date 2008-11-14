@@ -122,5 +122,50 @@
 	
 	<pathconvert refid="swc.runtime.path" property="swc.runtime.pathlist" />
 	<pathconvert refid="swc.linked.path" property="swc.linked.pathlist" />
+	
+	<!-- When building from sources the src.common.pathlist is dynamically build from
+		  properties named common.source.dir1..N -->
+	<if>
+		<isset property="build.from.sources" />
+		<then>
+			<!-- common source directories -->
+			<propertyselector 
+				property="common.source.dirs" 
+				delimiter="${path.separator}"
+				match="(common\.source\.dir[0-9]+)"
+				select="\1"
+				casesensitive="no"
+			/>
+			
+			<if>
+				<isset property="common.source.dirs" />
+				<then>
+					<var name="common.source.dirs.pathlist" value="" />
+					<for param="common.source.dirpath" 
+						list="${common.source.dirs}"
+						delimiter="${path.separator}">
+						<sequential>
+							<var name="common.source.dirs.pathlist" value="${@{common.source.dirpath}}${path.separator}${common.source.dirs.pathlist}" />
+						</sequential>
+					</for>
+					
+					<var name="src.common.pathlist" value="${common.source.dirs.pathlist}" />
+					
+					<if>
+						<isset property="use.empty.swcs"/>
+						<then>
+							<var name="empty.swc.dir" value="${build.dir}/empty_swc_dir" />
+							<mkdir dir="${empty.swc.dir}" />
+							
+							<var name="swc.main.pathlist" value="${empty.swc.dir}" />
+							<var name="swc.common.pathlist" value="${empty.swc.dir}" />
+						</then>
+					</if>
+					
+					<echo level="info">building from sources</echo>
+				</then>
+			</if>
+		</then>
+	</if>
 
 </project>

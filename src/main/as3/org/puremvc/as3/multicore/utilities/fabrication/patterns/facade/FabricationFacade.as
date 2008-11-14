@@ -121,12 +121,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			sendNotification(FabricationNotification.SHUTDOWN, getApplication());
 			startupCommand = null;
 			
-			if (controller is IDisposable) {
-				(controller as IDisposable).dispose();
-			}
-			
 			if (view is IDisposable) {
 				(view as IDisposable).dispose();
+			}
+			
+			if (controller is IDisposable) {
+				(controller as IDisposable).dispose();
 			}
 			
 			if (model is IDisposable) {

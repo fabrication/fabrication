@@ -91,6 +91,25 @@
 			<mkdir dir="${swc.common.dir}" />
 		</sequential>
 	</macrodef>
+	
+	<!-- unsets boolean properties that were specified as false -->
+	<macrodef name="unset-if-false">
+		<attribute name="property" />
+		<sequential>
+			<if>
+				<and>
+					<isset property="@{property}" />
+					<or>
+						<equals arg1="${@{property}}" arg2="no" />
+						<equals arg1="${@{property}}" arg2="false" />
+					</or>
+				</and>
+				<then>
+					<var name="@{property}" unset="yes" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
 
 	<!-- Compiles a Flex or AS3 application with mxmlc -->
 	<macrodef name="flex-app">
@@ -203,8 +222,8 @@
 				<arg value="-output=@{output}" />
 				
 				<!-- debug options -->
-				<!--
 				<arg value="-dump-config=${basedir}/macro-flex-config.xml" />
+				<!--
 				-->
 				<arg value="-debug=@{debug}" />
 			</exec>

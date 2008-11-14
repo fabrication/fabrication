@@ -17,6 +17,10 @@
 	<property name="test.runner.width" value="950" />
 	<property name="test.runner.height" value="600" />
 	
+	<unset-if-false property="runner.rebuild" />
+	<unset-if-false property="runner.modules.rebuild"/>
+	<unset-if-false property="resolver.layouts.rebuild" />
+	
 	<!-- fileset refers to the component resolver layout test mxml modules -->
 	<fileset id="resolver.layouts.fileset" dir="${resolver.layouts.dir}">
 		<include name="*.mxml" />
