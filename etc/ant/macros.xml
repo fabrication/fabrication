@@ -352,6 +352,86 @@
 		</sequential>
 	</macrodef>
 	
+	<!-- grabs files from path and returns them in a delimited list -->
+	<macrodef name="path-to-list">
+		<attribute name="dir" />
+		<attribute name="refid" />
+		<attribute name="variable" />
+		<attribute name="separator" />
+		<attribute name="pathsep" />
+		
+		<sequential>
+			<var-dirname variable="temp.dir.name" file="@{dir}"/>
+			<var-basename variable="temp.dir.file" file="@{dir}"/>
+			
+			<!-- convert the list of classes in the path to a delimited list -->
+			<var-pathconvert variable="temp.file.classes.list" refid="@{refid}" pathsep="@{pathsep}" />
+			
+			<!-- escapes the backslash in the paths -->
+			<propertyregex property="temp.dir.exp"
+				input="${temp.dir.name}"
+				regexp="(\\)"
+				replace="\\\\\\\\" />
+			
+			<!-- strips the directory and parts from the classpath list -->
+			<propertyregex property="@{variable}"
+				input="${temp.file.classes.list}"
+				regexp="${temp.dir.exp}@{separator}${temp.dir.file}@{separator}"
+				replace="" override="yes"/>
+		</sequential>
+	</macrodef>
+	
+	<!-- grabs files from path and returns a filename filepath list -->
+	<macrodef name="fileset-to-namelist">
+		<attribute name="dir" />
+		<attribute name="variable" />
+		<attribute name="separator" />
+		<attribute name="pathsep" />
+		<attribute name="prefix" default="-include-file" />
+		<element name="asset-files" implicit="yes" />
+		
+		<sequential>
+			<var-dirname variable="temp.dir.name" file="@{dir}"/>
+			<var-basename variable="temp.dir.file" file="@{dir}"/>
+			<var name="asset.list.value" value="" />
+			
+			<for param="asset-file">
+				<asset-files />
+					
+				<sequential>
+					<var-basename file="@{asset-file}" variable="asset.filename" />
+					<var-dirname file="@{asset-file}" variable="asset.dirname" />
+					
+					
+					<!-- escapes the backslash in the paths -->
+					<propertyregex property="asset.filepath"
+						input="@{asset-file}"
+						regexp="(\\)"
+						replace="/" override="yes"/>
+					
+					<!-- strips the directory and parts from the classpath list -->
+					<!--
+					<propertyregex property="asset.file.relpath"
+						input="@{asset-file}"
+						regexp="${temp.dir.exp}@{separator}${temp.dir.file}@{separator}"
+						replace="" override="yes"/>-->
+					
+					<!-- convert backslash to forward slash -->
+					<!--
+					<propertyregex property="asset.file.finalpath"
+						input="${temp.asset.exp}"
+						regexp="(\\)"
+						replace="/" override="yes"/>-->
+					
+					<echo>${asset.filepath}</echo>
+					<var name="asset.list.value" value="${asset.list.value} @{prefix} ${asset.filename} ${asset.filepath}" />
+				</sequential>
+			</for>
+			
+			<var name="@{variable}" value="${asset.list.value}" />
+		</sequential>
+	</macrodef>
+	
 	<!-- Compiles a swc component using compc -->
 	<macrodef name="flex-comp">
 		<element name="component-files" implicit="yes" />
@@ -379,14 +459,28 @@
 			-->
 			<tempfile property="temp.file" prefix="compc"/>
 			<var-basename variable="temp.file.name" file="${temp.file}" />
-			<property name="temp.dir" value="${build.dir}/${temp.file.name}" />
+			<var name="temp.dir" value="${build.dir}/${temp.file.name}" />
+			<var name="allfiles.dir" value="${build.dir}/${temp.file.name}_allfiles" />
 			
 			<delete dir="${temp.dir}" failonerror="no"/>
 			<mkdir dir="${temp.dir}" />
 			
-			<!-- flatten using a packagemapper -->
-			<copy todir="${temp.dir}">
+			<delete dir="${allfiles.dir}" failonerror="no" />
+			<mkdir dir="${allfiles.dir}" />
+			
+			<!-- move all files into temporary directory -->
+			<copy todir="${allfiles.dir}">
 				<component-files />
+			</copy>
+			
+			<!-- move classes and flatten using a packagemapper -->
+			<move todir="${temp.dir}">
+				<fileset dir="${allfiles.dir}">
+					<include name="**/*.as" />
+					<include name="**/*.mxml" />
+					<include name="*.as" />
+					<include name="*.mxml" />
+				</fileset>
 				<chainedmapper>
 					<packagemapper from="*" to="*.class" />
 					<filtermapper>
@@ -394,7 +488,7 @@
 						<replacestring from=".mxml.class" to="" />
 					</filtermapper>
 				</chainedmapper>
-			</copy>
+			</move>
 			
 			<!-- create temporary pathref with the classes to include -->
 			<path id="temp.file.classes">
@@ -403,28 +497,25 @@
 				</fileset>
 			</path>
 			
-			<var-dirname variable="temp.dir.name" file="${temp.dir}"/>
-			<var-basename variable="temp.dir.file" file="${temp.dir}"/>
-			
-			<!-- convert the list of classes in the path to a delimited list -->
-			<var-pathconvert variable="temp.file.classes.list" refid="temp.file.classes" pathsep=" " />
-			
-			<!-- escapes the backslash in the paths -->
-			<propertyregex property="temp.dir.exp"
-				input="${temp.dir.name}"
-				regexp="(\\)"
-				replace="\\\\\\\\" />
+			<!-- create temporary pathref with non classes to include -->
+			<path id="temp.file.assets">
+				<fileset dir="${allfiles.dir}">
+					<include name="**" />
+				</fileset>
+			</path>
 			
 			<!-- platform specific regular expression part separator -->
 			<condition property="regexp.separator" value="\\" else="${path.separator}">
 				<os family="windows"/>
 			</condition>
 			
-			<!-- strips the directory and parts from the classpath list -->
-			<propertyregex property="temp.file.classes.value"
-				input="${temp.file.classes.list}"
-				regexp="${temp.dir.exp}${regexp.separator}${temp.dir.file}${regexp.separator}"
-				replace="" />
+			<path-to-list
+				dir="${temp.dir}"
+				refid="temp.file.classes" 
+				variable="temp.file.classes.value" 
+				separator="${regexp.separator}" 
+				pathsep=" "
+			/>
 			
 			<!-- work done remove the temp directory before the exec -->
 			<delete dir="${temp.dir}" failonerror="no" />
@@ -449,6 +540,20 @@
 				<!-- output swc -->
 				<arg value="-output=@{output}" />
 			</exec>
+			
+			<!-- copy remaining files into the swc -->
+			<!-- using a fileset to exclude empty directories -->
+			<!-- TODO : find a better way -->
+			<zip destfile="@{output}" update="true">
+				<fileset dir="${allfiles.dir}">
+					<include name="**/*.jpg" />
+					<include name="**/*.css" />
+					<include name="**/*.png" />
+					<include name="**/*.gif" />
+					<include name="**/*.swf" />
+					<include name="**/*.txt" />
+				</fileset>
+			</zip>
 		</sequential>
 	</macrodef>	
 	
@@ -645,7 +750,8 @@
 	<!-- Removes older fabrication swcs from an example, adds the current swc
 		 to its libs, and recompiles and launches the main app swf 
 		 This is windows specific for the moment, because of lot of ant file calling
-		 ant file type operations. Ant's immutable properties make regular antcalls hard to do. -->
+		 ant file type operations. Ant's immutable properties make regular antcalls hard to do. 
+		 could use antfetch but it appears to be broken in ant 1.7		 -->
 	<macrodef name="upgrade-app">
 		<attribute name="app-dir" />
 		<attribute name="revision" default="${fabrication.version}"/>
@@ -680,13 +786,13 @@
 	</macrodef>
 	
 	<!-- freezes multiple examples specified by a dirset -->
-	<macrodef name="freeze-apps">
+	<macrodef name="upgrade-apps">
 		<element name="app-dirs" implicit="yes" optional="no" />
 		<sequential>
 			<for param="app-dir">
 				<app-dirs />
 				<sequential>
-					<freeze-app app-dir="@{app-dir}" />
+					<upgrade-app app-dir="@{app-dir}" />
 				</sequential>
 			</for>
 		</sequential>
