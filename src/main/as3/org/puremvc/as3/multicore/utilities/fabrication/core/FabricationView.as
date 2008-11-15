@@ -61,10 +61,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 					(mediator as IDisposable).dispose();
 				}
 				// check if mediator still exists or it was removed in the dispose call
+				/* *
 				if (hasMediator(mediator.getMediatorName())) {
 					// removing the mediator also removes it's observerMap references, good to call
 					removeMediator(mediator.getMediatorName());
 				}
+				 * 
+				 */
 			}
 			
 			mediatorMap = null;

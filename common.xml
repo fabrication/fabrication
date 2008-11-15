@@ -37,7 +37,7 @@
 	<!-- unset boolean properties that were specified as false
 		  must happen before the build paths are created -->
 	<unset-if-false property="build.from.sources" />
-	<unset-if-false property="use.empty.swcs" />
+	<unset-if-false property="build.from.sources.full" />
 	
 	<!-- flex build paths -->
 	<import file="${fabrication.common.dirname}/etc/ant/flex-paths.xml" />

@@ -47,7 +47,7 @@
 	</target>
 	
 	<target name="swc" description="Compiles the fabrication swc for multiple platforms"
-		depends="swc-flex, swc-flash, swc-air">
+		depends="swc-flex, swc-air, swc-dependencies">
 	</target>
 	
 	<target name="swc-flex" description="Compiles the fabrication swc for flex"
@@ -299,6 +299,20 @@
 	<target name="upgrade-app"
 		description="Freezes the current fabrication swc into a project">
 		<upgrade-app app-dir="${project.dir}" />
+	</target>
+	
+	<target name="upgrade-example" description="Upgrades the specified example">
+		<upgrade-app app-dir="${examples.dir}/${example.name}" />
+	</target>
+	
+	<target name="upgrade-examples" description="Upgrades all examples">
+		<upgrade-apps>
+			<dirset dir="${examples.dir}">
+				<include name="*" />
+				<exclude name="**flash**" />
+				<exclude name="**rsl**" />
+			</dirset>
+		</upgrade-apps>
 	</target>
 	
 	<target name="all" depends="clean, build, test, asdoc, run" 

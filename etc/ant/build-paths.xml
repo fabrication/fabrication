@@ -152,7 +152,7 @@
 					<var name="src.common.pathlist" value="${common.source.dirs.pathlist}" />
 					
 					<if>
-						<isset property="use.empty.swcs"/>
+						<isset property="build.from.sources.full"/>
 						<then>
 							<var name="empty.swc.dir" value="${build.dir}/empty_swc_dir" />
 							<mkdir dir="${empty.swc.dir}" />

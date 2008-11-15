@@ -575,6 +575,9 @@
 					<include name="**/*.txt" />
 				</fileset>
 			</zip>
+			
+			<!-- work done remove all files dir -->
+			<delete dir="${allfiles.dir}" failonerror="no"/>
 		</sequential>
 	</macrodef>	
 	
@@ -777,14 +780,24 @@
 		<attribute name="app-dir" />
 		<attribute name="revision" default="${fabrication.version}"/>
 		<attribute name="swc" default="${fabrication.flex.swc}" />
+		<attribute name="deps-swc" default="${fabrication.main.dependencies.swc}" />
 		
 		<sequential>
 			<var name="app-libs" value="@{app-dir}/libs" />
 			
 			<if>
-				<not>
-					<available file="@{swc}" />
-				</not>
+				<and>
+					<or>
+						<not>
+							<available file="@{swc}" />
+						</not>
+					</or>
+					<or>
+						<not>
+							<available file="@{deps-swc}" />
+						</not>
+					</or>
+				</and>
 				<then>
 					<exec executable="cmd" dir="${fabrication.dirname}" spawn="no">
 						<arg line="/c ant swc" />
@@ -799,6 +812,7 @@
 			</delete>
 			
 			<copy file="@{swc}" todir="${app-libs}" />
+			<copy file="@{deps-swc}" todir="${app-libs}" />
 
 			<exec executable="cmd" dir="@{app-dir}" spawn="no">
 				<arg line="/c ant" />
@@ -813,7 +827,24 @@
 			<for param="app-dir">
 				<app-dirs />
 				<sequential>
-					<upgrade-app app-dir="@{app-dir}" />
+					<var-basename file="@{app-dir}" variable="upgrade.appname"/>
+					<var name="upgrade.choice" unset="yes" />
+					<input message="Upgrade ${upgrade.appname}?" validargs="y,n,s,a" addproperty="upgrade.choice" />
+
+					<switch value="${upgrade.choice}">
+						<case value="y">
+							<upgrade-app app-dir="@{app-dir}" />
+						</case>
+						<case value="n">
+							<echo>Skipped ${upgrade.appname}</echo>
+						</case>
+						<case value="s">
+							<echo>Skipped ${upgrade.appname}</echo>
+						</case>
+						<case value="a">
+							<fail message="Build aborted by user" />
+						</case>
+					</switch>
 				</sequential>
 			</for>
 		</sequential>
@@ -891,49 +922,6 @@
 		</sequential>
 	</macrodef>
 	
-	<!-- prefixes all assets in the swf except catalog with the name specified and
-		  updates the catalog entries to point to the renamed assets -->
-	<macrodef name="prefix-swc">
-		<attribute name="swc" />
-		<attribute name="prefix" />
-		<sequential>
-			<!--
-			<var name="unzip.dir" value="${build.dir}/macro.var.1" />
-			-->
-			<var-unique variable="unzip.dir.id"/>
-			<var name="unzip.dir" value="${build.dir}/${unzip.dir.id}" />
-			<delete dir="${unzip.dir}" failonerror="no"/>
-			<unzip src="@{swc}" dest="${unzip.dir}" overwrite="yes">
-				<mapper type="regexp" from="(.*\.swf)" to="@{prefix}-\1" />
-			</unzip>
-			<var name="catalog.file" value="${unzip.dir}/catalog.xml" />
-			
-			<!-- get rid of the namespace to use simple xpaths -->
-			<var name="swc.namespace" value="xmlns=&quot;http://www.adobe.com/flash/swccatalog/9&quot;" />
-			<replace file="${catalog.file}" token="${swc.namespace}" value="" />
-			
-			<xmltask source="${catalog.file}" destbuffer="catalog.xmlroot">
-				<copy path="/" />
-			</xmltask>
-			
-			<xmltask sourcebuffer="catalog.xmlroot">
-				<call path="/swc/libraries/library">
-					<param name="path" path="@path" />
-					<actions>
-						<xmltask sourcebuffer="catalog.xmlroot" destbuffer="catalog.xmlroot">
-							<attr path="/swc/libraries/library[@path='@{path}']" attr="path" value="@{prefix}-@{path}"/>
-						</xmltask>
-					</actions>
-				</call>
-			</xmltask>
-			
-			<xmltask sourcebuffer="catalog.xmlroot" dest="${catalog.file}" />
-			
-			<!-- put back the namespace -->
-			<replace file="${catalog.file}" token="&lt;swc&gt;" value="&lt;swc ${swc.namespace}&gt;" />
-		</sequential>
-	</macrodef>
-	
 	<!-- combines all swcs provided in a fileset into a single swc -->
 	<!-- TODO : merging of non-library nodes in the catalog xml -->
 	<macrodef name="merge-swcs">
@@ -1008,6 +996,9 @@
 							<exclude name="catalog.xml" /> 
 						</fileset>
 					</zip>
+					
+					<!-- work done delete zip dir -->
+					<delete dir="${unzip.dir}" failonerror="no" />
 				</sequential>
 			</for>
 			
