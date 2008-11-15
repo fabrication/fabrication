@@ -14,6 +14,16 @@
 		</sequential>
 	</macrodef>
 	
+	<!-- creates a variable with a counter based unique value -->
+	<macrodef name="var-unique">
+		<attribute name="variable" />
+		<sequential>
+			<var name="@{variable}" unset="yes" />
+			<increment-counter />
+			<var name="@{variable}" value="${macro.var}.${macro.counter}" />
+		</sequential>
+	</macrodef>
+	
 	<!-- var with location property -->
 	<macrodef name="var-loc">
 		<attribute name="name" />
@@ -222,8 +232,8 @@
 				<arg value="-output=@{output}" />
 				
 				<!-- debug options -->
-				<arg value="-dump-config=${basedir}/macro-flex-config.xml" />
 				<!--
+				<arg value="-dump-config=${basedir}/macro-flex-config.xml" />
 				-->
 				<arg value="-debug=@{debug}" />
 			</exec>
@@ -436,6 +446,7 @@
 	<macrodef name="flex-comp">
 		<element name="component-files" implicit="yes" />
 		<attribute name="output" />
+		<attribute name="test" default="no"/>
 		
 		<attribute name="options" default="${flex.mxmlc.options}" />
 		<attribute name="config" default="${flex.config}" />
@@ -520,6 +531,16 @@
 			<!-- work done remove the temp directory before the exec -->
 			<delete dir="${temp.dir}" failonerror="no" />
 			
+			<if>
+				<equals arg1="@{test}" arg2="yes" />
+				<then>
+					<var name="compiler.source-path" value="${src.test.pathlist}" />
+				</then>
+				<else>
+					<var name="compiler.source-path" value="${src.main.pathlist}" />
+				</else>
+			</if>
+			
 			<!-- swc generation with compc -->
 			<exec executable="${flex.compc}" dir="${basedir}" failonerror="true">
 				<arg line="@{options}" />
@@ -531,7 +552,7 @@
 				<arg value="-compiler.external-library-path=${swc.linked.pathlist}" />
 				
 				<!-- the main source libraries -->
-				<arg value="-compiler.source-path=${src.main.pathlist}" />
+				<arg value="-compiler.source-path=${compiler.source-path}" />
 				<arg value="-compiler.source-path=${src.common.pathlist}" />
 				
 				<!-- classes to include in the swc -->
@@ -867,6 +888,140 @@
 			<copy file="${templates.dir}/html_template.html" tofile="@{project-dir}/bin/index.html" overwrite="@{overwrite}">
 				<filterset refid="template.filterset" />
 			</copy>
+		</sequential>
+	</macrodef>
+	
+	<!-- prefixes all assets in the swf except catalog with the name specified and
+		  updates the catalog entries to point to the renamed assets -->
+	<macrodef name="prefix-swc">
+		<attribute name="swc" />
+		<attribute name="prefix" />
+		<sequential>
+			<!--
+			<var name="unzip.dir" value="${build.dir}/macro.var.1" />
+			-->
+			<var-unique variable="unzip.dir.id"/>
+			<var name="unzip.dir" value="${build.dir}/${unzip.dir.id}" />
+			<delete dir="${unzip.dir}" failonerror="no"/>
+			<unzip src="@{swc}" dest="${unzip.dir}" overwrite="yes">
+				<mapper type="regexp" from="(.*\.swf)" to="@{prefix}-\1" />
+			</unzip>
+			<var name="catalog.file" value="${unzip.dir}/catalog.xml" />
+			
+			<!-- get rid of the namespace to use simple xpaths -->
+			<var name="swc.namespace" value="xmlns=&quot;http://www.adobe.com/flash/swccatalog/9&quot;" />
+			<replace file="${catalog.file}" token="${swc.namespace}" value="" />
+			
+			<xmltask source="${catalog.file}" destbuffer="catalog.xmlroot">
+				<copy path="/" />
+			</xmltask>
+			
+			<xmltask sourcebuffer="catalog.xmlroot">
+				<call path="/swc/libraries/library">
+					<param name="path" path="@path" />
+					<actions>
+						<xmltask sourcebuffer="catalog.xmlroot" destbuffer="catalog.xmlroot">
+							<attr path="/swc/libraries/library[@path='@{path}']" attr="path" value="@{prefix}-@{path}"/>
+						</xmltask>
+					</actions>
+				</call>
+			</xmltask>
+			
+			<xmltask sourcebuffer="catalog.xmlroot" dest="${catalog.file}" />
+			
+			<!-- put back the namespace -->
+			<replace file="${catalog.file}" token="&lt;swc&gt;" value="&lt;swc ${swc.namespace}&gt;" />
+		</sequential>
+	</macrodef>
+	
+	<!-- combines all swcs provided in a fileset into a single swc -->
+	<!-- TODO : merging of non-library nodes in the catalog xml -->
+	<macrodef name="merge-swcs">
+		<attribute name="output" />
+		<element name="swcs" implicit="yes" />
+		<sequential>
+			<delete file="@{output}" failonerror="no" />
+			<delete file="${build.dir}/catalog.xml" />
+			<var-dirname file="@{output}" variable="merge.dir" />
+			<mkdir dir="${merge.dir}" />
+			
+			<xmltask destbuffer="catalog.libraries">
+				<insert path="/">
+					<![CDATA[
+						<libraries />
+					]]>
+				</insert>
+			</xmltask>
+			
+			<for param="swc">
+				<swcs />
+				<sequential>
+					<!-- Extract the swc into temp directory and prefix names to swfs -->
+					<var-basename file="@{swc}" variable="prefix" suffix=".swc"/>
+					<var-unique variable="unzip.dir.id"/>
+					<var name="unzip.dir" value="${build.dir}/${unzip.dir.id}" />
+					<delete dir="${unzip.dir}" failonerror="no"/>
+					<unzip src="@{swc}" dest="${unzip.dir}" overwrite="yes">
+						<mapper type="regexp" from="(.*\.swf)" to="${prefix}-\1" />
+					</unzip>
+					<var name="catalog.file" value="${unzip.dir}/catalog.xml" />
+					
+					<!-- get rid of the namespace to use simple xpaths -->
+					<var name="swc.namespace" value="xmlns=&quot;http://www.adobe.com/flash/swccatalog/9&quot;" />
+					<replace file="${catalog.file}" token="${swc.namespace}" value="" />
+					
+					<xmltask source="${catalog.file}" destbuffer="catalog.xmlroot">
+						<copy path="/" />
+					</xmltask>
+					
+					<!-- adds prefix to library node in the catalog -->
+					<xmltask sourcebuffer="catalog.xmlroot">
+						<call path="/swc/libraries/library">
+							<param name="path" path="@path" />
+							<actions>
+								<xmltask sourcebuffer="catalog.xmlroot" destbuffer="catalog.xmlroot">
+									<attr path="/swc/libraries/library[@path='@{path}']" attr="path" value="${prefix}-@{path}"/>
+								</xmltask>
+							</actions>
+						</call>
+					</xmltask>
+					
+					<!-- save modified catalog -->
+					<xmltask sourcebuffer="catalog.xmlroot" dest="${catalog.file}" />
+					
+					<!-- put back the namespace -->
+					<replace file="${catalog.file}" token="&lt;swc&gt;" value="&lt;swc ${swc.namespace}&gt;" />
+					
+					<!-- copy current library catalog into temp buffer -->
+					<xmltask sourcebuffer="catalog.xmlroot">
+						<copy path="/swc/libraries/library" buffer="library.buffer"/>
+					</xmltask>
+					
+					<!-- insert library buffer into catalog library buffer -->
+					<xmltask sourcebuffer="catalog.libraries" destbuffer="catalog.libraries">
+						<insert path="/libraries" buffer="library.buffer" />
+					</xmltask>
+					
+					<!-- zip up the swc contents without the catalog -->
+					<zip destfile="@{output}" update="yes">
+						<fileset dir="${unzip.dir}">
+							<exclude name="catalog.xml" /> 
+						</fileset>
+					</zip>
+				</sequential>
+			</for>
+			
+			<!-- remove old library from catalog and put all library catalogs into it -->
+			<xmltask sourcebuffer="catalog.xmlroot" destbuffer="catalog.merged">
+				<cut path="/swc/libraries" buffer="catalog.libraries.old" />
+				<paste path="/swc" buffer="catalog.libraries" />
+			</xmltask>
+			
+			<!-- save merged catalog to disk -->
+			<xmltask sourcebuffer="catalog.merged" dest="${build.dir}/catalog.xml" />
+			
+			<!-- put merged catalog into merged zip -->
+			<zip destfile="@{output}" update="yes" basedir="${build.dir}" includes="catalog.xml" />
 		</sequential>
 	</macrodef>
 	

@@ -83,6 +83,40 @@
 		</flex-comp>
 	</target>
 	
+	<target name="swc-test" description="Creates an swc out of the test line">
+		<flex-comp output="${fabrication.test.swc}" test="yes">
+			<fileset dir="${src.test.flash}">
+				<include name="**/*.mxml" />
+				<include name="**/*.as" />
+				<include name="*.mxml" />
+				<include name="*.as" />
+			</fileset>
+		</flex-comp>
+	</target>
+	
+	<target name="swc-dependencies" description="Create swcs for all fabrication dependencies"
+		depends="swc-main-dependencies, swc-test-dependencies">	
+	</target>
+	
+	<target name="swc-main-dependencies" description="Creates a common swcs of all the main line dependencies">
+		<merge-swcs output="${fabrication.main.dependencies.swc}">
+			<fileset dir="${libs}">
+				<include name="*.swc" />
+				<exclude name="mockas3.swc" />
+				<exclude name="FlexUnit.swc" />
+			</fileset>
+		</merge-swcs>
+	</target>
+	
+	<target name="swc-test-dependencies" description="Creates a common swc of all the test line dependencies">
+		<merge-swcs output="${fabrication.test.dependencies.swc}">
+			<fileset dir="${libs}">
+				<include name="mockas3.swc" />
+				<include name="FlexUnit.swc" />
+			</fileset>
+		</merge-swcs>	
+	</target>
+	
 	<target name="build" description="Builds runner, modules and resolver layouts"
 		depends="build-test-runner, build-modules, build-layout-modules">
 	</target>
