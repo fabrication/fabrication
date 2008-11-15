@@ -694,6 +694,7 @@
 	<macrodef name="asdoc">
 		<attribute name="destdir" />
 		<attribute name="window-title" />
+		<attribute name="source-swc" default="null" /> 
 		<element name="source-files" implicit="yes" optional="no"/>
 		
 		<sequential>
@@ -723,6 +724,16 @@
 			
 			<!-- converts the files path into a delimited list -->
 			<var-pathconvert variable="doc.sources.path.list" refid="doc.sources.path" pathsep=" "/>
+			
+			<if>
+				<equals arg1="@{source-swc}" arg2="null"/>
+				<then>
+					<var name="compiler.source-swc" value="" />
+				</then>
+				<else>
+					<var name="compiler.source-swc" value="-compiler.external-library-path=@{source-swc}" />
+				</else>
+			</if>
 
 			<!-- doc generation with asdoc -->
 			<exec executable="${flex.asdoc}" dir="${basedir}" failonerror="true">
@@ -741,11 +752,16 @@
 				<!-- for multiple source paths convert it to a pathlist outside --> 
 				<arg value="-source-path=${temp.dir}" />
 				
+				<!-- optional source paths -->
+				<arg value="${compiler.source-swc}" />
+				
 				<!-- asdoc generation directory -->
 				<arg value="-output=@{destdir}" />
 			</exec>
 			
 			<delete dir="${temp.dir}" />
+			<!--
+			-->
 		</sequential>		
 	</macrodef>
 	
@@ -1098,4 +1114,5 @@
 		</sequential>
 	</macrodef>
 	
+
 </project>

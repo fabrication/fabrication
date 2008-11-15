@@ -26,6 +26,48 @@
 		<include name="*.mxml" />
 	</fileset>
 
+	<!-- macro to publish specified asdocs to svn -->
+	<macrodef name="publish-asdoc-to-svn">
+		<attribute name="asdoc.dir" />
+		<attribute name="doc.target" />
+		<attribute name="doc.type" />
+		<attribute name="manual" default="no"/>
+		
+		<sequential>
+			<svn username="${svn.username}" password="${svn.password}">
+				<revert dir="@{asdoc.dir}" recurse="yes" />
+				<delete dir="@{asdoc.dir}" />
+				<commit dir="@{asdoc.dir}" message="Removed old @{doc.type} asdocs."/>
+			</svn>
+			<delete dir="@{asdoc.dir}" failonerror="no" />
+			
+			<antcall target="@{doc.target}" />
+			
+			<if>
+				<equals arg1="@{manual}" arg2="no" />
+				<then>
+					<svn username="${svn.username}" password="${svn.password}">
+						<add dir="@{asdoc.dir}" recurse="yes" />
+					</svn>
+				</then>
+			</if>
+			
+			<set-mimetypes>
+				<fileset dir="@{asdoc.dir}">
+					<include name="**/*.*" />
+				</fileset>
+			</set-mimetypes>
+			<if>
+				<equals arg1="@{manual}" arg2="no" />
+				<then>
+					<svn username="${svn.username}" password="${svn.password}">
+						<commit dir="@{asdoc.dir}" message="Added updated @{doc.type} asdocs." />
+					</svn>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+	
 	<target name="clean" description="Removes all build generated files" depends="clean-coverage">
 		<delete dir="${build.dir}" />
 		<delete dir="${dist}" failonerror="no" />
@@ -198,10 +240,30 @@
 		<launch-flex-app file="${test.runner.swf}"/>
 	</target>
 	
-	<target name="asdoc" description="Generates asdocs">
+	<target name="asdoc" description="Generates asdocs"
+		depends="asdoc-public, asdoc-full">
+	</target>
+	
+	<target name="asdoc-public" description="Generates public asdocs">
+		<copy file="${doc.public.api}" tofile="${doc.public.api.generated}" overwrite="yes">
+			<filterchain>
+				<tokenfilter>
+					<containsregex pattern="^(.*)$" replace="**/\1.as" flags="gi" />
+				</tokenfilter>
+			</filterchain>
+		</copy>
 		<asdoc 
-			window-title="${asdoc.window-title}" 
-			destdir="${doc.asdoc}">
+			window-title="${asdoc.window-title} Public API" 
+			destdir="${doc.asdoc.public}"
+			source-swc="${fabrication.air.swc}">
+			<fileset dir="${src.main.flash}" includesfile="${doc.public.api.generated}" />
+		</asdoc>
+	</target>
+		
+	<target name="asdoc-full" description="Generates asdocs for all classes">
+		<asdoc 
+			window-title="${asdoc.window-title} Full API" 
+			destdir="${doc.asdoc.full}">
 			<fileset dir="${src.main.flash}">
 				<include name="**/*.as" />
 				<include name="**/*.mxml" />
@@ -209,25 +271,21 @@
 		</asdoc>
 	</target>
 	
-	<target name="publish-asdoc" description="Publishes asdocs to the svn">
-		<svn username="${svn.username}" password="${svn.password}">
-			<revert dir="${doc.asdoc}" recurse="yes" />
-			<delete dir="${doc.asdoc}" />
-			<commit dir="${doc.asdoc}" message="Removed old asdocs."/>
-		</svn>
-		<delete dir="${doc.asdoc}" failonerror="no" />
-		<antcall target="asdoc" />
-		<svn username="${svn.username}" password="${svn.password}">
-			<add dir="${doc.asdoc}" recurse="yes" />
-		</svn>
-		<set-mimetypes>
-			<fileset dir="${doc.asdoc}">
-				<include name="**/*.*" />
-			</fileset>
-		</set-mimetypes>
-		<svn username="${svn.username}" password="${svn.password}">
-			<commit dir="${doc.asdoc}" message="Added updated asdocs." />
-		</svn>
+	<target name="publish-asdoc-manual" description="The svntask takes more time than a tsvn commit. This target does prep work to commit manually">
+		<publish-asdoc-to-svn manual="yes" asdoc.dir="${doc.asdoc.public}" doc.target="asdoc-public" doc.type="public" />
+		<publish-asdoc-to-svn manual="yes" asdoc.dir="${doc.asdoc.full}" doc.target="asdoc-full" doc.type="full" />
+	</target>
+	
+	<target name="publish-asdoc" description="Publishes all asdocs to the svn"
+		depends="publish-asdoc-public, publish-asdoc-full">
+	</target>
+	
+	<target name="publish-asdoc-public" description="Publishes public asdocs to the svn">
+		<publish-asdoc-to-svn asdoc.dir="${doc.asdoc.public}" doc.target="asdoc-public" doc.type="public" />
+	</target>
+	
+	<target name="publish-asdoc-full" description="Publishes full asdocs to the svn">
+		<publish-asdoc-to-svn asdoc.dir="${doc.asdoc.full}" doc.target="asdoc-full" doc.type="full" />
 	</target>
 	
 	<target name="zip" description="Generates a zip file from the trunk">
