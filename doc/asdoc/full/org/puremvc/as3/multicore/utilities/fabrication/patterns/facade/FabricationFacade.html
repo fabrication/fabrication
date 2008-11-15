@@ -1,0 +1,829 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../../print.css" type="text/css" media="print">
+<meta content="FabricationFacade,org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade,application,applicationName,singletonInstanceMap,startupCommand,fabricationController,calcApplicationName,dispose,executeCommandClass,findInstance,getApplication,getApplicationName,getFabrication,getInstance,getMultitonKey,hasInstance,initializeController,initializeModel,initializeView,redo,removeInstance,routeNotification,saveInstance,startup,undo" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FabricationFacade - Fabrication Full API';
+				var baseRef = '../../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../../all-classes.html')" href="../../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../all-classes.html')" href="../../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../index-list.html')" href="../../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/patterns/facade/FabricationFacade.html&amp;org/puremvc/as3/multicore/utilities/fabrication/patterns/facade/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FabricationFacade</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FabricationFacade"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.patterns.facade</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FabricationFacade</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FabricationFacade <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../../../images/inherit-arrow.gif"> org.puremvc.as3.multicore.patterns.facade.Facade</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="../../interfaces/IDisposable.html">IDisposable</a></td>
+</tr>
+</table>
+<p></p>
+  FabricationFacade is a concrete PureMVC facade implementation that
+  provides the typical bootstrap process of a PureMVC application.
+  
+  It implements a startup method to kickstart the PureMVC apparatus
+  with a STARTUP notification.
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#fabricationController">fabricationController</a> : <a href="../../core/FabricationController.html">FabricationController</a>
+<div class="summaryTableDescription">[read-only]
+   Returns the current application controller as FabricationController
+   object.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#application">application</a> : Object<div class="summaryTableDescription">
+   Reference to the main application fabrication
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#applicationName">applicationName</a> : String<div class="summaryTableDescription">
+   The calculated name of the current application.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#singletonInstanceMap">singletonInstanceMap</a> : <a href="../../utils/HashMap.html">HashMap</a>
+<div class="summaryTableDescription">
+   The custom singleton object instances map
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#startupCommand">startupCommand</a> : Class<div class="summaryTableDescription">
+   The startup command class
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FabricationFacade()">FabricationFacade</a>(key:String)</div>
+<div class="summaryTableDescription">
+   Creates a new FabricationFacade object.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#calcApplicationName()">calcApplicationName</a>(startupCommand:Class = null):String</div>
+<div class="summaryTableDescription">[static]
+   Calculates the name of the application from the its startup command.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#dispose()">dispose</a>():void</div>
+<div class="summaryTableDescription">
+   Sends a SHUTDOWN notification to allow the application to
+   perform any cleanup prior to removal and deletes external
+   referenced objects.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#executeCommandClass()">executeCommandClass</a>(clazz:Class, body:Object = null, note:INotification = null):ICommand</div>
+<div class="summaryTableDescription">
+   Alias to fabricationController.registerCommandClass
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#findInstance()">findInstance</a>(key:String):Object</div>
+<div class="summaryTableDescription">
+   Returns the singleton instance for the corresponding key.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getApplication()">getApplication</a>():Object</div>
+<div class="summaryTableDescription">
+   Returns the main application class instance for the current
+   application.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getApplicationName()">getApplicationName</a>():String</div>
+<div class="summaryTableDescription">
+   Returns the calculated application name string.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getFabrication()">getFabrication</a>():<a href="../../interfaces/IFabrication.html">IFabrication</a>
+</div>
+<div class="summaryTableDescription">
+   Alias to getApplication, cast as IFabrication
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getInstance()">getInstance</a>(key:String):<a href="../facade/FabricationFacade.html">FabricationFacade</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Returns the singleton instance of the FabricationFacade for the
+   specified multiton key.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMultitonKey()">getMultitonKey</a>():String</div>
+<div class="summaryTableDescription">
+   Returns the multiton key for the current facade.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hasInstance()">hasInstance</a>(key:String):Object</div>
+<div class="summaryTableDescription">
+   Returns a boolean depending on whether an instance for the specified key 
+   exists in the singleton hash map.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#redo()">redo</a>(steps:int = 1):void</div>
+<div class="summaryTableDescription">
+   Executes a redo operation for the specified number of steps
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeInstance()">removeInstance</a>(key:String):Object</div>
+<div class="summaryTableDescription">
+   Removes the instance for the specified key from the singleton hash map
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#routeNotification()">routeNotification</a>(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void</div>
+<div class="summaryTableDescription">
+   Wraps the notification and triggers a send via the router
+   using a notification.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#saveInstance()">saveInstance</a>(key:String, instance:Object):Object</div>
+<div class="summaryTableDescription">
+   Stores the instance with the specified key in the singleton hash map.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#startup()">startup</a>(startupCommand:Class, application:Object):void</div>
+<div class="summaryTableDescription">
+   Starts the PureMVC apparatus after registering and triggering
+   a STARTUP notification.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#undo()">undo</a>(steps:int = 1):void</div>
+<div class="summaryTableDescription">
+   Executes an undo operation for the specified number of steps.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeController()">initializeController</a>():void</div>
+<div class="summaryTableDescription">
+   Overrides initializeController to create a FabricationController
+   instead of the PureMVC default.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeModel()">initializeModel</a>():void</div>
+<div class="summaryTableDescription">
+   Overrides the initializeModel to create FabricationModel instead of
+   the PureMVC default.</div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeView()">initializeView</a>():void</div>
+<div class="summaryTableDescription">
+   Override the initializeView to create a FabricationView instead of
+   the PureMVC default
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationFacade</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="application"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">application</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var application:Object</code><p>
+   Reference to the main application fabrication
+   </p></div>
+<a name="applicationName"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">applicationName</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var applicationName:String</code><p>
+   The calculated name of the current application.
+   </p></div>
+<a name="fabricationController"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fabricationController</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>fabricationController:<a href="../../core/FabricationController.html">FabricationController</a></code>&nbsp;&nbsp;[read-only]<p>
+   Returns the current application controller as FabricationController
+   object. 
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get fabricationController():<a href="../../core/FabricationController.html">FabricationController</a></code>
+<br>
+</div>
+<a name="singletonInstanceMap"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">singletonInstanceMap</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var singletonInstanceMap:<a href="../../utils/HashMap.html">HashMap</a></code><p>
+   The custom singleton object instances map
+   </p></div>
+<a name="startupCommand"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">startupCommand</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var startupCommand:Class</code><p>
+   The startup command class
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FabricationFacade()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FabricationFacade</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FabricationFacade(key:String)</code><p>
+   Creates a new FabricationFacade object.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="calcApplicationName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">calcApplicationName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function calcApplicationName(startupCommand:Class = null):String</code><p>
+   Calculates the name of the application from the its startup command.
+   StartupCommand must be of the form [ApplicationName]StartupCommand.
+   An error is thrown if this form is not used.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">startupCommand</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; The startup command class reference
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+<br>
+<span class="label">Throws</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code></code> &mdash; StartupCommand must be of the form [ApplicationName]StartupCommand
+   </td>
+</tr>
+</table>
+</div>
+<a name="dispose()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dispose</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function dispose():void</code><p>
+   Sends a SHUTDOWN notification to allow the application to
+   perform any cleanup prior to removal and deletes external
+   referenced objects.
+   
+   </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../../interfaces/IDisposable.html#dispose()" target="">org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable.dispose()</a>
+</div>
+</div>
+<a name="executeCommandClass()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">executeCommandClass</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function executeCommandClass(clazz:Class, body:Object = null, note:INotification = null):ICommand</code><p>
+   Alias to fabricationController.registerCommandClass
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">clazz</span>:Class</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">body</span>:Object</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">note</span>:INotification</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>ICommand</code></td>
+</tr>
+</table>
+</div>
+<a name="findInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">findInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function findInstance(key:String):Object</code><p>
+   Returns the singleton instance for the corresponding key.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The unique key of the singleton instance to lookup.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="getApplication()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getApplication</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getApplication():Object</code><p>
+   Returns the main application class instance for the current
+   application.  
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="getApplicationName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getApplicationName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getApplicationName():String</code><p>
+   Returns the calculated application name string.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="getFabrication()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getFabrication</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getFabrication():<a href="../../interfaces/IFabrication.html">IFabrication</a></code><p>
+   Alias to getApplication, cast as IFabrication
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../../interfaces/IFabrication.html">IFabrication</a></code></td>
+</tr>
+</table>
+</div>
+<a name="getInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getInstance(key:String):<a href="../facade/FabricationFacade.html">FabricationFacade</a></code><p>
+   Returns the singleton instance of the FabricationFacade for the
+   specified multiton key. If the instance is not present it is first
+   created here.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The multiton key
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../facade/FabricationFacade.html">FabricationFacade</a></code></td>
+</tr>
+</table>
+</div>
+<a name="getMultitonKey()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMultitonKey</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getMultitonKey():String</code><p>
+   Returns the multiton key for the current facade.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="hasInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hasInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function hasInstance(key:String):Object</code><p>
+   Returns a boolean depending on whether an instance for the specified key 
+   exists in the singleton hash map.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The unique key for the singleton instance to verify.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="initializeController()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeController</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected override function initializeController():void</code><p>
+   Overrides initializeController to create a FabricationController
+   instead of the PureMVC default. Also registers the undo commands
+   with the facade.
+   </p></div>
+<a name="initializeModel()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeModel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected override function initializeModel():void</code><p>
+   Overrides the initializeModel to create FabricationModel instead of
+   the PureMVC default.
+   </p></div>
+<a name="initializeView()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeView</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected override function initializeView():void</code><p>
+   Override the initializeView to create a FabricationView instead of
+   the PureMVC default
+   </p></div>
+<a name="redo()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">redo</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function redo(steps:int = 1):void</code><p>
+   Executes a redo operation for the specified number of steps
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">steps</span>:int</code> (default = <code>1</code>)<code></code> &mdash; The number of steps to redo. Default is 1.
+   </td>
+</tr>
+</table>
+</div>
+<a name="removeInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeInstance(key:String):Object</code><p>
+   Removes the instance for the specified key from the singleton hash map
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The unique key for the singleton instance to remove.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="routeNotification()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">routeNotification</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void</code><p>
+   Wraps the notification and triggers a send via the router
+   using a notification.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">noteName</span>:Object</code> &mdash; The name of the notification to send
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteBody</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; The body of the notification to send
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteType</span>:String</code> (default = <code>null</code>)<code></code> &mdash; The type of the notification to send
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">to</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; The target destination module address of the notification.
+        to can be a ModuleAddress object or a string with the route
+        in the form ModuleName/InstanceName. If InstanceName is         the message will be routed to all instances of the ModuleName.
+   </td>
+</tr>
+</table>
+</div>
+<a name="saveInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">saveInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function saveInstance(key:String, instance:Object):Object</code><p>
+   Stores the instance with the specified key in the singleton hash map.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The unique key of the singleton instance
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">instance</span>:Object</code> &mdash; The object to store
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="startup()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">startup</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function startup(startupCommand:Class, application:Object):void</code><p>
+   Starts the PureMVC apparatus after registering and triggering
+   a STARTUP notification. A BOOTSTRAP notification is also sent
+   to allow the startup commands to be split into 2 parts, a
+   creation phase and a configuration phase.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">startupCommand</span>:Class</code> &mdash; The startup command class for this application
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">application</span>:Object</code> &mdash; The main application reference
+   </td>
+</tr>
+</table>
+</div>
+<a name="undo()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">undo</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function undo(steps:int = 1):void</code><p>
+   Executes an undo operation for the specified number of steps.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">steps</span>:int</code> (default = <code>1</code>)<code></code> &mdash; The number of steps to undo. Default is 1.
+   </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

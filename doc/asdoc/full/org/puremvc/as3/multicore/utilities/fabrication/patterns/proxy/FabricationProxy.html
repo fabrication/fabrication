@@ -1,0 +1,531 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../../print.css" type="text/css" media="print">
+<meta content="FabricationProxy,org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy,NAME,NOTIFICATION_FROM_PROXY,classRegExp,expansion,proxyNameCache,proxyNameCacheKey,fabFacade,dispose,getCachedDefaultProxyName,getDefaultProxyName,getNotificationName,hasCachedDefaultProxyName,initializeNotifier,initializeProxyNameCache,routeNotification,sendNotification" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FabricationProxy - Fabrication Full API';
+				var baseRef = '../../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../../all-classes.html')" href="../../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../all-classes.html')" href="../../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../index-list.html')" href="../../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/patterns/proxy/FabricationProxy.html&amp;org/puremvc/as3/multicore/utilities/fabrication/patterns/proxy/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FabricationProxy</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FabricationProxy"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FabricationProxy</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FabricationProxy <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../../../images/inherit-arrow.gif"> org.puremvc.as3.multicore.patterns.proxy.Proxy</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="../../interfaces/IDisposable.html">IDisposable</a></td>
+</tr>
+</table>
+<p></p>
+  FabricationProxy is the base Proxy class for fabrication proxies.
+  It provides part name based notifications.
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#expansion">expansion</a> : Boolean = true<div class="summaryTableDescription">
+   Indicates whether to use notification expansion when custom
+   named Proxies are used.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#proxyNameCacheKey">proxyNameCacheKey</a> : String = "proxyNameCache"<div class="summaryTableDescription">[static]
+   Key for the facade scope singleton proxy name cache.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#fabFacade">fabFacade</a> : <a href="../facade/FabricationFacade.html">FabricationFacade</a>
+<div class="summaryTableDescription">[read-only]
+   Alias to fabrication facade.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#proxyNameCache">proxyNameCache</a> : <a href="../../utils/HashMap.html">HashMap</a>
+<div class="summaryTableDescription">
+   The proxy names cache object.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FabricationProxy()">FabricationProxy</a>(name:String = null, data:Object = null)</div>
+<div class="summaryTableDescription">
+   Creates a new FabricationProxy object.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#dispose()">dispose</a>():void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getDefaultProxyName()">getDefaultProxyName</a>():String</div>
+<div class="summaryTableDescription">
+   Calculates the default name of the current proxy using reflection.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getNotificationName()">getNotificationName</a>(note:String):String</div>
+<div class="summaryTableDescription">
+   Returns the full name for the specified notification.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeNotifier()">initializeNotifier</a>(key:String):void</div>
+<div class="summaryTableDescription">
+   Overrides initializeNotifier to create the proxy name cache.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#routeNotification()">routeNotification</a>(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void</div>
+<div class="summaryTableDescription">
+   Routes a notification to all modules using facade.routeNotification.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#sendNotification()">sendNotification</a>(noteName:String, noteBody:Object = null, noteType:String = null):void</div>
+<div class="summaryTableDescription">
+   Overrides the default send notification to qualify the notification
+   if needed prior to sending it.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getCachedDefaultProxyName()">getCachedDefaultProxyName</a>():String</div>
+<div class="summaryTableDescription">
+   Returns the cached default proxy name.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hasCachedDefaultProxyName()">hasCachedDefaultProxyName</a>():Boolean</div>
+<div class="summaryTableDescription">
+   Returns true if the default proxy name was cached earlier.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeProxyNameCache()">initializeProxyNameCache</a>():void</div>
+<div class="summaryTableDescription">
+   Creates the proxy name cache specific to the current facade.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#classRegExp">classRegExp</a> : RegExp<div class="summaryTableDescription">[static]
+   Regular expression used to extract the classname from the classpath.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NAME">NAME</a> : String = "FabricationProxy"<div class="summaryTableDescription">[static]
+   Default name of a FabricationProxy
+   </div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NOTIFICATION_FROM_PROXY">NOTIFICATION_FROM_PROXY</a> : String = "notificationFromProxy"<div class="summaryTableDescription">[static]
+   System notification used to indicate that a notification has been
+   sent by a Proxy.</div>
+</td><td class="summaryTableOwnerCol">FabricationProxy</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="expansion"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">expansion</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var expansion:Boolean = true</code><p>
+   Indicates whether to use notification expansion when custom
+   named Proxies are used. The default behaviour is to do expansion.
+   </p></div>
+<a name="fabFacade"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">fabFacade</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>fabFacade:<a href="../facade/FabricationFacade.html">FabricationFacade</a></code>&nbsp;&nbsp;[read-only]<p>
+   Alias to fabrication facade.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;protected function get fabFacade():<a href="../facade/FabricationFacade.html">FabricationFacade</a></code>
+<br>
+</div>
+<a name="proxyNameCache"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">proxyNameCache</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var proxyNameCache:<a href="../../utils/HashMap.html">HashMap</a></code><p>
+   The proxy names cache object.
+   </p></div>
+<a name="proxyNameCacheKey"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">proxyNameCacheKey</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var proxyNameCacheKey:String = "proxyNameCache"</code><p>
+   Key for the facade scope singleton proxy name cache.
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FabricationProxy()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FabricationProxy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FabricationProxy(name:String = null, data:Object = null)</code><p>
+   Creates a new FabricationProxy object.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">data</span>:Object</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="dispose()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dispose</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function dispose():void</code><p>
+   </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../../interfaces/IDisposable.html#dispose()" target="">org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable.dispose()</a>
+</div>
+</div>
+<a name="getCachedDefaultProxyName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getCachedDefaultProxyName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function getCachedDefaultProxyName():String</code><p>
+   Returns the cached default proxy name.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="getDefaultProxyName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getDefaultProxyName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getDefaultProxyName():String</code><p>
+   Calculates the default name of the current proxy using reflection.
+   The name is cached and the cached name is used in subsequent invocations.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="getNotificationName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getNotificationName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getNotificationName(note:String):String</code><p>
+   Returns the full name for the specified notification. If the
+   name of the Proxy is the same as Proxy.NAME then no prefix is
+   used else the name of the proxy is prefixed to the notification.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">note</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+<br>
+<span class="label">Example</span>
+<br>For the Proxy SampleProxy with the name MySampleProxy,
+      the notification Changed becomes, MySampleProxy/Changed 
+   <p></p>
+</div>
+<a name="hasCachedDefaultProxyName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hasCachedDefaultProxyName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function hasCachedDefaultProxyName():Boolean</code><p>
+   Returns true if the default proxy name was cached earlier.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="initializeNotifier()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeNotifier</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function initializeNotifier(key:String):void</code><p>
+   Overrides initializeNotifier to create the proxy name cache.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code></td>
+</tr>
+</table>
+</div>
+<a name="initializeProxyNameCache()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeProxyNameCache</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function initializeProxyNameCache():void</code><p>
+   Creates the proxy name cache specific to the current facade. 
+   </p></div>
+<a name="routeNotification()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">routeNotification</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void</code><p>
+   Routes a notification to all modules using facade.routeNotification.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">noteName</span>:Object</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteBody</span>:Object</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteType</span>:String</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">to</span>:Object</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="sendNotification()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sendNotification</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function sendNotification(noteName:String, noteBody:Object = null, noteType:String = null):void</code><p>
+   Overrides the default send notification to qualify the notification
+   if needed prior to sending it. Also sends a NOTIFICATION_FROM_PROXY
+   system notification which can be used by mediators to listen
+   to a mediators notification using respondToProxyName methods.  
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">noteName</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteBody</span>:Object</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">noteType</span>:String</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="classRegExp"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">classRegExp</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const classRegExp:RegExp</code><p>
+   Regular expression used to extract the classname from the classpath.
+   </p></div>
+<a name="NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NAME:String = "FabricationProxy"</code><p>
+   Default name of a FabricationProxy
+   </p></div>
+<a name="NOTIFICATION_FROM_PROXY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NOTIFICATION_FROM_PROXY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NOTIFICATION_FROM_PROXY:String = "notificationFromProxy"</code><p>
+   System notification used to indicate that a notification has been
+   sent by a Proxy. 
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

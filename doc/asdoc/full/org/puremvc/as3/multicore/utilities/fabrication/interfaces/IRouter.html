@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../print.css" type="text/css" media="print">
+<meta content="IRouter,org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter,connect,disconnect,install,route" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'IRouter - Fabrication Full API';
+				var baseRef = '../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../all-classes.html')" href="../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../index-list.html')" href="../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/interfaces/IRouter.html&amp;org/puremvc/as3/multicore/utilities/fabrication/interfaces/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Interface&nbsp;IRouter</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Interface IRouter"); titleBar_setSubNav(false,false,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.interfaces</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Interface</td><td class="classSignature">public interface IRouter extends <a href="IDisposable.html">IDisposable</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Subinterfaces</td><td><a href="../interfaces/IFabrication.html">IFabrication</a>, <a href="../interfaces/IRouterAwareModule.html">IRouterAwareModule</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implementors</td><td><a href="../components/fabricator/ApplicationFabricator.html">ApplicationFabricator</a>, <a href="../routing/firewall/MultiRuleFirewall.html">MultiRuleFirewall</a>, <a href="../routing/firewall/PolicyFirewall.html">PolicyFirewall</a>, <a href="../routing/Router.html">Router</a>, <a href="../routing/RouterCable.html">RouterCable</a>, <a href="../routing/RouterMessage.html">RouterMessage</a>, <a href="../patterns/observer/RouterNotification.html">RouterNotification</a></td>
+</tr>
+</table>
+<p></p>
+  An interface that describes the capabilities of a fabrication 
+  router object. IRouter is used to send messages between
+  different modules.
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#connect()">connect</a>(cable:<a href="IRouterCable.html">IRouterCable</a>):void</div>
+<div class="summaryTableDescription">
+   Connects the router cable to the router.</div>
+</td><td class="summaryTableOwnerCol">IRouter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#disconnect()">disconnect</a>(cable:<a href="IRouterCable.html">IRouterCable</a>):void</div>
+<div class="summaryTableDescription">
+   Disconnects the router cable from the router.</div>
+</td><td class="summaryTableOwnerCol">IRouter</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="IDisposable.html#dispose()">dispose</a>():void</div>
+<div class="summaryTableDescription">
+   Deletes all internal objects and removes all references to 
+   external objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="IDisposable.html">IDisposable</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#install()">install</a>(firewall:<a href="IRouterFirewall.html">IRouterFirewall</a>):void</div>
+<div class="summaryTableDescription">
+   Installs a firewall on the router.</div>
+</td><td class="summaryTableOwnerCol">IRouter</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#route()">route</a>(message:<a href="IRouterMessage.html">IRouterMessage</a>):void</div>
+<div class="summaryTableDescription">
+   Sends the message from the specified module to the target
+   as described in the router message
+   
+   </div>
+</td><td class="summaryTableOwnerCol">IRouter</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="connect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">connect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function connect(cable:<a href="IRouterCable.html">IRouterCable</a>):void</code><p>
+   Connects the router cable to the router. The router
+   cable describes the input and output pipe names of the module.
+   These are used to connect to the junction.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cable</span>:<a href="IRouterCable.html">IRouterCable</a></code> &mdash; The router cable for the module to connect
+   </td>
+</tr>
+</table>
+</div>
+<a name="disconnect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">disconnect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function disconnect(cable:<a href="IRouterCable.html">IRouterCable</a>):void</code><p>
+   Disconnects the router cable from the router. The router cable
+   need not be the same object but must have the same input and
+   output names.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cable</span>:<a href="IRouterCable.html">IRouterCable</a></code></td>
+</tr>
+</table>
+</div>
+<a name="install()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">install</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function install(firewall:<a href="IRouterFirewall.html">IRouterFirewall</a>):void</code><p>
+   Installs a firewall on the router. Firewalls are used to limit
+   communication between different modules.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">firewall</span>:<a href="IRouterFirewall.html">IRouterFirewall</a></code></td>
+</tr>
+</table>
+</div>
+<a name="route()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">route</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function route(message:<a href="IRouterMessage.html">IRouterMessage</a>):void</code><p>
+   Sends the message from the specified module to the target
+   as described in the router message
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">message</span>:<a href="IRouterMessage.html">IRouterMessage</a></code> &mdash; The details of the message to send
+   </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->
