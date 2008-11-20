@@ -68,7 +68,7 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="clean" description="Removes all build generated files" depends="clean-coverage">
+	<target name="clean" description="Removes all build generated files" depends="clean-coverage, clean-generated">
 		<delete dir="${build.dir}" />
 		<delete dir="${dist}" failonerror="no" />
 		<mkdir dir="${build.dir}" />
@@ -82,6 +82,14 @@
 			</fileset>
 		</delete>
 		<delete dir="${bin}/coverage-report" failonerror="no"/>
+	</target>
+	
+	<target name="clean-generated" description="Removed files generated with the keep-generated-actionscript switch">
+		<delete includeemptydirs="yes" failonerror="no">
+			<fileset dir="${src.test.flash}">
+				<include name="**/generated/**" />
+			</fileset>
+		</delete>
 	</target>
 	
 	<target name="dist" description="Builds swcs and zip for distribution"
@@ -373,7 +381,7 @@
 		</upgrade-apps>
 	</target>
 	
-	<target name="all" depends="clean, build, test, asdoc, run" 
+	<target name="all" depends="clean, build, test, dist" 
 		description="Removes previous compiled files and rebuilds the main application and generates asdocs">
 	</target>
 	

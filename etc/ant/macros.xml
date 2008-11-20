@@ -234,6 +234,7 @@
 				<!-- debug options -->
 				<!--
 				<arg value="-dump-config=${basedir}/macro-flex-config.xml" />
+				<arg value="-keep-generated-actionscript" />
 				-->
 				<arg value="-debug=@{debug}" />
 			</exec>
@@ -772,18 +773,22 @@
 		<attribute name="file" />
 		
 		<sequential>
-			<var-basename file="@{file}" variable="file.name"/>
-			<var-dirname file="@{file}" variable="file.dir" />
+			<var name="file.name" unset="yes" />
+			<var name="file.dir" unset="yes" />
+			
+			<basename file="@{file}" property="file.name"/>
+			<dirname file="@{file}" property="file.dir" />
+			
 			<echo level="info">Launching ${file.name}</echo>
 			
-	        <exec executable="${flex.standalone.player}"
-	              dir="${file.dir}"
-	              failonerror="false"
-	              vmlauncher="true"
-				  spawn="yes">
-	            <arg value="@{file}" />
-	            <env key="DISPLAY" value="${environment.display}" />
-	        </exec>
+			<exec executable="${flex.standalone.player}"
+				dir="${file.dir}"
+				failonerror="false"
+				vmlauncher="true"
+				spawn="yes">
+				<arg value="@{file}" />
+				<env key="DISPLAY" value="${environment.display}" />
+			</exec>
 		</sequential>
 	</macrodef>
 	

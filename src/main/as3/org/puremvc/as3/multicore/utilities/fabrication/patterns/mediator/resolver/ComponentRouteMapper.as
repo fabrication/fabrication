@@ -49,6 +49,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			} else {
 				var routes:Array = mapComponentRoutes(component, path);
 				cachedRoutes[component] = routes;
+				//printRoutes(routes);
 				return routes;
 			}
 		}
@@ -133,5 +134,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			return routes;
 		}
+		
+		/* *
+		private function printRoutes(routes:Array):void {
+			var n:int = routes.length;
+			trace("Mapped Routes = " + n);
+			
+			var route:Object;
+			for (var i:int = 0; i < n; i++) {
+				route = routes[i];
+				trace("\t[" + route.id + " : " + route.path + "]");
+			}
+		}
+		/* */
 	}
 }

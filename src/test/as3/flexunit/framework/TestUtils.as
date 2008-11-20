@@ -45,7 +45,7 @@ import flash.utils.describeType;	/**
 
 			for (var i:int = 0; i < n; i++) {
 				method = testMethods[i];
-				if (requiredParametersCount == 1) {
+				if (requiredParametersCount >= 1) {
 					testSuite.addTest(new clazz(method.@name));
 				} else if (requiredParametersCount == 0) {
 					testSuite.addTest(new clazz());

@@ -15,23 +15,22 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;	
+	import org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 	
-	import mx.core.Application;	
+	import mx.core.Application;
+	import mx.core.Container;
+	import mx.core.UIComponent;
+	import mx.events.ChildExistenceChangedEvent;
+	import mx.events.FlexEvent;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import flash.utils.Proxy;
-	import flash.utils.flash_proxy;
-	
-	import mx.core.UIComponent;
-	import mx.events.ChildExistenceChangedEvent;
-	import mx.events.FlexEvent;
-	
-	import org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;		
+	import flash.utils.flash_proxy;	
 
 	/**
 	 * Dispatched when a component was resolved from an expression.
@@ -432,9 +431,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			if (component.id != null) {
 				// needed with application states
 				// this replaces the <Component>NNN to the id specified in the mxml.
+				// not needed anymore, since using component[currentID] syntax.
+				/* *
 				if (component.name != component.id) { 
 					component.name = component.id;
 				}
+				/* */
 				
 				return component.id;
 			} else if (component.name != null) {
@@ -479,6 +481,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			var regres:Object;
 			var currentComponent:UIComponent = baseComponent;
 			var n:int = pathArray.length;
+			var nextComponent:UIComponent;
 			
 			for (var i:int = 0; i < n; i++) {
 				currentID = pathArray[i];
@@ -489,10 +492,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 					if (currentIDInt < currentComponent.numChildren) {
 						currentComponent = currentComponent.getChildAt(currentIDInt) as UIComponent;
 					} else {
+						//debug("ERROR : Cannot find child at index " + currentIDInt);
 						currentComponent = null;
 					}
 				} else {
-					currentComponent = currentComponent.getChildByName(currentID) as UIComponent;
+					if (currentComponent.hasOwnProperty(currentID)) {
+						nextComponent = currentComponent[currentID] as UIComponent;
+					} else {
+						nextComponent = currentComponent.getChildByName(currentID) as UIComponent;
+					}
+					
+					if (nextComponent == null) {
+						nextComponent = findComponentByID(currentComponent, currentID);
+						//debug("+++++++++++ FOUND component by id " + nextComponent);
+					}
+
+					if (nextComponent == null) {
+						//debug("ERROR : calcComponentFromPath failed for " + path);
+						//debug("\t---currentID = " + currentID);
+						//debug("\t---currentComponent = " + currentComponent);
+						return null;
+					}
+					
+					currentComponent = nextComponent;
 				}
 				
 				if (currentComponent == null) {
@@ -505,10 +527,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		}
 		
 		/**
+		 * Locates a component from the id specified. Used when getChildByName returns
+		 * null. This happens when id and name are both specified in the mxml tag.
+		 * @private
+		 */
+		private function findComponentByID(component:UIComponent, id:String):UIComponent {
+			var container:Container = component as Container;
+			if (container == null) {
+				return null;
+			}
+			
+			var children:Array = container.getChildren();
+			var n:int = children.length;
+			var child:UIComponent;
+			
+			for (var i:int = 0; i < n; i++) {
+				child = children[i];
+				if (child.id == id) {
+					return child;
+				}
+			}
+			
+			return null;
+		}
+		
+		/**
 		 * Flags a component as resolved and sends an event indicating the same.
 		 */
 		private function markAsResolved(component:UIComponent):void {
-			//debug("\tmarkAsResolved component=" + component);
+			//debug("\t\tmarkAsResolved component=" + component);
 			component.removeEventListener(readyEventName, handleReadyEvent);
 			
 			resolvedComponents[component] = true;
@@ -527,8 +574,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Returns a boolean if the component has been resolved earlier.
 		 */
 		private function hasResolved(component:UIComponent):Boolean {
-			var flag:Boolean = resolvedComponents[component];
-			return flag == true; 
+			return resolvedComponents[component] == true; 
 		}
 		
 		/* *
@@ -542,9 +588,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				//debug("\t[" + route.id + " : " + route.path + "]");
 			}
 		}
-		/* */
 		
-		/* *
 		public function debug (...params):void {
 			trace.apply(this, params);
 		}

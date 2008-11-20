@@ -46,13 +46,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			var n:int = modules.length;
 			var module:String;
 			
-			if (!checksAdded) {
-				checksAdded = true;
-				var checkRegExp:RegExp = new RegExp("^check.*",	 "");
-				var checkSuite:TestSuite = TestUtils.suite(ComponentResolverTest, checkRegExp);
-				
-				suite.addTest(checkSuite);
-			}
+			var checkRegExp:RegExp = new RegExp("^check.*",	 "");
+			var checkSuite:TestSuite = TestUtils.suite(ComponentResolverTest, checkRegExp);
+			
+			suite.addTest(checkSuite);
 			
 			for (var i:int = 0; i < n; i++) {
 				module = modules[i];
@@ -81,6 +78,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			super(method);
 			
 			this.moduleUrl = moduleUrl;
+			//this.timeoutMS = 3000;
 		}
 		
 		override public function setUp():void {
@@ -236,6 +234,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 					assertTrue("Routes property not found in " + moduleUrl, module.hasOwnProperty("routes"));
 					
 					var routes:Array = module["routes"];
+					//trace("verifyExpressions url=" + url);
+					//printRoutes(routes);
+					
 					assertType(moduleUrl, Array, routes);
 					assertTrue("Routes array must not be empty in " + moduleUrl, routes.length > 0);
 					
@@ -352,5 +353,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			return new ComponentResolver(component, facade, routeMapper);
 		}
 		
+		private function printRoutes(routes:Array):void {
+			var n:int = routes.length;
+			trace("Total Routes = " + n);
+			
+			var route:Object;
+			for (var i:int = 0; i < n; i++) {
+				route = routes[i];
+				trace("\t[" + route.id + " : " + route.path + "]" + (route.component ? " = " + route.component : ""));
+			}
+		}
 	}
 }
