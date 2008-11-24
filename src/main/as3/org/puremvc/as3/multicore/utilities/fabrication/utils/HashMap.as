@@ -38,7 +38,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 				}
 			}
 
-			// explicitely setting to null to help with garbage collection
+			// explicitly setting to null to help with garbage collection
 			// can't do this is the same loop because it introduces a duplicate null key 
 			// TODO : File a bug report with Adobe.
 			for (key in elements) {

@@ -660,7 +660,15 @@
 				<lowercase />
 			</stringutil>
 
-			<var name="@{variable}" value="${snaked3}" />
+			<if>
+				<isset property="snaked2" />
+				<then>
+					<var name="@{variable}" value="${snaked3}" />
+				</then>
+				<else>
+					<var name="@{variable}" value="@{input}" />
+				</else>
+			</if>
 		</sequential>	
 	</macrodef>
 	
@@ -875,14 +883,37 @@
 		 also includes swfobject based html templates -->
 	<macrodef name="scaffold-build">
 		<attribute name="project-dir" />
-		<attribute name="project-name" />
-		<attribute name="project-mainclass" />
-		<attribute name="project-output" />
+		<attribute name="project-mainclass" default="${project.mainclass}"/>
+		<attribute name="project-name" default="${project.name}"/>
+		<attribute name="project-output" default="${project.output}"/>
 		<attribute name="project-output-width" default="550" />
 		<attribute name="project-output-height" default="400" />
 		<attribute name="overwrite" default="no" />
 		
 		<sequential>
+			<if>
+				<isset property="project.name"/>
+				<then>
+					<var name="project.name" value="${project.name}" />				
+				</then>
+				<else>
+					<var-basename variable="project.name" file="@{project-dir}" />
+				</else>
+			</if>
+			
+			<if>
+				<isset property="project.output"/>
+				<then>
+					<var name="project.output" value="${project.output}" />				
+				</then>
+				<else>
+					<to-snakecase input="${project.mainclass}" variable="project.output.name"/>
+					<var-basename file="${project.output.name}" suffix=".mxml" variable="project.output.name" />
+					<var-basename file="${project.output.name}" suffix=".as" variable="project.output.name" />
+					<var name="project.output" value="${project.output.name}.swf" />
+				</else>
+			</if>			
+			
 			<var-dirname file="${ant.file.fabrication.common}" variable="fabrication.dir"/>
 			<propertyregex property="fab.build.dir" input="${fabrication.dir}"
 				regexp="(\\)" replace="/" />
@@ -900,10 +931,10 @@
 			</if>
 			
 			<filterset id="template.filterset">
-				<filter token="project.name" value="@{project-name}" />
+				<filter token="project.name" value="${project.name}" />
 				<filter token="project.type" value="${project-type}" />
 				<filter token="project.mainclass" value="@{project-mainclass}" />
-				<filter token="project.output" value="@{project-output}" />
+				<filter token="project.output" value="${project.output}" />
 				<filter token="project.output.width" value="@{project-output-width}" />
 				<filter token="project.output.height" value="@{project-output-height}" />
 				<filter token="flashplayer.version" value="${flashplayer.version}" />

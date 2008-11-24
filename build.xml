@@ -342,9 +342,7 @@
 	
 	<!-- Required scaffolding properties -->
 	<property name="project.dir" value="" />
-	<property name="project.name" value="" />
 	<property name="project.mainclass" value="" />
-	<property name="project.output" value="" />
 	<property name="project.output.width" value="550" />
 	<property name="project.output.height" value="400" />
 	<property name="scaffold.overwrite" value="no" />
