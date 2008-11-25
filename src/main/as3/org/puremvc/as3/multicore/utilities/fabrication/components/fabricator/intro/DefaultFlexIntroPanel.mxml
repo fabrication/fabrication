@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Welcome to Fabrication" width="300" height="100%" horizontalAlign="center" verticalAlign="middle"
-		paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-	<mx:Text id="introText" width="100%" height="100%" fontFamily="_sans" fontSize="12"/>
-</mx:Panel>

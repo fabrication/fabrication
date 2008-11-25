@@ -54,22 +54,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		/**
 		 * FlexModuleLoader specific fabricator
 		 */
-		private var _fabricator:FlexModuleLoaderFabricator;
+		protected var _fabricator:FlexModuleLoaderFabricator;
 		
 		/**
 		 * Message router assigned to this ModuleLoader
 		 */
-		private var _router:IRouter;
+		protected var _router:IRouter;
 		
 		/**
 		 * Default route assigned to this ModuleLoader
 		 */
-		private var _defaultRoute:String;
+		protected var _defaultRoute:String;
 		
 		/**
 		 * Default route address assigned to this ModuleLoader
 		 */
-		private var _defaultRouteAddress:IModuleAddress;
+		protected var _defaultRouteAddress:IModuleAddress;
+		
+		/**
+		 * Optional configuration object.
+		 */
+		protected var _config:Object;
 
 		/**
 		 * Creates the FlexModuleLoader and initializes is fabricator
@@ -144,6 +149,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			return fabricator.defaultRoute;
 		}
 
+		/**
+		 * The configuration object of the current FlexApplication.
+		 */
+		public function get config():Object {
+			return _config;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set config($config:Object):void {
+			_config = $config;
+		}
+		
 		public function set defaultRoute(_defaultRoute:String):void {
 			this._defaultRoute = _defaultRoute;
 			if (fabricator != null) { 

@@ -56,7 +56,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		/**
 		 * Default route address assigned to this FlashApplication
 		 */
-		private var _defaultRouteAddress:IModuleAddress;
+		protected var _defaultRouteAddress:IModuleAddress;
+		
+		/**
+		 * Optional configuration object 
+		 */
+		protected var _config:Object; 
 
 		/**
 		 * Initializes the FlexApplicationFabricator
@@ -124,6 +129,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		
 		public function get router():IRouter {
 			return fabricator.router;
+		}
+		
+		/**
+		 * The configuration object of the current FlashApplication.
+		 */
+		public function get config():Object {
+			return _config;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set config($config:Object):void {
+			_config = $config;
 		}
 		
 		/**

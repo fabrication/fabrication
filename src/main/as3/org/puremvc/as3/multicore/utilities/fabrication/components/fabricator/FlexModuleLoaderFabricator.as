@@ -45,7 +45,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 */
 		public function FlexModuleLoaderFabricator(_fabrication:FlexModuleLoader) {
 			super(_fabrication);
-			
 		}
 		
 		/**
@@ -110,6 +109,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			// Here we fetch those values
 			defaultRoute = moduleLoader.defaultRoute;
 			router = moduleLoader.router;
+			module.config = moduleLoader.config;
 			
 			_ready = true;
 			

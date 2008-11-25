@@ -53,6 +53,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 * The flex environment specific fabricator
 		 */
 		protected var _fabricator:FlexApplicationFabricator;
+		
+		/**
+		 * Optional configuration object.
+		 */
+		protected var _config:Object;
 
 		/**
 		 * Initializes the FlexApplicationFabricator
@@ -90,6 +95,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */		
 		public function get defaultRoute():String {
 			return fabricator.defaultRoute;
+		}
+		
+		/**
+		 * The configuration object of the current FlexApplication.
+		 */
+		public function get config():Object {
+			return _config;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set config($config:Object):void {
+			_config = $config;
 		}
 		
 		/**

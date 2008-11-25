@@ -15,13 +15,12 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import mx.events.FlexEvent;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.AirApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultAirApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
+	
+	import mx.events.FlexEvent;	
 
 	/**
 	 * AirApplicationFabricator creates a concrete fabricator for the 
@@ -36,10 +35,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 */
 		public function AirApplicationFabricator(_fabrication:AirApplication) {
 			super(_fabrication);
-			
-			if (_startupCommand == null) {
-				_startupCommand = DefaultAirApplicationStartupCommand;
-			}
 		}
 
 		/**

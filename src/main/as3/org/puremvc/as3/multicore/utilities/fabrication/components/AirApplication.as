@@ -53,6 +53,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 * AIR specific application fabricator.
 		 */
 		protected var _fabricator:AirApplicationFabricator;
+		
+		/**
+		 * Optional configuration object.
+		 */
+		protected var _config:Object;
 
 		/**
 		 * Creates a new AirApplication and initializes it fabricator.
@@ -111,6 +116,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */
 		public function set router(_router:IRouter):void {
 			fabricator.router = _router;
+		}
+		
+		/**
+		 * The configuration object of the current AirApplication.
+		 */
+		public function get config():Object {
+			return _config;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set config($config:Object):void {
+			_config = $config;
 		}
 		
 		/**

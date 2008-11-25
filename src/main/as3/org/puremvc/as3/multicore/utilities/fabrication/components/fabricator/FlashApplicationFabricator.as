@@ -15,15 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ModuleStartupCommand;	
-	
-	import flash.events.Event;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlashApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultFlashApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ModuleStartupCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
+	
+	import flash.events.Event;		
 
 	/**
 	 * FlashApplicationFabricator is the concrete fabricator for Flash applications.
@@ -37,10 +35,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 */
 		public function FlashApplicationFabricator(_fabrication:FlashApplication) {
 			super(_fabrication);
-			
-			if (_startupCommand == null) {
-				_startupCommand = DefaultFlashApplicationStartupCommand;
-			}
 		}
 
 		/**

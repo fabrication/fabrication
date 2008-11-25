@@ -50,6 +50,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * @return The unique identifier of the current fabrication
 		 */
 		function get id():String;
+		
+		/**
+		 * An optional configuration object of the current fabrication. This object contains
+		 * information about the module as specified by the parent. The module can use this
+		 * to build its initial state prior to the establishment of communication between
+		 * itself and the parent.  
+		 */
+		function get config():Object;
+		function set config($config:Object):void;
 
 		/**
 		 * Creates the concrete application fabricator. This method should 

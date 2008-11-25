@@ -15,14 +15,12 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultFlexApplicationStartupCommand;	
-	
-	import mx.events.FlexEvent;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;	
+	
+	import mx.events.FlexEvent;		
 
 	/**
 	 * FlexApplicationFabricator is the concrete fabricator for Flex applications.
@@ -36,10 +34,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 */
 		public function FlexApplicationFabricator(_fabrication:FlexApplication) {
 			super(_fabrication);
-			
-			if (_startupCommand == null) {
-				_startupCommand = DefaultFlexApplicationStartupCommand;
-			}
 		}
 
 		/**

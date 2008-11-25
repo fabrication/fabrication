@@ -57,7 +57,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		/**
 		 * Default route address assigned to this Module
 		 */
-		private var _defaultRouteAddress:IModuleAddress;
+		protected var _defaultRouteAddress:IModuleAddress;
+		
+		/**
+		 * Optional configuration object.
+		 */
+		protected var _config:Object;
 
 		/**
 		 * Creates the FlexModule and initializes its fabricator.
@@ -118,6 +123,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			fabricator.router = _router;
 		}
 
+		/**
+		 * The configuration object of the current FlexApplication.
+		 */
+		public function get config():Object {
+			return _config;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set config($config:Object):void {
+			_config = $config;
+		}
+		
 		/**
 		 * The default route address to be assigned to the child module.
 		 */

@@ -25,7 +25,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.utils.getQualifiedClassName;	
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;		
 
 	/**
 	 * ApplicationFabricator is the base class for all fabrication 
@@ -269,6 +270,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * Starts the default fabricator initialization sequence. 
 		 */
 		protected function initializeFabricator():void {
+			if (_startupCommand == null) {
+				try {
+					// While testing we need to have startup command, because the events
+					// escape out the try-catch
+					var testCase:Class = getDefinitionByName("flexunit.framework.TestCase") as Class;
+					if (testCase != null) {
+						_startupCommand = getDefinitionByName("org.puremvc.as3.multicore.utilities.fabrication.components.empty.EmptyFlexModuleStartupCommand") as Class;
+					};
+				} finally {
+					// if the startupCommand is still null, we are in implementation mode
+					// and need to indicate to the user that the startup command is missing
+					if (_startupCommand == null) {
+						throw new Error("Startup command class not found in getStartupCommand method in the main application class.");
+					}
+				}
+			}
+			
 			initializeModuleAddress();
 			initializeFacade();
 			
