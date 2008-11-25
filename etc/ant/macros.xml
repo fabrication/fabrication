@@ -250,6 +250,7 @@
 		<attribute name="output" />
 		<attribute name="optimize-for" default="null" />
 		<attribute name="debug" default="${debug}" />
+		<attribute name="options" default=" " />
 			
 		<sequential>
 			<var name="mainclass.file" value="${src.main.flash}/@{mainclass}" />
@@ -280,14 +281,14 @@
 							<flex-app
 								mainclass="@{optimize-for}" 
 								output="${build.dir}/@{optimize-for}.swf" 
-								options="-link-report=${optimize-for-linkreport}"
+								options="-link-report=${optimize-for-linkreport} @{options}"
 								debug="@{debug}"
 							/>
 							
 							<flex-app
 								mainclass="@{mainclass}" 
 								output="@{output}" 
-								options="-load-externs=${optimize-for-linkreport}"
+								options="-load-externs=${optimize-for-linkreport} @{options}"
 								debug="@{debug}"
 							/> 
 						</then>
@@ -295,7 +296,7 @@
 							<flex-app
 								mainclass="@{mainclass}" 
 								output="@{output}" 
-								options="-load-externs=${optimize-for-linkreport}"
+								options="-load-externs=${optimize-for-linkreport} @{options}"
 								debug="@{debug}"
 							/> 
 						</else>
@@ -843,8 +844,8 @@
 				</fileset>
 			</delete>
 			
-			<copy file="@{swc}" todir="${app-libs}" />
-			<copy file="@{deps-swc}" todir="${app-libs}" />
+			<copy file="@{swc}" todir="${app-libs}" overwrite="yes"/>
+			<copy file="@{deps-swc}" tofile="${app-libs}/common.swc" overwrite="yes" />
 
 			<exec executable="cmd" dir="@{app-dir}" spawn="no">
 				<arg line="/c ant" />
