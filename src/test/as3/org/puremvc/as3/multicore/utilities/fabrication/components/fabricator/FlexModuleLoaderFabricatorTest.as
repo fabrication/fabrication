@@ -17,6 +17,8 @@
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoaderMock;
+	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.Router;
 	
 	import mx.events.ModuleEvent;	
 
@@ -32,6 +34,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			return suite;
 		}
 		/* */
+		
+		public var moduleLoader:FlexModuleLoader;
+		public var timeoutMS:int = 25000;
+		public var emptyModuleUrl:String = "modules/empty_flex_module.swf";
 		
 		public function FlexModuleLoaderFabricatorTest(method:String) {
 			super(method);
@@ -71,6 +77,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			verifyMock(fabricationMock);
 			assertTrue(fabrication.hasEventListener(ModuleEvent.READY));
+		}
+		
+		public function testFlexModuleLoaderFabricatorSavesConfigOnModule():void {
+			var configObj:Object = new Object();
+			
+			var verifyConfig:Function = function(event:FabricatorEvent):void {
+				assertNotNull(moduleLoader.module.config);
+				assertEquals(configObj, moduleLoader.module.config);
+			};
+			
+			moduleLoader = new FlexModuleLoader();
+			moduleLoader.url = emptyModuleUrl;
+			moduleLoader.addEventListener(FabricatorEvent.FABRICATION_CREATED, addAsync(verifyConfig, timeoutMS));
+			moduleLoader.router = new Router();
+			moduleLoader.config = configObj;
+			moduleLoader.loadModule();
 		}
 		
 	}

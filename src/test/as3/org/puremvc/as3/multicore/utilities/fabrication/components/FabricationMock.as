@@ -137,5 +137,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
+		
+		public function get config():Object {
+			return mock.config;
+		}
+		
+		public function set config($config:Object):void {
+			mock.config = $config;
+		}
+		
 	}
 }

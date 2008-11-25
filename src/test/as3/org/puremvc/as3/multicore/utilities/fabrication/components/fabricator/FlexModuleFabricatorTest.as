@@ -17,10 +17,9 @@
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultFlexModuleStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
 	
-	import mx.events.FlexEvent;		
+	import mx.events.FlexEvent;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -76,8 +75,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			assertEquals(SimpleFabricationCommandMock, fabricator.startupCommand);
 		}
 		
-		public function testFlexModuleFabricatorHasDefaultStartupCommand():void {
-			assertEquals(DefaultFlexModuleStartupCommand, fabricator.startupCommand);
+		public function testFlexModuleFabricatorDoesNotHaveDefaultStartupCommand():void {
+			assertNull(fabricator.startupCommand);
 		}
 		
 	}

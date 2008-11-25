@@ -143,5 +143,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			
 			verifyMock(eventListener.mock);
 		}
+		
+		public function testFabricationStoresConfigurationObject():void {
+			assertProperty(fabrication, "config", Object, null, new Object());
+		}
 	}
 }

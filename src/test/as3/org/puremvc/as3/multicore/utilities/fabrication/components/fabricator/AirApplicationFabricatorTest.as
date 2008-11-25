@@ -17,10 +17,9 @@
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.components.AirApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.AirApplicationMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultAirApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
 	
-	import mx.events.FlexEvent;		
+	import mx.events.FlexEvent;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -77,7 +76,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		}
 		
 		public function testFlexFabricationFabricatorHasDefaultStartupCommand():void {
-			assertEquals(DefaultAirApplicationStartupCommand, fabricator.startupCommand);
+			assertNull(fabricator.startupCommand);
 		}
 		
 	}

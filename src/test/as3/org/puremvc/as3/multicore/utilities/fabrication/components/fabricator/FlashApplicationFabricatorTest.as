@@ -17,10 +17,9 @@
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlashApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlashApplicationMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.intro.DefaultFlashApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
 	
-	import flash.events.Event;		
+	import flash.events.Event;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -76,8 +75,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			assertEquals(SimpleFabricationCommandMock, fabricator.startupCommand);
 		}
 		
-		public function testFlashApplicationFabricatorHasDefaultStartupCommand():void {
-			assertEquals(DefaultFlashApplicationStartupCommand, fabricator.startupCommand);
+		public function testFlashApplicationFabricatorDoesNotHaveDefaultStartupCommand():void {
+			assertNull(fabricator.startupCommand);
 		}
 		
 	}
