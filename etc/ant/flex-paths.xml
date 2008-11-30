@@ -23,15 +23,27 @@
 		<os family="windows" />
 	</condition>
 	
+	<!-- adl runner -->
+	<condition property="air.adl" value="${flex.dir}/bin/adl.exe" else="${flex.dir}/bin/adl">
+		<os family="windows" />
+	</condition>
+	
+	<!-- adt compiler -->
+	<condition property="air.adt" value="${flex.dir}/bin/adt.exe" else="${flex.dir}/bin/adt">
+		<os family="windows" />
+	</condition>	
+	
 	<!-- additional options to pass to the compilers -->
-    <property name="flex.mxmlc.options" value="" />
-    <property name="flex.compc.options" value="" />
+   <property name="flex.mxmlc.options" value="" />
+   <property name="flex.compc.options" value="" />
 	<property name="flex.asdoc.options" value="" />
+	<property name="adl.options" value="" />
+	<property name="adt.options" value="" />
 	
 	<!-- path to the flex config file -->
-    <property name="flex.config" value="${flex.frameworks.dir}/flex-config.xml" />
+   <property name="flex.config" value="${flex.frameworks.dir}/flex-config.xml" />
 
-    <!-- standalone player for the current sdk -->
+   <!-- standalone player for the current sdk -->
 	<property name="flex.standalone.player" location="${flex.dir}/runtimes/player/win/FlashPlayer.exe" />
 	
 	<!-- /usr/bin/open for mac -->

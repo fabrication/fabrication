@@ -133,11 +133,76 @@
 		<attribute name="options" default="${flex.mxmlc.options}" />
 		<attribute name="config" default="${flex.config}" />
 		<attribute name="debug" default="${debug}" />
+		<attribute name="artifact" default="main" />
+		<attribute name="runtime" default="player" />
 		
 		<sequential>
 			<prepare-source-paths />
 			
-			<var name="mainclass.file" value="${src.main.flash}/@{mainclass}" />
+			<var name="artifact.src.dir" unset="yes" />
+			<var name="artifact.src.dir.value" unset="yes" />
+			<var name="artifact.src" unset="yes" />
+			<var name="artifact.src.value" unset="yes" />
+			<var name="artifact.swc" unset="yes" />
+			<var name="artifact.swc.value" unset="yes" />
+			
+			<!-- when using the main artifact the src.main.flash is used else src.test.flash -->
+			<if>
+				<equals arg1="@{artifact}" arg2="main"/>
+				<then>
+					<var name="artifact.src.dir" value="src.main.flash" />
+					<var name="artifact.src" value="src.main.pathlist" />
+					<var name="artifact.swc" value="swc.main.pathlist" />
+				</then>
+				<elseif>
+					<equals arg1="@{artifact}" arg2="test" />
+					<then>
+						<var name="artifact.src.dir" value="src.test.flash" />
+						<var name="artifact.src" value="src.test.pathlist" />
+						<var name="artifact.swc" value="swc.main.pathlist" />
+					</then>
+				</elseif>
+			</if>
+			
+			<expand-prop variable="artifact.src.dir.value" property="artifact.src.dir" value="${artifact.src.dir}" />
+			<expand-prop variable="artifact.src.value" property="artifact.src" value="${artifact.src}" />
+			<expand-prop variable="artifact.swc.value" property="artifact.swc" value="${artifact.swc}" />
+			
+			<!-- globals -->
+			<var name="runtime.swc" unset="yes" />
+			<var name="runtime.swc.value" unset="yes" />
+			
+			<!-- frameworks -->
+			<var name="runtime.library.swc" unset="yes" />
+			<var name="runtime.library.swc.value" unset="yes" />
+			
+			<if>
+				<equals arg1="@{runtime}" arg2="air" />
+				<then>
+					<var name="runtime.swc" value="swc.runtime.air.pathlist" />
+					<var name="runtime.library.swc" value="swc.air.pathlist" />
+				</then>
+				<else>
+					<var name="runtime.swc" value="swc.runtime.pathlist" />
+					<var name="runtime.library.swc" value="swc.flex.pathlist" />
+				</else>
+			</if>
+
+			<expand-prop variable="runtime.swc.value" property="runtime.swc" value="${runtime.swc}" />
+			<expand-prop variable="runtime.library.swc.value" property="runtime.library.swc" value="${runtime.library.swc}" />
+
+			<if>
+				<not>
+					<available file="@{mainclass}" />
+				</not>
+				<then>
+					<var name="mainclass.file" value="${artifact.src.dir.value}/@{mainclass}" />
+				</then>
+				<else>
+					<var name="mainclass.file" value="@{mainclass}" />
+				</else>
+			</if>
+			
 			<var-basename variable="mainclass.filename" file="${mainclass.file}" />
 			<echo level="info">flex-app : ${mainclass.filename}</echo>
 			
@@ -151,18 +216,18 @@
 				<arg value="-load-config=@{config}" />
 				
 				<!-- the runtime swc libraries -->
-				<arg value="-compiler.external-library-path=${swc.runtime.pathlist}" />
+				<arg value="-compiler.external-library-path=${runtime.swc.value}" />
 				
 				<!-- the main swc libraries -->
-				<arg value="-compiler.library-path=${swc.main.pathlist}" />
+				<arg value="-compiler.library-path=${artifact.swc.value}" />
 				<arg value="-compiler.library-path=${swc.common.pathlist}" />
-				<arg value="-compiler.library-path=${swc.flex.pathlist}" />
+				<arg value="-compiler.library-path=${runtime.library.swc.value}" />
 				
 				<!-- allows the flex compiler to determine the locale specific swc's -->
 				<arg value="-compiler.library-path=${flex.frameworks.dir}/locale/{locale}" />
 				
 				<!-- the main source libraries -->
-				<arg value="-compiler.source-path=${src.main.pathlist}" />
+				<arg value="-compiler.source-path=${artifact.src.value}" />
 				<arg value="-compiler.source-path=${src.common.pathlist}" />
 				
 				<!-- input and output -->
@@ -177,72 +242,17 @@
 			</exec>
 		</sequential>
 	</macrodef>
-
+	
+	<!-- preset flex-app set to use the air runtime -->
+	<presetdef name="air-app">
+		<flex-app runtime="air" />
+	</presetdef>
+	
+	<!-- preset flex-app set to use the test artifact -->
 	<!-- Compiles a Flex or AS3 application with mxmlc with the test configuration -->
-	<macrodef name="test-flex-app">
-		<attribute name="mainclass" />
-		<attribute name="output" />
-		
-		<attribute name="width" default="800" />
-		<attribute name="height" default="600" />
-		<attribute name="options" default="${flex.mxmlc.options}" />
-		<attribute name="config" default="${flex.config}" />
-		<attribute name="debug" default="${debug}" />
-		
-		<sequential>
-			<prepare-source-paths />
-			
-			<if>
-				<not>
-					<available file="@{mainclass}" />
-				</not>
-				<then>
-					<var name="mainclass.file" value="${src.test.flash}/@{mainclass}" />
-				</then>
-				<else>
-					<var name="mainclass.file" value="@{mainclass}" />
-				</else>
-			</if>
-			<var-basename variable="mainclass.filename" file="${mainclass.file}" />
-			<echo level="info">test-flex-app : ${mainclass.filename}</echo>
-			
-			<!-- compile with the mxmlc in the current flex framework directory -->
-			<exec executable="${flex.mxmlc}" dir="${basedir}" failonerror="true">
-				<arg line="@{options}" />
-				<arg line="-default-size @{width} @{height}" />
-
-				<!-- flex-config -->
-				<arg value="-load-config=@{config}" />
-				
-				<!-- the runtime swc libraries -->
-				<arg value="-compiler.external-library-path=${swc.runtime.pathlist}" />
-				
-				<!-- the main swc libraries -->
-				<arg value="-compiler.library-path=${swc.main.pathlist}" />
-				<arg value="-compiler.library-path=${swc.common.pathlist}" />
-				<arg value="-compiler.library-path=${swc.flex.pathlist}" />
-				<arg value="-compiler.library-path=${swc.air.pathlist}" />
-				
-				<!-- allows the flex compiler to determine the locale specific swc's -->
-				<arg value="-compiler.library-path=${flex.frameworks.dir}/locale/{locale}" />
-				
-				<!-- the main source libraries -->
-				<arg value="-compiler.source-path=${src.test.pathlist}" />
-				<arg value="-compiler.source-path=${src.common.pathlist}" />
-				
-				<!-- input and output -->
-				<arg value="-file-specs=${mainclass.file}" />
-				<arg value="-output=@{output}" />
-				
-				<!-- debug options -->
-				<!--
-				<arg value="-dump-config=${basedir}/macro-flex-config.xml" />
-				<arg value="-keep-generated-actionscript" />
-				-->
-				<arg value="-debug=@{debug}" />
-			</exec>
-		</sequential>
-	</macrodef>	
+	<presetdef name="test-flex-app">
+		<flex-app artifact="test" />
+	</presetdef>
 	
 	<!-- Compiles a flex module with mxmlc -->
 	<macrodef name="flex-module">
@@ -778,6 +788,65 @@
 		</sequential>		
 	</macrodef>
 	
+	<!-- Opens an application swf with the air debug launcher -->
+	<macrodef name="launch-air-app">
+		<attribute name="descriptor" />
+		<attribute name="dir" default="${bin}"/>
+		<attribute name="debug" default="${debug}"/>
+		
+		<sequential>
+			<var name="nodebug" unset="yes" />
+			<var name="pubid" unset="yes" />
+			
+			<if>
+				<equals arg1="${debug}" arg2="true" />
+				<then>
+					<var name="nodebug" value=" " />
+				</then>
+				<else>
+					<var name="nodebug" value="-nodebug" />
+				</else>
+			</if>
+			
+			<uid name="pubid" int="yes" />
+			<property name="descriptor-loc" location="@{descriptor}" /> 
+			
+			<exec executable="${air.adl}" dir="@{dir}" vmlauncher="true" spawn="yes">
+				<arg line="-pubid ${pubid}" />
+				<arg line="${nodebug}" />
+				<arg value="${descriptor-loc}" />
+				<arg value="@{dir}" />
+			</exec>
+		</sequential>
+	</macrodef>
+	
+	<!-- Creates a temporary application descriptor for a swf and launches it -->
+	<macrodef name="launch-air-swf">
+		<attribute name="file" />
+		<attribute name="debug" default="${debug}"/>
+		<attribute name="dir" default="${bin}"/>
+		<attribute name="template" default="${fabrication.dir}/etc/templates/air/descriptor_template.xml" />
+	
+		<sequential>
+			<var-basename file="@{file}" suffix=".swf" variable="app.name" />
+			<echo>launch-air-swf : ${app.name}.swf</echo>
+			
+			<var-dirname file="@{file}" variable="app.dir"/>
+			<var name="descriptor" value="${build.dir}/${app.name}-app.xml" />
+			
+			<copy file="@{template}" tofile="${descriptor}">
+				<filterset>
+					<filter token="application_id" value="${app.name}" />
+					<filter token="application_name" value="${app.name}" />
+					<filter token="application_swf" value="${app.name}.swf" />
+				</filterset>
+			</copy>
+			
+			<launch-air-app descriptor="${descriptor}" dir="${app.dir}"/>
+		</sequential>
+	</macrodef>
+	
+	
 	<!-- Launches the specified swf in the standalone flash player for the current sdk
 		 Currently only works on windows 
 		 TODO : Make platform independent -->
@@ -934,6 +1003,26 @@
 				</else>					
 			</if>
 			
+			<if>
+				<available file="@{project-dir}/src/main"/>
+				<then>
+					<var name="project.src.main.flash" value="" />
+				</then>
+				<else>
+					<var name="project.src.main.flash" value="src" />
+				</else>
+			</if>
+
+			<if>
+				<available file="@{project-dir}/src/test"/>
+				<then>
+					<var name="project.src.test.flash" value="" />
+				</then>
+				<else>
+					<var name="project.src.test.flash" value="test" />
+				</else>
+			</if>			
+			
 			<filterset id="template.filterset">
 				<filter token="project.name" value="${project.name}" />
 				<filter token="project.type" value="${project-type}" />
@@ -941,6 +1030,8 @@
 				<filter token="project.output" value="${project.output}" />
 				<filter token="project.output.width" value="@{project-output-width}" />
 				<filter token="project.output.height" value="@{project-output-height}" />
+				<filter token="src.main.flash" value="src.main.flash = ${project.src.main.flash}" />
+				<filter token="src.test.flash" value="src.test.flash = ${project.src.test.flash}" />
 				<filter token="flashplayer.version" value="${flashplayer.version}" />
 			</filterset>
 			
@@ -1153,6 +1244,5 @@
 			/>
 		</sequential>
 	</macrodef>
-	
 
 </project>

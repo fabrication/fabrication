@@ -379,6 +379,16 @@
 		</upgrade-apps>
 	</target>
 	
+	<target name="apply-mime-types" description="Applies correct mime types to all files in the specified directory">
+		<property name="mimetypes.dir" value="${doc}" />
+		<set-mimetypes>
+			<fileset dir="${mimetypes.dir}">
+				<include name="**/*.*" />
+				<include name="*.*" />
+			</fileset>
+		</set-mimetypes>
+	</target>
+	
 	<target name="all" depends="clean, build, test, dist" 
 		description="Removes previous compiled files and rebuilds the main application and generates asdocs">
 	</target>

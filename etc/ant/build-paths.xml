@@ -18,6 +18,9 @@
 	<!-- the libs directory must be present -->
 	<mkdir dir="${libs}" />
 	
+	<!-- templates directory -->
+	<property name="templates.dir" location="${fabrication${etc}/templates" />
+	
 	<!-- generated asdocs -->
 	<property name="doc.asdoc.public" location="${doc}/asdoc/public" />
 	<property name="doc.asdoc.full" location="${doc}/asdoc/full" />
@@ -87,13 +90,23 @@
 	<!-- air framework swc paths -->
 	<path id="swc.air.path">
 		<fileset dir="${flex.frameworks.dir}/libs">
-			<include name="**/air/*.swc" />
+			<include name="**/*.swc" />
 		</fileset>
 	</path>
 	
 	<!-- flash player runtime library paths 
 		 these are generally named *global.swc -->
 	<path id="swc.runtime.path">
+		<fileset dir="${flex.frameworks.dir}/libs">
+			<include name="**/${flashplayer.runtime}/*global.swc" />
+		</fileset>
+	</path>
+	
+	<!-- air runtime library paths -->
+	<path id="swc.runtime.air.path">
+		<fileset dir="${flex.frameworks.dir}/libs/air">
+			<include name="*global.swc" />
+		</fileset>
 		<fileset dir="${flex.frameworks.dir}/libs">
 			<include name="**/${flashplayer.runtime}/*global.swc" />
 		</fileset>
@@ -125,6 +138,7 @@
 	
 	<pathconvert refid="swc.runtime.path" property="swc.runtime.pathlist" />
 	<pathconvert refid="swc.linked.path" property="swc.linked.pathlist" />
+	<pathconvert refid="swc.runtime.air.path" property="swc.runtime.air.pathlist" />
 	
 	<!-- When building from sources the src.common.pathlist is dynamically build from
 		  properties named common.source.dir1..N -->
