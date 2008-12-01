@@ -90,6 +90,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 			assertType(Array, undoableNotification.redoableCommands);
 		}
 		
+		public function testUndoableNotificationStoresGroupID():void {
+			assertProperty(undoableNotification, "groupID", String, null, "groupA");
+		}
+		
 		public function testUndoableNotificationResetsAfterDisposal():void {
 			var undoableNotification:UndoableNotification = new UndoableNotification(UndoableNotification.COMMAND_HISTORY_CHANGED, body, "test_type");
 			undoableNotification.dispose();
@@ -100,6 +104,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 			assertNull(undoableNotification.redoableCommands);
 			assertNull(undoableNotification.undoCommand);
 			assertNull(undoableNotification.redoCommand);
+			assertNull(undoableNotification.groupID);
 			
 			assertThrows(Error);
 			undoableNotification.getBody().constructor;

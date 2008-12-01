@@ -15,15 +15,16 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
-	import org.puremvc.as3.multicore.patterns.observer.Notification;	
 	import org.puremvc.as3.multicore.core.Controller;
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
+	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.patterns.observer.Observer;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.UndoableNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;		
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;	
 
 	/**
 	 * FabricationController is the custom controller used by fabrication.
@@ -33,6 +34,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	 * @author Darshan Sawardekar
 	 */
 	public class FabricationController extends Controller implements IDisposable {
+
+		/**
+		 * The default group id name.
+		 */
+		static public const DEFAULT_GROUP_ID:String = "default";
 
 		/**
 		 * Creates and returns the multiton instance of the controller for
@@ -51,12 +57,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		/**
 		 * The undoable command stack
 		 */
-		protected var undoStack:Stack;
+		//protected var undoStack:Stack;
 		
 		/**
 		 * The redoable command stack.
 		 */
-		protected var redoStack:Stack;
+		//protected var redoStack:Stack;
+		
+		/**
+		 * Stores the different undo groups in the controller. 
+		 */
+		protected var groupsHashMap:HashMap;
+
+		/**
+		 * The current undo-redo group id.
+		 */
+		protected var _groupID:String = DEFAULT_GROUP_ID;
 
 		/**
 		 * Creates the FabricationController and initializes the undo and
@@ -65,19 +81,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		public function FabricationController(key:String) {
 			super(key);
 			
-			undoStack = new Stack();
-			redoStack = new Stack();
+			groupsHashMap = new HashMap();
 		}
 
 		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
-			undoStack.dispose();
-			undoStack = null;
-			
-			redoStack.dispose();
-			redoStack = null;
+			groupsHashMap.dispose();
+			groupsHashMap = null;
 			
 			commandMap.splice(0);
 			commandMap = null;		
@@ -308,6 +320,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			notification.redoable = canRedo();
 			notification.undoableCommands = undoStack.getElements();
 			notification.redoableCommands = redoStack.getElements();
+			notification.groupID = groupID;
 			
 			if (notification.undoable) {
 				notification.undoCommand = (undoStack.peek() as IUndoableCommand).getUndoPresentationName();
@@ -317,6 +330,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 				notification.redoCommand = (redoStack.peek() as IUndoableCommand).getRedoPresentationName();
 			}
 			
+			view.notifyObservers(notification);
+		}
+		
+		/**
+		 * Sends a COMMAND_GROUP_CHANGED notification using the view object
+		 */
+		protected function notifyCommandGroupChanged():void {
+			var notification:UndoableNotification = new UndoableNotification(UndoableNotification.COMMAND_GROUP_CHANGED);
 			view.notifyObservers(notification);
 		}
 		
@@ -335,5 +356,104 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return -1;
 		}
+		
+		/**
+		 * The unique identifier of the current undo-redo group.
+		 */
+		public function get groupID():String {
+			return _groupID;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set groupID(_groupID:String):void {
+			if (_groupID == null || _groupID == "") {
+				throw new Error("groupID must not be null.");	
+			}
+			
+			this._groupID = _groupID;
+			
+			notifyCommandGroupChanged();
+			notifyCommandHistoryChanged();
+		}
+		
+		/**
+		 * Disposes the specified undo-redo group.
+		 * 
+		 * @param $groupID The unique undo-redo group to remove.
+		 */
+		public function removeGroup($groupID:String):void {
+			var store:GroupStore = getGroupStore($groupID);
+			if (store != null) {
+				store.dispose();
+				groupsHashMap.remove($groupID);
+			}
+		}
+		
+		/**
+		 * Returns the object in the groups hash map storing the undo-redo stacks
+		 * for the specified group. The group store is created here if it isn't already
+		 * present.
+		 */
+		protected function getGroupStore($groupID:String = null):GroupStore {
+			if ($groupID == null) {
+				$groupID = groupID;
+			}
+			
+			var store:GroupStore = groupsHashMap.find($groupID) as GroupStore;
+			if (store == null) {
+				store = createGroupStore($groupID);
+			}
+			
+			return store;
+		}
+		
+		/**
+		 * Initialize the undo-redo stack store for the specified group. 
+		 */
+		protected function createGroupStore($groupID:String = null):GroupStore {
+			return groupsHashMap.put(
+				$groupID, new GroupStore(new Stack(), new Stack())
+			) as GroupStore;
+		}
+		
+		/**
+		 * Returns the undo stack for the current group.
+		 */
+		protected function get undoStack():Stack {
+			return getGroupStore().undoStack;
+		}
+		
+		/**
+		 * Returns the redo stack for the current group.
+		 */
+		protected function get redoStack():Stack {
+			return getGroupStore().redoStack;
+		}
+		
 	}
+}
+
+import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;
+import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+
+internal class GroupStore implements IDisposable {
+
+	public var undoStack:Stack;
+	public var redoStack:Stack;
+	
+	public function GroupStore(undoStack:Stack, redoStack:Stack) {
+		this.undoStack = undoStack;
+		this.redoStack = redoStack;
+	}
+	
+	public function dispose():void {
+		undoStack.dispose();
+		undoStack = null;
+		
+		redoStack.dispose();
+		redoStack = null;	
+	}
+	
 }

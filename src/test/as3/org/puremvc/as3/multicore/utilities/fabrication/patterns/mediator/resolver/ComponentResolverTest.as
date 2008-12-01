@@ -15,20 +15,20 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
-	import flexunit.framework.TestUtils;	
-	import flexunit.framework.ModuleAwareTestCase;
-	import flexunit.framework.TestSuite;
+	import flash.events.Event;
+	
+	import mx.core.UIComponent;
+	import mx.events.FlexEvent;
+	import mx.modules.Module;
 	
 	import org.puremvc.as3.multicore.utilities.fabrication.events.ComponentResolverEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	
-	import mx.core.UIComponent;
-	import mx.events.FlexEvent;
-	import mx.modules.Module;
-	
-	import flash.events.Event;	
+	import flexunit.framework.ModuleAwareTestCase;
+	import flexunit.framework.TestSuite;
+	import flexunit.framework.TestUtils;		
 
 	/**
 	 * @author Darshan Sawardekar
@@ -353,7 +353,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			return new ComponentResolver(component, facade, routeMapper);
 		}
 		
-		private function printRoutes(routes:Array):void {
+		public function printRoutes(routes:Array):void {
 			var n:int = routes.length;
 			trace("Total Routes = " + n);
 			

@@ -33,6 +33,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		static public const COMMAND_HISTORY_CHANGED:String = "commandHistoryChanged";
 		
 		/**
+		 * Notified when the undo-redo group is changed in the FabricationController
+		 */
+		static public const COMMAND_GROUP_CHANGED:String = "commandGroupChanged";
+		
+		/**
 		 * Indicates if an undo operation can be performed from the current
 		 * position on the stack.
 		 */
@@ -65,6 +70,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		public var redoCommand:String;
 		
 		/**
+		 * The unique name of the current group
+		 */
+		public var groupID:String;
+		
+		/**
 		 * Creates a new UndoableNotification object
 		 */
 		public function UndoableNotification(name:String, body:Object = null, type:String = null) {
@@ -91,6 +101,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 			redoableCommands = null;
 			undoCommand = null;
 			redoCommand = null;
+			groupID = null;
 		}
 		
 	}

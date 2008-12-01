@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;	
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.SimpleUndoableCommand;	
 	
 	import flexunit.framework.SimpleAssert;
@@ -500,6 +501,155 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			assertType(IUndoableCommand, command);
 			assertEquals(note, (command as IUndoableCommand).getNotification());
+		}
+		
+		public function testFabricationControllerIsInDefaultGroupInitially():void {
+			assertNotNull(controller.groupID);
+			assertType(String, controller.groupID);
+			assertEquals(FabricationController.DEFAULT_GROUP_ID, controller.groupID);
+		}
+		
+		public function testFabricationControllerAllowsChangingGroups():void {
+			var sampleSize:int = 25;
+			var i:int = 0;
+			var prevGroup:String = FabricationController.DEFAULT_GROUP_ID;
+			var nextGroup:String;
+			
+			for (i = 0; i < sampleSize; i++) {
+				nextGroup = "group" + i;
+				assertProperty(controller, "groupID", String, prevGroup, nextGroup);
+				prevGroup = nextGroup;
+			}
+		}
+		
+		public function testFabricationControllerAllowsRemovingGroups():void {
+			var sampleSize:int = 25;
+			var note:INotification = new Notification("test_note");
+			var i:int = 0;
+			
+			controller.registerCommand("test_note", SimpleUndoableCommandMock);
+			
+			for (i = 0; i < sampleSize; i++) {
+				controller.groupID = "group" + i;
+				
+				assertEquals(0, controller.undoSize());
+				controller.executeCommand(note);
+				assertEquals(1, controller.undoSize());
+				controller.removeGroup("group" + i);
+			}
+		}
+		
+		public function testFabricationControllerHasValidStacksAfterChangingGroup():void {
+			var note:INotification = new Notification("test_note");
+			controller.registerCommand("test_note", SimpleUndoableCommandMock);
+			
+			controller.groupID = "A";
+			executeCommand(controller, note, 3);
+			
+			controller.groupID = "B";
+			executeCommand(controller, note, 5);
+
+			controller.groupID = "C";
+			executeCommand(controller, note, 8);
+			
+			controller.groupID = FabricationController.DEFAULT_GROUP_ID;
+			assertEquals(0, controller.undoSize());
+			
+			controller.groupID = "A";
+			assertEquals(3, controller.undoSize());
+			
+			controller.groupID = "B";
+			assertEquals(5, controller.undoSize());
+			
+			controller.groupID = "C";
+			assertEquals(8, controller.undoSize());
+		}
+		
+		public function testFabricationControllerSendsGroupIDAlongWithUndoableNotifications():void {
+			var repeatCount:int = 10;
+			var sampleSize:int = 5;
+			var expectedNote:INotification;
+			var i:int = 0;
+			var j:int = 0;
+			var commandClass:Class;
+			var mockPath:String = getQualifiedClassName(SimpleUndoableCommandMock);
+			mockPath = mockPath.replace(new RegExp("(::.*)", ""), "");
+			
+			var view:FabricationViewMock = FabricationViewMock.getInstance("X" + methodName);
+			assertType(FabricationViewMock, view);
+			assertType(View, view);
+			assertNotNull(view.mock);
+
+			view.mock.method("notifyObservers").withArgs(
+				function(note:UndoableNotification):Boolean {
+					if (note.getName() == UndoableNotification.COMMAND_HISTORY_CHANGED) { 
+						assertNotNull(note.groupID);
+						assertEquals(expectedNote.getBody(), note.groupID);
+					}
+					
+					return true;
+				}
+			).exactly(sampleSize);
+			
+			var controller:FabricationController = new FabricationController("X" + methodName);
+			
+			for (i = 1; i <= sampleSize; i++) {
+				commandClass = getDefinitionByName(mockPath + ".SimpleUndoableCommandMock" + i) as Class;
+				
+				view.mock.method("registerObserver").withArgs("note" + i, IObserver);
+				controller.registerCommand("note" + i, commandClass);
+				
+				expectedNote = new Notification("note" + i, "group" + i);
+				controller.groupID = "group" + i;
+				controller.executeCommand(expectedNote);
+			}
+		}
+		
+		public function testFabricationControllerSendsCommandHistoryChangedNotificationAfterSwitchingGroups():void {
+			var repeatCount:int = 10;
+			var sampleSize:int = 5;
+			var expectedNote:INotification;
+			var i:int = 0;
+			var j:int = 0;
+			var commandClass:Class;
+			var mockPath:String = getQualifiedClassName(SimpleUndoableCommandMock);
+			mockPath = mockPath.replace(new RegExp("(::.*)", ""), "");
+			
+			var view:FabricationViewMock = FabricationViewMock.getInstance("X" + methodName);
+			assertType(FabricationViewMock, view);
+			assertType(View, view);
+			assertNotNull(view.mock);
+
+			view.mock.method("notifyObservers").withArgs(
+				function(note:UndoableNotification):Boolean {
+					assertEquals(UndoableNotification.COMMAND_HISTORY_CHANGED, note.getName());						
+					
+					return true;
+				}
+			).exactly(sampleSize);
+			
+			view.mock.method("registerObserver").withArgs("test_note", IObserver);
+			controller.registerCommand("test_note", commandClass);
+			
+			for (i = 1; i <= sampleSize; i++) {
+				controller.groupID = "group" + i;
+			}
+		}
+		
+		public function testFabricationControllerDoesNotAllowNullGroupID():void {
+			assertThrows(Error);
+			controller.groupID = null;
+		}
+		
+		public function testFabricationControllerDoesNotAllowEmptyGroupID():void {
+			assertThrows(Error);
+			controller.groupID = "";
+		}
+		
+		public function executeCommand(controller:FabricationController, note:INotification, times:int = 1):void {
+			for (var i:int = 0; i < times; i++) {
+				controller.executeCommand(note);
+			}
 		}
 		
 	}
