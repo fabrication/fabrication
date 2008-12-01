@@ -99,6 +99,7 @@
 	<path id="swc.runtime.path">
 		<fileset dir="${flex.frameworks.dir}/libs">
 			<include name="**/${flashplayer.runtime}/*global.swc" />
+			<include name="**/*global.swc" />
 		</fileset>
 	</path>
 	
