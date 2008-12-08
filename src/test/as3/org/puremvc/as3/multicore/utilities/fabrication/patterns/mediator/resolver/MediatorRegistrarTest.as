@@ -82,7 +82,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			registrar.register(new FlexMediator(), resolver);
 			
-			verifyMock(resolver.mock);
+			assertTrue(resolver.mock.hasEventListener(ComponentResolverEvent.COMPONENT_RESOLVED));
+			assertTrue(resolver.mock.hasEventListener(ComponentResolverEvent.COMPONENT_DESOLVED));
 		}
 		
 		public function testMediatorRegistrarRegistersMediatorWithFacadeOnComponentResolution():void {

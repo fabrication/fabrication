@@ -15,17 +15,28 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
+	import mx.events.FlexEvent;
+	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexApplication;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexApplicationMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
 	
-	import mx.events.FlexEvent;	
+	import flexunit.framework.TestSuite;	
 
 	/**
 	 * @author Darshan Sawardekar
 	 */
 	public class FlexApplicationFabricatorTest extends AbstractApplicationFabricatorTest {
 
+		/* *
+		static public function suite():TestSuite {
+			var suite:TestSuite = new TestSuite();
+			suite.addTest(new FlexApplicationFabricatorTest("testFlexApplicationFabricatorUsesCorrectReadyEventName"));
+			
+			return suite;
+		}
+		/* */
+		
 		public function FlexApplicationFabricatorTest(method:String) {
 			super(method);
 		}
@@ -62,7 +73,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			initializeFabricator();
 			
-			verifyMock(fabricationMock);
 			assertTrue(fabrication.hasEventListener(FlexEvent.CREATION_COMPLETE));
 		}
 		

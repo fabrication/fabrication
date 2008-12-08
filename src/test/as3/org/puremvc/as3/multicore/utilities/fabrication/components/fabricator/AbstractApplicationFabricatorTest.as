@@ -15,21 +15,22 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import flexunit.framework.SimpleTestCase;
-	
-	import com.anywebcam.mock.Mock;
-	
+	import org.puremvc.as3.multicore.utilities.fabrication.components.empty.EmptyFlexModuleStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.Router;
 	
-	import flash.events.Event;		
+	import com.anywebcam.mock.Mock;
+	
+	import flexunit.framework.SimpleTestCase;	
 
 	/**
 	 * @author Darshan Sawardekar
 	 */
 	public class AbstractApplicationFabricatorTest extends SimpleTestCase {
 
+		static public var dependency:EmptyFlexModuleStartupCommand;
 		public var fabricator:ApplicationFabricator;
 		public var fabrication:IFabrication;
 		public var fabricationMock:Mock;
@@ -66,7 +67,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			fabricationMock = (fabrication as IMockable).mock;
 			fabricationMock.ignoreMissing = true;
 			
-			fabricationMock.method("dispatchEvent").withArgs(Event);
+			fabricationMock.property("router").returns(new Router());
+			//fabricationMock.method("dispatchEvent").withArgs(Event);
 		}
 
 		public function testApplicationFabricatorHasValidType():void {

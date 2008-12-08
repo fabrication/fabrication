@@ -47,8 +47,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			mock.dispose();
 		}
 		
+		/* */
 		override public function dispatchEvent(event:Event):Boolean {
-			mock.dispatchEvent(event);
+			//mock.dispatchEvent(event);
 			return super.dispatchEvent(event);
 		}
 
@@ -80,6 +81,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
+		/* */
 		
 		override public function setBaseExpression(baseExpression:Expression, multimode:Boolean = true):Expression {
 			mock.setBaseExpression(baseExpression);

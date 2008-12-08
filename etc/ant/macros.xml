@@ -254,6 +254,49 @@
 		<flex-app artifact="test" />
 	</presetdef>
 	
+	<!-- macro to autogenerate the FlexUnit runner for a specified class -->
+	<macrodef name="test-class">
+		<attribute name="file" />
+		<attribute name="output" default="${bin}/test_class.swf"/>
+		<attribute name="launch" default="yes" /> 
+		
+		<sequential>
+			<var name="filepath" unset="yes" />
+			<var name="filename" unset="yes" />
+			<var name="classpath" unset="yes" />
+			<var name="classpath.file" unset="yes" />
+			
+			<property name="filepath" location="${src.test.flash}/@{file}" />
+			<var-basename variable="filename" file="${filepath}" suffix=".as"/>
+			<propertyregex property="classpath.file" input="@{file}" regexp="(/)" replace="." />
+			<propertyregex property="classpath" input="${classpath.file}" regexp="(\.as$)" replace="" />
+			<var name="runner.template" value="${templates.dir}/test/TestRunner_template.mxml" />
+			<var name="runner.name" value="${filename}Runner.mxml" />
+			<var name="test-class-runner" value="${src.test.flash}/${runner.name}" />
+			
+			<copy file="${runner.template}" tofile="${test-class-runner}" overwrite="yes">
+				<filterset>
+					<filter token="testclasspath" value="${classpath}"/>
+					<filter token="testclassname" value="${filename}" />
+				</filterset>
+			</copy>
+			
+			<test-flex-app 
+				mainclass="${runner.name}" output="@{output}"
+				width="${test.runner.width}" height="${test.runner.height}"
+			/>
+			
+			<if>
+				<equals arg1="@{launch}" arg2="yes" />
+				<then>
+					<launch-flex-app file="@{output}" />
+				</then>
+			</if>
+			
+			<delete file="${test-class-runner}" failonerror="no"/>
+		</sequential>
+	</macrodef>
+	
 	<!-- Compiles a flex module with mxmlc -->
 	<macrodef name="flex-module">
 		<attribute name="mainclass" />

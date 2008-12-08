@@ -15,6 +15,11 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+	
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
@@ -23,10 +28,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.NameUtils;
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
 	
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;		
+	import com.hexagonstar.util.debug.Debug;
+	
+	import trace;	
 
 	/**
 	 * ApplicationFabricator is the base class for all fabrication 
@@ -131,6 +135,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			_startupCommand = _fabrication.getStartupCommand();
 			_fabrication.addEventListener(readyEventName, readyEventListener);
+			Debug.trace("adding listener for " + readyEventName);
 		}
 
 		/**

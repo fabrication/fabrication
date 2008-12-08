@@ -20,6 +20,8 @@
 	<unset-if-false property="runner.rebuild" />
 	<unset-if-false property="runner.modules.rebuild"/>
 	<unset-if-false property="resolver.layouts.rebuild" />
+		
+	<property name="test.class" value="org/puremvc/as3/multicore/utilities/fabrication/vo/ReactionTest.as" />
 	
 	<!-- fileset refers to the component resolver layout test mxml modules -->
 	<fileset id="resolver.layouts.fileset" dir="${resolver.layouts.dir}">
@@ -242,6 +244,10 @@
 		
 		<antcall target="build-test-runner" />
 		<antcall target="run" />
+	</target>
+	
+	<target name="test-class" description="Tests only the TestSuite class specified">
+		<test-class file="${test.class}"/>
 	</target>
 	
 	<target name="run" description="Launches the test runner">

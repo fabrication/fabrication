@@ -62,7 +62,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			initializeFabricator();
 			
-			verifyMock(fabricationMock);
 			assertTrue(fabrication.hasEventListener(FlexEvent.CREATION_COMPLETE));
 		}
 		

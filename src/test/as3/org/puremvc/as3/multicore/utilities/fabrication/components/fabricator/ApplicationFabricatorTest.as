@@ -15,11 +15,10 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import flexunit.framework.SimpleTestCase;
-	
-	import com.anywebcam.mock.Mock;
+	import flash.events.Event;
 	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FabricationMock;
+	import org.puremvc.as3.multicore.utilities.fabrication.components.empty.EmptyFlexModuleStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IMockable;
@@ -32,7 +31,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.Router;
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
 	
-	import flash.events.Event;		
+	import com.anywebcam.mock.Mock;
+	
+	import flexunit.framework.SimpleTestCase;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -47,11 +48,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		}
 		/* */
 		
+		static public var dependency:EmptyFlexModuleStartupCommand;
 		public var fabricator:ApplicationFabricator;
 		public var fabrication:IFabrication;
 		public var fabricatorMock:Mock;
 		public var fabricationMock:Mock;
 		public var facadeMock:Mock;
+		
 		
 		public function ApplicationFabricatorTest(method:String) {
 			super(method);
