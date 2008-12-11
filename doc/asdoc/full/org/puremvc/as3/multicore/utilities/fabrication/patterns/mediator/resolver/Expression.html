@@ -1,0 +1,828 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../../../../../print.css" type="text/css" media="print">
+<meta content="Expression,org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression,DESCENDANT_PATTERN,SEPARATOR_PATTERN,child,descendantRegExp,root,source,callProperty,descendants,descendantsExpression,dispose,expand,getDescendants,getIterator,getProperty,link,match,nameExpression,re,reExpression,resolve,rex,toString" name="keywords">
+<title>org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Expression - Fabrication Full API';
+				var baseRef = '../../../../../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../../../../../all-classes.html')" href="../../../../../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../../all-classes.html')" href="../../../../../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../../../../../index-list.html')" href="../../../../../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../../../../../index.html?org/puremvc/as3/multicore/utilities/fabrication/patterns/mediator/resolver/Expression.html&amp;org/puremvc/as3/multicore/utilities/fabrication/patterns/mediator/resolver/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;Expression</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class Expression"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public dynamic  class Expression</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">Expression <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../../../../../images/inherit-arrow.gif"> flash.utils.Proxy</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="../../../interfaces/IDisposable.html">IDisposable</a></td>
+</tr>
+</table>
+<p></p>
+  Expression is a dynamic class used to build the path to a UI component.
+  wrt to its DisplayObject hierarchy. Expressions can be attached to 
+  a root component resolver which specifies the base expression.
+  
+  Expressions can be named, descendant, regular expressions or
+  descendant with regular expressions. 
+  
+  <ul>
+   <li>named : .componentName</li>
+   <li>descendant : ..componentName</li>
+   <li>regular expression : .re(/componentName/)</li>
+   <li>descendant with regular expression : ..rex(/componentName/)</li>
+  </ul>
+  
+  <p>
+  The implementation uses regular expressions for all types of expressions.
+  The named and descendant expressions are converted into regular expressions
+  internally.
+  </p>
+  
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#child">child</a> : <a href="../resolver/Expression.html">Expression</a>
+<div class="summaryTableDescription">
+   The child expression of the current expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#root">root</a> : <a href="../resolver/ComponentResolver.html">ComponentResolver</a>
+<div class="summaryTableDescription">
+   The root component resolver for the current expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#source">source</a> : String<div class="summaryTableDescription">[read-only]
+   Returns the source of the current expression's regular expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#Expression()">Expression</a>(pattern:RegExp, root:<a href="ComponentResolver.html">ComponentResolver</a> = null)</div>
+<div class="summaryTableDescription">
+   Creates a new component expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#descendants()">descendants</a>(name:String):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">
+   Creates a new descendant expression and links it to this expression
+   
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#descendantsExpression()">descendantsExpression</a>(baseExpression:<a href="Expression.html">Expression</a>, name:String):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Creates a descendants Expression to the component name specified.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#dispose()">dispose</a>():void</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#expand()">expand</a>():RegExp</div>
+<div class="summaryTableDescription">
+   Expands the current expression into a composite regular expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getIterator()">getIterator</a>(direction:String = null):<a href="../resolver/ExpressionIterator.html">ExpressionIterator</a>
+</div>
+<div class="summaryTableDescription">
+   Returns the iterator for the current expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#link()">link</a>(expression:<a href="Expression.html">Expression</a>):void</div>
+<div class="summaryTableDescription">
+   Links the specified expression to this expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#match()">match</a>(content:String):Boolean</div>
+<div class="summaryTableDescription">
+   Tests the specified component name with the current expressions pattern
+   
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#nameExpression()">nameExpression</a>(baseExpression:<a href="Expression.html">Expression</a>, name:String):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Creates a regular expression from the name specified and creates
+   a new Expression from it.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#re()">re</a>(pattern:String, multimode:Boolean = true):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">
+   Creates a new child expression linked to this expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#reExpression()">reExpression</a>(baseExpression:<a href="Expression.html">Expression</a>, pattern:RegExp):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Creates a new expression of type RegExp using the regular expression specified
+   
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#resolve()">resolve</a>(name:String, multimode:Boolean = false):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">
+   Creates a named expression and links it to this expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#rex()">rex</a>(pattern:String, multimode:Boolean = true):<a href="../resolver/Expression.html">Expression</a>
+</div>
+<div class="summaryTableDescription">
+   Creates a new descendant child expression with a regular expression
+   and links it to this expression.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#toString()">toString</a>():String</div>
+<div class="summaryTableDescription">
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#callProperty()">callProperty</a>(name:*, ... args):*</div>
+<div class="summaryTableDescription">
+   For named component resolution with multimode true.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getDescendants()">getDescendants</a>(name:*):*</div>
+<div class="summaryTableDescription">
+   For descendant component resolution with multimode false.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getProperty()">getProperty</a>(name:*):*</div>
+<div class="summaryTableDescription">
+   For named component resolution with multimode false.</div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DESCENDANT_PATTERN">DESCENDANT_PATTERN</a> : String = ".*"<div class="summaryTableDescription">[static]
+   Regular expression pattern used to match descendants
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#descendantRegExp">descendantRegExp</a> : RegExp<div class="summaryTableDescription">[static]
+   Regular expression used to match descendants
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SEPARATOR_PATTERN">SEPARATOR_PATTERN</a> : String = "\."<div class="summaryTableDescription">[static]
+   Regular expression pattern used to for expression separators
+   </div>
+</td><td class="summaryTableOwnerCol">Expression</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="child"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">child</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var child:<a href="../resolver/Expression.html">Expression</a></code><p>
+   The child expression of the current expression.
+   </p></div>
+<a name="root"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">root</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var root:<a href="../resolver/ComponentResolver.html">ComponentResolver</a></code><p>
+   The root component resolver for the current expression.
+   </p></div>
+<a name="source"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">source</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>source:String</code>&nbsp;&nbsp;[read-only]<p>
+   Returns the source of the current expression's regular expression.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get source():String</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="Expression()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Expression</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function Expression(pattern:RegExp, root:<a href="ComponentResolver.html">ComponentResolver</a> = null)</code><p>
+   Creates a new component expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pattern</span>:RegExp</code> &mdash; The regular expression for this component expression
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">root</span>:<a href="ComponentResolver.html">ComponentResolver</a></code> (default = <code>null</code>)<code></code> &mdash; The optional root component resolver.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="callProperty()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">callProperty</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>flash_proxy override function callProperty(name:*, ... args):*</code><p>
+   For named component resolution with multimode true. Typically 
+   the property operation is used. If .componentName() or 
+   .componentName(true) is used multimode gets turn on.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code>... <span class="label">args</span></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+</div>
+<a name="descendants()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">descendants</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function descendants(name:String):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a new descendant expression and links it to this expression
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the descendant component.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="descendantsExpression()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">descendantsExpression</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function descendantsExpression(baseExpression:<a href="Expression.html">Expression</a>, name:String):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a descendants Expression to the component name specified.
+   Descendants are created using 2 linked expressions, a descendant
+   pattern expression and a named component expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">baseExpression</span>:<a href="Expression.html">Expression</a></code> &mdash; The base expression of the new expression
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the descendant component 
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="dispose()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">dispose</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function dispose():void</code><p>
+   </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../../../interfaces/IDisposable.html#dispose()" target="">org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable.dispose()</a>
+</div>
+</div>
+<a name="expand()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">expand</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function expand():RegExp</code><p>
+   Expands the current expression into a composite regular expression.
+   
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>RegExp</code></td>
+</tr>
+</table>
+</div>
+<a name="getDescendants()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getDescendants</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>flash_proxy override function getDescendants(name:*):*</code><p>
+   For descendant component resolution with multimode false.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+</div>
+<a name="getIterator()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getIterator</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getIterator(direction:String = null):<a href="../resolver/ExpressionIterator.html">ExpressionIterator</a></code><p>
+   Returns the iterator for the current expression. Default direction
+   is backward. 
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">direction</span>:String</code> (default = <code>null</code>)<code></code> &mdash; The direction of the iteration. Can be forward or backward.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/ExpressionIterator.html">ExpressionIterator</a></code></td>
+</tr>
+</table>
+</div>
+<a name="getProperty()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getProperty</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>flash_proxy override function getProperty(name:*):*</code><p>
+   For named component resolution with multimode false. This is
+   the most common usage.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+</div>
+<a name="link()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">link</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function link(expression:<a href="Expression.html">Expression</a>):void</code><p>
+   Links the specified expression to this expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">expression</span>:<a href="Expression.html">Expression</a></code> &mdash; The expression to link to the current expression.
+   </td>
+</tr>
+</table>
+</div>
+<a name="match()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">match</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function match(content:String):Boolean</code><p>
+   Tests the specified component name with the current expressions pattern
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">content</span>:String</code> &mdash; The component name to match
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="nameExpression()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">nameExpression</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function nameExpression(baseExpression:<a href="Expression.html">Expression</a>, name:String):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a regular expression from the name specified and creates
+   a new Expression from it.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">baseExpression</span>:<a href="Expression.html">Expression</a></code> &mdash; The base expression of the new expression
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the component  
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="re()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">re</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function re(pattern:String, multimode:Boolean = true):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a new child expression linked to this expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pattern</span>:String</code> &mdash; The regular expression pattern string
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">multimode</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Optional multimode specifier if multiple components correspond to this expression. Default is true.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="reExpression()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">reExpression</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function reExpression(baseExpression:<a href="Expression.html">Expression</a>, pattern:RegExp):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a new expression of type RegExp using the regular expression specified
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">baseExpression</span>:<a href="Expression.html">Expression</a></code> &mdash; The base expression of the new expression
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">pattern</span>:RegExp</code> &mdash; The regular expression for the component expression.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="resolve()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">resolve</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function resolve(name:String, multimode:Boolean = false):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a named expression and links it to this expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the component
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">multimode</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Optional multimode specifier if multiple components correspond to this expression. Default is false.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="rex()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rex</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function rex(pattern:String, multimode:Boolean = true):<a href="../resolver/Expression.html">Expression</a></code><p>
+   Creates a new descendant child expression with a regular expression
+   and links it to this expression.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">pattern</span>:String</code> &mdash; The regular expression pattern string
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">multimode</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Optional multimode specifier if multiple components correspond to this expression. Default is true.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resolver/Expression.html">Expression</a></code></td>
+</tr>
+</table>
+</div>
+<a name="toString()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">toString</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function toString():String</code><p>
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">Object.toString</div>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="DESCENDANT_PATTERN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DESCENDANT_PATTERN</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DESCENDANT_PATTERN:String = ".*"</code><p>
+   Regular expression pattern used to match descendants
+   </p></div>
+<a name="descendantRegExp"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">descendantRegExp</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const descendantRegExp:RegExp</code><p>
+   Regular expression used to match descendants
+   </p></div>
+<a name="SEPARATOR_PATTERN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SEPARATOR_PATTERN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SEPARATOR_PATTERN:String = "\."</code><p>
+   Regular expression pattern used to for expression separators
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->
