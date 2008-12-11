@@ -69,6 +69,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			moduleAddress.parse("B");
 			assertEquals("B", moduleAddress.getClassName());			
 		}
+		
+		public function testModuleAddressGroupNameRegularExpressionIsValid():void {
+			var re:RegExp = ModuleAddress.groupNameRegExp;
+			
+			assertMatch(re, "#myGroup");
+			assertNoMatch(re, "#");
+			assertNoMatch(re, "A/A0");
+			assertNoMatch(re, "A/*");
+		}
+		
+		public function testModuleAddressCanParseGroupNameSource():void {
+			moduleAddress.parse("A/#myGroup");
+			assertEquals("A", moduleAddress.getClassName());
+			assertEquals("myGroup", moduleAddress.getGroupName());
+		}
+		
+		public function testModuleAddresHasNullGroupNameWhenSourceHasNoGroup():void {
+			moduleAddress.parse("A/A0");
+			assertEquals("A", moduleAddress.getClassName());
+			assertEquals("A0", moduleAddress.getInstanceName());
+			assertNull(moduleAddress.getGroupName());
+		}
 
 		public function testModuleAddressResetsStateAfterParse():void {
 			moduleAddress.parse("C");

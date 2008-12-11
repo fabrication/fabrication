@@ -77,6 +77,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		public function get router():IRouter {
 			return mock.router;
 		}
+		
+		public function get moduleGroup():String {
+			return mock.moduleGroup;
+		}
+		
+		public function set moduleGroup(moduleGroup:String):void {
+			mock.moduleGroup = moduleGroup;
+		}
 
 		public function initializeFabricator():void {
 			mock.initializeFabricator();

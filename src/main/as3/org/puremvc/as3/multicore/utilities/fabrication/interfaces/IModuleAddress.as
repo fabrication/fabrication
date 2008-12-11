@@ -47,5 +47,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 */
 		function getOutputName():String;
 		
+		/**
+		 * Returns the optional group name of the current module
+		 */
+		function getGroupName():String;
+		
 	}
 }

@@ -36,5 +36,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * @param name The new name of the pipe fitting
 		 */
 		function setName(name:String):void;
+		
+		/**
+		 * Optional name of the group that this pipe fitting's module belongs to. Default is null
+		 * which implies that the module is not part of any group.
+		 */
+		function get moduleGroup():String;
+		
+		/**
+		 * @private
+		 */
+		function set moduleGroup(moduleGroup:String):void;
 	}
 }

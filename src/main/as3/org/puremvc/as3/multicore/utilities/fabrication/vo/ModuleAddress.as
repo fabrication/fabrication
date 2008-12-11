@@ -15,8 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.vo {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;	
-	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;		
+
 	/**
 	 * ModuleAddress represents the parts of an application module name
 	 * that fully qualify it for message routing.
@@ -28,22 +28,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		/**
 		 * The input pipe name suffix.
 		 */
-		static public var INPUT_SUFFIX:String = "/INPUT";
+		static public const INPUT_SUFFIX:String = "/INPUT";
 		
 		/**
 		 * The output pipe name suffix.
 		 */
-		static public var OUTPUT_SUFFIX:String = "/OUTPUT";
+		static public const OUTPUT_SUFFIX:String = "/OUTPUT";
 		
 		/**
 		 * Regular expression used to test if an input suffix is present
 		 */
-		static public var inputSuffixRegExp:RegExp = new RegExp("\\" + INPUT_SUFFIX + "$", "");
+		static public const inputSuffixRegExp:RegExp = new RegExp("\\" + INPUT_SUFFIX + "$", "");
 
 		/**
 		 * Regular expression used to test if an output suffix is present 
 		 */
-		static public var outputSuffixRegExp:RegExp = new RegExp("\\" + OUTPUT_SUFFIX + "$", "");
+		static public const outputSuffixRegExp:RegExp = new RegExp("\\" + OUTPUT_SUFFIX + "$", "");
+		
+		/**
+		 * Regular expression used to extract group name from the module address source
+		 */
+		static public const groupNameRegExp:RegExp = new RegExp("^#(.+)$", "");
 
 		/**
 		 * The name of the module
@@ -58,14 +63,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		private var instanceName:String;
 		
 		/**
+		 * The name of the group that this module belongs to.
+		 * @private
+		 */
+		private var groupName:String;
+		
+		/**
 		 * Creates a new ModuleAddress object
 		 * 
 		 * @param className The name of the module.
 		 * @param instanceName The name the module instance.
 		 */
-		public function ModuleAddress(className:String = null, instanceName:String = null) {
+		public function ModuleAddress(className:String = null, instanceName:String = null, groupName:String = null) {
 			this.className = className;
 			this.instanceName = instanceName;
+			this.groupName = groupName;
 		}
 		
 		/**
@@ -81,6 +93,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		public function getInstanceName():String {
 			return instanceName;
 		}		
+		
+		/**
+		 * Returns the name of the group that this module address is for.
+		 */
+		public function getGroupName():String {
+			return groupName;
+		}
 		
 		/**
 		 * Returns the name of the input message pipe.
@@ -107,6 +126,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			if (length >= 2) {
 				className = parts[0] as String;
 				instanceName = parts[1] as String;
+				
+				var match:Object = groupNameRegExp.exec(instanceName);
+				if (match != null && match.length == 2) {
+					groupName = match[1];
+				}
 			} else if (length == 1) {
 				className = parts[0] as String;
 				instanceName = null;
@@ -128,6 +152,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		public function dispose():void {
 			className = null;
 			instanceName = null;
+			groupName = null;
 		}
 		
 	}

@@ -72,6 +72,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		protected var _defaultRouteAddress:IModuleAddress;
 		
 		/**
+		 * The group that this application is part of.
+		 */
+		protected var _moduleGroup:String;
+		
+		/**
 		 * Optional configuration object.
 		 */
 		protected var _config:Object;
@@ -206,6 +211,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			defaultRoute = _defaultRouteAddress.getInputName();
 		}
 
+		/**
+		 * The name of the current application module group for messaging.
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule#moduleGroup
+		 */
+		public function get moduleGroup():String {
+			if (fabricator != null) {
+				return fabricator.moduleGroup;
+			} else {
+				return _moduleGroup;
+			}
+		}
+		
+		public function set moduleGroup(moduleGroup:String):void {
+			if (fabricator != null) {
+				fabricator.moduleGroup = moduleGroup;
+			} else {
+				_moduleGroup = moduleGroup;				
+			}
+		}
+		
 		/**
 		 * Initializes the FlexModuleLoader specific fabricator.
 		 */

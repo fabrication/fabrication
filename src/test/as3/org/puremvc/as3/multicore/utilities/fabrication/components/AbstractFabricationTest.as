@@ -101,6 +101,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 			assertProperty(fabrication, "router", IRouter, router, new Router());
 		}
 		
+		public function testFabricationGetsModuleGroupFromItsFabricator():void {
+			fabricator.moduleGroup = "myGroup";
+			assertProperty(fabrication, "moduleGroup", String, "myGroup", "myNewGroup");
+		}
+		
 		public function testFabricationProvidesItsStartupCommand():void {
 			assertTrue((fabrication as Object).hasOwnProperty("getStartupCommand"));
 			assertNull(fabrication.getStartupCommand());

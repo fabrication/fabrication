@@ -132,6 +132,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 		
 		/**
+		 * The name of the current application module group for messaging.
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule#moduleGroup
+		 */
+		public function get moduleGroup():String {
+			return fabricator.moduleGroup;
+		}
+		
+		public function set moduleGroup(moduleGroup:String):void {
+			fabricator.moduleGroup = moduleGroup;
+		}
+		
+		/**
 		 * The configuration object of the current FlashApplication.
 		 */
 		public function get config():Object {

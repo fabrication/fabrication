@@ -15,17 +15,21 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.AbstractFabricationCommandTest;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
+	
+	import com.hexagonstar.util.debug.Debug;
+	
+	import trace;		
 
 	/**
 	 * @author Darshan Sawardekar
@@ -168,6 +172,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 			verifyMock(router.mock);
 		}
 		
+		public function testRoutNotificationCommandDoesNotSuffixInputPipeNameIfDestinationIsAModuleGroup():void {
+			var transport:TransportNotification = notification.getBody() as TransportNotification;
+			transport.setTo("myGroup");
+			
+			fabrication.mock.property("defaultRoute").returns(null).never;
+			router.mock.method("route").withArgs(
+				function(message:IRouterMessage):Boolean {
+					return message.getTo() == "myGroup";
+				}
+			).once;
+			
+			executeCommand();
+			
+			verifyMock(fabrication.mock);
+			verifyMock(router.mock);
+		}
+		
 		public function testRouteNotificationCommandAddsInputSuffixIfInputSuffixIsNotSpecifiedOnModuleAddressWithClassAndInstanceName():void {
 			var transport:TransportNotification = notification.getBody() as TransportNotification;
 			transport.setTo("D/D0");
@@ -244,6 +265,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 			
 			verifyMock(fabrication.mock);
 			verifyMock(router.mock);
+		}
+		
+		public function testRouteNotificationCommandAddsModuleGroupSuffixToPlainInstanceInGroupRoute():void {
+			var transport:TransportNotification = notification.getBody() as TransportNotification;
+			transport.setTo("X/#");
+			
+			fabrication.mock.property("defaultRoute").returns(null).never;
+			fabrication.mock.property("moduleGroup").returns("myGroup").atLeast(1);
+			router.mock.method("route").withArgs(
+				function(message:IRouterMessage):Boolean {
+					return message.getTo() == "X/#myGroup";
+				}
+			).once;
+			
+			executeCommand();
+			
+			verifyMock(router.mock);
+			verifyMock(fabrication.mock);
 		}
 		
 	}

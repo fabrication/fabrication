@@ -47,5 +47,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * @private
 		 */
 		function set defaultRoute(route:String):void;
+		
+		/**
+		 * Optional name of the group that this module belongs to. Default is null, which 
+		 * implies the module does not belong to any group.
+		 */
+		function get moduleGroup():String;
+		
+		/**
+		 * @private
+		 */
+		function set moduleGroup(moduleGroup:String):void;
+		
 	}
 }

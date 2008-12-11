@@ -54,11 +54,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			assertEquals("test", namedPipe.getName());
 		}
 		
+		public function testNamedPipeStoresModuleGroup():void {
+			assertProperty(namedPipe, "moduleGroup", String, null, "myGroup");
+		}
+		
 		public function testNamedPipeResetsAfterDisposal():void {
 			var namedPipe:NamedPipe = new NamedPipe("test_pipe", new Pipe());
+			namedPipe.moduleGroup = "myGroup";
 			namedPipe.dispose();
 			
 			assertNull(namedPipe.getName());
+			assertNull(namedPipe.moduleGroup);
 			assertThrows(Error);
 			namedPipe.write(new Message(Message.NORMAL));
 		}

@@ -26,11 +26,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.NameUtils;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
-	
-	import com.hexagonstar.util.debug.Debug;
-	
-	import trace;	
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
 
 	/**
 	 * ApplicationFabricator is the base class for all fabrication 
@@ -123,6 +119,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * The current application's message router
 		 */
 		protected var _router:IRouter;
+		
+		/**
+		 * The current module's group name.
+		 */
+		protected var _moduleGroup:String = null;
 
 		/**
 		 * Creates a new ApplicationFabricator and subscribes to its
@@ -135,7 +136,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			_startupCommand = _fabrication.getStartupCommand();
 			_fabrication.addEventListener(readyEventName, readyEventListener);
-			Debug.trace("adding listener for " + readyEventName);
 		}
 
 		/**
@@ -160,6 +160,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 				_moduleAddress = null;
 			}
 			
+			_moduleGroup = null;
 			_fabrication = null;			
 		}
 
@@ -208,6 +209,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 
 		public function set moduleAddress(_moduleAddress:IModuleAddress):void {
 			this._moduleAddress = _moduleAddress;
+		}
+		
+		/**
+		 * The module group of the current application for message routing.
+		 */
+		public function get moduleGroup():String {
+			return _moduleGroup;
+		}
+		
+		public function set moduleGroup(moduleGroup:String):void {
+			_moduleGroup = moduleGroup;
 		}
 
 		/**

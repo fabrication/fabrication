@@ -56,9 +56,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 		
 		public function testConfigureRouterCommandConnectsToRouterAndSavesCableListener():void {
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication).atLeast(1);
-			facade.mock.method("saveInstance").withArgs(String, RouterCableListener).once;
 			fabrication.mock.property("moduleAddress").returns(new ModuleAddress("X", "X0")).atLeast(1);
-			router.mock.method("connect").withArgs(IRouterCable).once;
+			fabrication.mock.property("moduleGroup").returns("myGroup");
+			facade.mock.method("saveInstance").withArgs(String, RouterCableListener).once;
+			router.mock.method("connect").withArgs(
+				function(cable:IRouterCable):Boolean {
+					return cable.getOutput().moduleGroup == "myGroup";
+				}
+			).once;
 			
 			executeCommand();
 			

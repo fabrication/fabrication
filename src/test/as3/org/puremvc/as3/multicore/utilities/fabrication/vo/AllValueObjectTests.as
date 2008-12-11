@@ -15,8 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.vo {
-	import flexunit.framework.SimpleTestSuite;	
-	
+	import flexunit.framework.SimpleTestSuite;		
+
 	/**
 	 * @author Darshan Sawardekar
 	 */
@@ -27,6 +27,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			
 			addTestCase(ModuleAddressTest);
 			addTestCase(NotificationInterestsTest);
+			addTestCase(ReactionTest);
 		}
 		
 	}

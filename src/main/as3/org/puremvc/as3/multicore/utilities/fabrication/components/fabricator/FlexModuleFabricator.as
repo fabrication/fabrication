@@ -15,13 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
+	import mx.events.FlexEvent;
+	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ModuleStartupCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
-	
-	import mx.events.FlexEvent;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;	
 
 	/**
 	 * FlexModuleFabricator is the concrete fabricator for the FlexModule
@@ -72,6 +72,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			if (defaultRoute == null && moduleLoader != null) {
 				module.defaultRoute = moduleLoader.defaultRoute;
+			}
+			
+			if (moduleGroup == null && moduleLoader != null) {
+				module.moduleGroup = moduleLoader.moduleGroup;
 			}
 			
 			if (router == null) {

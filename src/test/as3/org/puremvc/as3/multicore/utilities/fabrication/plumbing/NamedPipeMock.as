@@ -34,7 +34,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		}
 
 		public function initializeMock(name:String):String {
-			mock = new Mock(this);
+			mock = new Mock(this, true);
 			mock.method("setName").withArgs(name);
 			return name;
 		}
@@ -49,6 +49,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 
 		override public function dispose():void {
 			mock.dispose();
+		}
+		
+		override public function get moduleGroup():String {
+			return mock.moduleGroup;
+		}
+		
+		override public function set moduleGroup(moduleGroup:String):void {
+			mock.moduleGroup = moduleGroup;
 		}
 
 		override public function connect(output:IPipeFitting):Boolean {

@@ -15,6 +15,10 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
+	import flash.events.IEventDispatcher;
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
+	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
@@ -28,9 +32,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
-	
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;	
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;	
 
 	/**
 	 * FabricationMediator is the base mediator class for all application mediator
@@ -49,6 +51,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		static public var DEFAULT_NOTIFICATION_HANDLER_PREFIX:String = "respondTo";
 
 		/**
+		 * The handler name prefix used to reflect reactions in the event bubbling or target
+		 * phase. Methods with this prefix are interpreted as reactions. The default prefix
+		 * is reactTo
+		 */
+		static public var DEFAULT_REACTION_PREFIX:String = "reactTo";
+
+		/**
+		 * The handler name prefix used to reflect reaction in the capture phase. Methods with
+		 * this prefix are interpreted as reactions. The default prefix is capture.
+		 */
+		static public var DEFAULT_CAPTURE_PREFIX:String = "trap";
+
+		/**
 		 * Regular expression used to match notification interest in a specific proxy name
 		 */ 
 		static public var proxyNameRegExp:RegExp = new RegExp(".*Proxy.*", "");
@@ -57,17 +72,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Regular expression used to check if a notification is qualified
 		 */
 		static public var notePartRegExp:RegExp = new RegExp("\/", "");
-		
+
 		/**
 		 * Regular expression used for case conversion
 		 */
 		static public var firstCharRegExp:RegExp = new RegExp("^(.)", "");
-		
+
 		/**
 		 * Key used to store cached notification with the facade. 
 		 */
 		static public var notificationCacheKey:String = "notificationCache";
-		
+
 		/**
 		 * Stores list of qualified notifications. Notifications should be
 		 * qualified if there are multiple notifications with the same
@@ -80,12 +95,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * is respondTo.  
 		 */
 		protected var notificationHandlerPrefix:String = DEFAULT_NOTIFICATION_HANDLER_PREFIX;
-		
+
+		/**
+		 * Default bubbling or at target phase reaction prefix within this mediator.
+		 * Default is reactTo. 
+		 */
+		protected var reactionHandlerPrefix:String = DEFAULT_REACTION_PREFIX;
+
+		/**
+		 * Default capture phase reaction prefix within this mediator.
+		 */
+		protected var captureHandlerPrefix:String = DEFAULT_CAPTURE_PREFIX;
+
 		/**
 		 * Reference to the facade instance specified notification cache object.
 		 */
 		protected var notificationCache:HashMap;
-		
+
+		/**
+		 * The reaction object currently active in this mediator.
+		 */
+		protected var currentReactions:Array;
+
 		/**
 		 * Creates a new FabricationMediator object.
 		 */
@@ -99,6 +130,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function dispose():void {
 			qualifiedNotifications = null;
 			notificationCache = null;
+			
+			if (currentReactions != null) {
+				var n:int = currentReactions.length;
+				var reaction:Reaction; 
+				for (var i:int = 0;i < n; i++) {
+					reaction = currentReactions[i];
+					reaction.dispose();
+				}
+				
+				currentReactions = null;
+			}
 		}
 
 		/**
@@ -185,7 +227,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
 		}
-		
+
 		/**
 		 * Overrides the initializeNotifier to initialize local references to the notification
 		 * cache and route mapper.
@@ -195,7 +237,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
 			initializeNotificationCache();
 		}
-		
+
 		/**
 		 * Creates a local reference to the notification cache object for the current facade 
 		 */
@@ -380,6 +422,153 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public function getNotificationQualification(noteName:String):String {
 			return qualifiedNotifications[noteName];
+		}
+
+		/**
+		 * Creates the reactions for the current mediator using reflection.
+		 */
+		public function initializeReactions():void {
+			var reactionPattern:String = "(" + reactionHandlerPrefix + "|" + captureHandlerPrefix + ")";
+			var reactionRegExp:RegExp = new RegExp("^" + reactionPattern + ".*$", "");
+			var qpath:String = getQualifiedClassName(this);
+			var classpath:String = qpath.replace("::", ".");
+
+			try {			
+				var clazz:Class = fabrication.getClassByName(classpath);
+			} catch (e:Error) {
+				//throw e;
+				throw new Error("Unable to perform reflection for classpath " + classpath + ". Check if getClassByName is defined on the main fabrication class");
+			}
+			
+			var clazzInfo:XML = describeType(clazz);
+			
+			var reactionMethods:XMLList = clazzInfo..method.((reactionRegExp as RegExp).test(@name) == true);
+			var reactionMethodsCount:int = reactionMethods.children().length();
+			
+			if (reactionMethodsCount == 0) {
+				// early exit if no reactions were found
+				reactionMethods = null;
+				clazzInfo = null;
+				return;
+			}
+			
+			var accessorRegExp:RegExp = new RegExp("(::FabricationMediator$|::Mediator$|Class$)", "");
+			var accessorMethods:XMLList = clazzInfo..accessor.((accessorRegExp as RegExp).test(@declaredBy) == false);
+			var accessorMethodsCount:int = accessorMethods.length();
+			
+			var eventType:String;
+			var eventSourceName:String;
+			var eventSource:IEventDispatcher;
+			var handlerName:String;
+			var eventHandler:Function;
+			var eventPhase:String;
+			var useCapture:Boolean;
+			
+			var extractRegExp:RegExp;
+			var patternList:Array = new Array();
+			var matchResult:Object;
+			var i:int = 0;
+			var j:int = 0;
+			var reaction:Reaction;
+			
+			currentReactions = new Array();
+			
+			for (i = 0;i < accessorMethodsCount; i++) {
+				handlerName = accessorMethods[i].@name;
+				extractRegExp = new RegExp("^" + reactionPattern + "(" + ucfirst(handlerName) + ")" + "(.*)$", "");
+				patternList.push(extractRegExp);
+			}
+			
+			for (i = 0;i < reactionMethodsCount; i++) {
+				handlerName = reactionMethods[i].@name;
+				for (j = 0;j < accessorMethodsCount; j++) {
+					extractRegExp = patternList[j];
+					matchResult = extractRegExp.exec(handlerName);
+					if (matchResult != null) {
+						eventPhase = matchResult[1];
+						eventSourceName = matchResult[2];
+						eventSource = this[lcfirst(eventSourceName)];
+						eventType = lcfirst(matchResult[3]);
+						eventHandler = this[handlerName];
+						useCapture = eventPhase == captureHandlerPrefix;
+						
+						reaction = new Reaction(eventSource, eventType, eventHandler, useCapture);
+						currentReactions.push(reaction);
+						
+						reaction.start();
+					}
+				}
+			}
+			
+			accessorMethods = null;
+			reactionMethods = null;
+			accessorRegExp = null;
+			reactionRegExp = null;
+			clazzInfo = null;			
+		}
+		
+		/**
+		 * Stops the specified reaction.
+		 * 
+		 * @param handler The name of the handler function or a reference to it.
+		 */
+		public function haltReaction(handler:Object):void {
+			actOnReaction(handler, "stop");
+		}
+		
+		/**
+		 * Resumes the reaction if it hasn't already started. 
+		 * 
+		 * @param handler The name of the handler function or a reference to it.
+		 */
+		public function resumeReaction(handler:Object):void {
+			actOnReaction(handler, "start");
+		}
+		
+		/**
+		 * Disposes the reaction and removes it from the current list of reactions.
+		 * 
+		 * @param handler The name of the handler function or a reference to it.
+		 */
+		public function removeReaction(handler:Object):void {
+			actOnReaction(handler, "dispose");
+		}
+		
+		/**
+		 * Removes the specified reaction.
+		 * 
+		 * @param handler The name of the handlerfunction or a reference to it.
+		 * @param action The name of the method to invoke on the reaction.
+		 */
+		public function actOnReaction(handler:Object, action:String):void {
+			if (handler is String) {
+				handler = this[handler];
+			}
+			
+			var n:int = currentReactions.length;
+			var reaction:Reaction;
+			for (var i:int = 0; i < n; i++) {
+				reaction = currentReactions[i];
+				if (reaction.handler == handler) {
+					reaction[action]();
+					if (action == "dispose") {
+						currentReactions.splice(i, 1);
+					}
+					break;
+				}
+			}
+		}
+		
+		/**
+		 * Initializes the reactions in this mediator. Subclasses that override this method must
+		 * call super.onRegister for reactions to work.
+		 */
+		override public function onRegister():void {
+			// This condition check allows the tests with mock mediators to work without
+			// additional mocks that are needed to support reactions 
+			if (multitonKey != null) {
+				initializeReactions();
+			}
 		}
 
 		/**

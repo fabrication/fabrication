@@ -15,10 +15,13 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.INamedPipeFitting;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
+	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;
+	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeMessage;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction;	
 
 	/**
@@ -28,12 +31,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 	 * @author Darshan Sawardekar
 	 */
 	public class DynamicJunction extends Junction implements IDisposable {
+		
+		/**
+		 * Regular expression used to test if the destination module is a module group.
+		 */
+		static public const MODULE_GROUP_REGEXP:RegExp = new RegExp("^[^\\*/]*$", "");
+
+		/**
+		 * Stores the output pipes in a hash map by their group name. 
+		 */
+		protected var moduleGroups:HashMap;
 
 		/**
 		 * Creates a new DynamicJunction object.
 		 */
 		public function DynamicJunction() {
 			super();
+			
+			moduleGroups = new HashMap();
 		}
 
 		/**
@@ -47,6 +62,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			var descriptor:PipeDescriptor = describePipeName(outputPipeName);
 			var routerMessage:IRouterMessage = message as IRouterMessage;
 			var pipeName:String;
+			var pipeNames:Array;
+			var n:int;
+			var i:int;
 			
 			if (outputPipeName == "*") {
 				// send the message to everyone
@@ -57,12 +75,45 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 				}
 				
 				return true;
+			} else if (isModuleGroup(outputPipeName)) {
+				// send messages to module group
+				pipeNames = retrieveOutputPipesByModuleGroup(outputPipeName);
+				
+				// no groups registered for the destination group 
+				if (pipeNames == null) {
+					return false;
+				} 
+				
+				n = pipeNames.length;
+
+				for (i = 0; i < n; i++) {
+					pipeName = pipeNames[i];
+					if (!isLoopback(pipeName, routerMessage.getFrom())) {
+						super.sendMessage(pipeName, message);
+					}
+				}
+				
+				return n > 0;
+			} else if (descriptor.groupName != null) {
+				// send messages to modules of type class in group
+				pipeNames = retrieveOutputPipesInModuleGroupByModuleName(descriptor.groupName, descriptor.className);
+				n = pipeNames.length;
+
+				for (i = 0; i < n; i++) {
+					pipeName = pipeNames[i];
+
+					if (!isLoopback(pipeName, routerMessage.getFrom())) {
+						super.sendMessage(pipeName, message);
+					}
+				}
+				
+				return n > 0;
 			} else if (descriptor.instanceName == "*") {
 				// send messages to all instances
-				var pipeNames:Array = retrieveOutputPipesByClassName(descriptor.className);
-				var n:int = pipeNames.length;
+				pipeNames = retrieveOutputPipesByClassName(descriptor.className);
+				n = pipeNames.length;
 
-				for (var i:int = 0;i < n; i++) {
+				for (i = 0; i < n; i++) {
 					pipeName = pipeNames[i];
 
 					if (!isLoopback(pipeName, routerMessage.getFrom())) {
@@ -90,6 +141,56 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			outputPipes = null;
 			pipeTypesMap = null;
 			inputPipes = null;
+			
+			moduleGroups.dispose();
+			moduleGroups = null;
+		}
+		
+		/**
+		 * If type is output and the pipe is a named pipe stores the pipe in an hashmap of groups.
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction#registerPipe()
+		 */
+		override public function registerPipe(name:String, type:String, pipe:IPipeFitting):Boolean {
+			if (type == Junction.OUTPUT && pipe is INamedPipeFitting) {
+				var namedPipe:INamedPipeFitting = pipe as INamedPipeFitting;
+				var group:String = namedPipe.moduleGroup;
+				
+				if (group != null && group.length > 0) {
+					var groupPipes:Array = moduleGroups.find(group) as Array;
+					if (groupPipes == null) {
+						groupPipes = moduleGroups.put(group, new Array()) as Array;
+					} 
+					
+					groupPipes.push(name);
+				}				
+			}
+			
+			return super.registerPipe(name, type, pipe);
+		}
+
+		/**
+		 * Removes the name of the pipe from the hashmap of groups if present.
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction#removePipe()
+		 */
+		override public function removePipe(name:String):void {
+			var namedPipe:INamedPipeFitting = pipesMap[name] as INamedPipeFitting;
+			var type:String = pipeTypesMap[name];
+			if (namedPipe != null && type == Junction.OUTPUT) {
+				var group:String = namedPipe.moduleGroup;
+				if (group != null) {
+					var groupPipes:Array = moduleGroups.find(group) as Array;
+					if (groupPipes != null) {
+						var index:int = findPipeIndex(groupPipes, name);
+						if (index >= 0) {
+							groupPipes.splice(index, 1);
+						}
+					}
+				}
+			}
+
+			super.removePipe(name);
 		}
 
 		/**
@@ -110,6 +211,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			
 			return pipeNames;
 		}
+		
+		/**
+		 * Returns an array of the output pipes for the specified group name.
+		 */
+		protected function retrieveOutputPipesByModuleGroup(groupName:String):Array {
+			return moduleGroups.find(groupName) as Array;
+		}
+		
+		/**
+		 * Returns an array of the output pipes in the specified group of specified moduleName.
+		 */
+		protected function retrieveOutputPipesInModuleGroupByModuleName(groupName:String, className:String):Array {
+			var groupPipes:Array = retrieveOutputPipesByModuleGroup(groupName);
+			var n:int = groupPipes.length;
+			var i:int;
+			var pipeName:String;
+			var descriptor:PipeDescriptor;
+			var outputPipes:Array = new Array();
+			
+			for (i = 0; i < n; i++) {
+				pipeName = groupPipes[i];
+				descriptor = describePipeName(pipeName);
+				if (descriptor.className == className) {
+					outputPipes.push(pipeName);
+				}
+			}
+			
+			return outputPipes;
+		}
 
 		/**
 		 * Splits a complete pipe name into its module address.
@@ -122,6 +252,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			
 			descriptor.className = temp[0];
 			descriptor.instanceName = temp[1];
+			
+			var match:Object = ModuleAddress.groupNameRegExp.exec(descriptor.instanceName);
+			if (match != null && match.length == 2) {
+				descriptor.groupName = match[1];
+			}			
+			
 			descriptor.type = temp[1];
 			
 			return descriptor;
@@ -159,6 +295,31 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 			
 			return outputModuleAddress.equals(inputModuleAddress);
 		}
+		
+		/**
+		 * Helper returns the index position of the pipe name in the specified array.
+		 */
+		protected function findPipeIndex(pipes:Array, name:String):int {
+			var n:int = pipes.length;
+			var item:String;
+			for (var i:int = 0;i < n; i++) {
+				item = pipes[i];
+				if (item == name) {
+					return i;
+				}
+			}
+			
+			return -1;
+		}
+		
+		/**
+		 * Helper returns a boolean depending on whether the destination is a module group. 
+		 * 
+		 * @param pipeName The name of the pipe to test.
+		 */
+		public function isModuleGroup(pipeName:String):Boolean {
+			return pipeName != null && pipeName != "" && MODULE_GROUP_REGEXP.test(pipeName);
+		}
 	}
 }
 
@@ -169,5 +330,6 @@ internal class PipeDescriptor {
 
 	public var className:String;
 	public var instanceName:String;
-	public var type:String; // not used anymore 
+	public var groupName:String; 
+	public var type:String;
 }

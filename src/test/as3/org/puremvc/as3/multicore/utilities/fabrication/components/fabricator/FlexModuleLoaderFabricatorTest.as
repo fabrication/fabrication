@@ -94,5 +94,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			moduleLoader.loadModule();
 		}
 		
+		public function testFlexModuleLoaderFabricatorSavesModuleGroupOnModule():void {
+			var moduleGroup:String = "myGroup";
+			
+			var verifyModuleGroup:Function = function(event:FabricatorEvent):void {
+				assertNotNull(moduleLoader.module.moduleGroup);
+				assertEquals(moduleGroup, moduleLoader.module.moduleGroup);
+			};
+			
+			moduleLoader = new FlexModuleLoader();
+			moduleLoader.url = emptyModuleUrl;
+			moduleLoader.addEventListener(FabricatorEvent.FABRICATION_CREATED, addAsync(verifyModuleGroup, timeoutMS));
+			moduleLoader.router = new Router();
+			moduleLoader.moduleGroup = moduleGroup;
+			moduleLoader.loadModule();
+		}
+		
 	}
 }

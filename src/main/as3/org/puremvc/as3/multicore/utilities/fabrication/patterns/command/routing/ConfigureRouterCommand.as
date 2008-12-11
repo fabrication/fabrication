@@ -58,6 +58,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 			var outputPipe:NamedPipe = new NamedPipe(moduleAddress.getOutputName());
 			var cableListener:RouterCableListener = new RouterCableListener(facade);
 			var routerCable:RouterCable = new RouterCable(inputPipe, outputPipe);
+			
+			inputPipe.moduleGroup = fabrication.moduleGroup;
+			outputPipe.moduleGroup = fabrication.moduleGroup;
 
 			inputPipe.connect(cableListener);
 			router.connect(routerCable);

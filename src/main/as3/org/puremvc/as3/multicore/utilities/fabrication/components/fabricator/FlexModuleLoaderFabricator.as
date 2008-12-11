@@ -15,14 +15,14 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
+	import mx.events.ModuleEvent;
+	import mx.modules.ModuleLoader;
+	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
-	
-	import mx.events.ModuleEvent;
-	import mx.modules.ModuleLoader;		
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;	
 
 	/**
 	 * FlexModuleLoaderFabricator is the concrete fabricator for FlexModuleLoader.
@@ -109,7 +109,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			// Here we fetch those values
 			defaultRoute = moduleLoader.defaultRoute;
 			router = moduleLoader.router;
+			
 			module.config = moduleLoader.config;
+			module.moduleGroup = moduleLoader.moduleGroup;
 			
 			_ready = true;
 			

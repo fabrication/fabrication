@@ -15,18 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
-	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMessage;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;
-	import org.puremvc.as3.multicore.utilities.pipes.messages.Message;	
-
-	/**
+	import org.puremvc.as3.multicore.interfaces.INotification;	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;	import org.puremvc.as3.multicore.utilities.fabrication.plumbing.DynamicJunction;	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMessage;	import org.puremvc.as3.multicore.utilities.fabrication.vo.ModuleAddress;	import org.puremvc.as3.multicore.utilities.pipes.messages.Message;		/**
 	 * RouteNotificationCommand transmit the source notification to route
 	 * in a router message and sends across using the current application's
 	 * router object.
@@ -37,9 +26,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 
 		/**
 		 * Regular expression used to match a Module/* route
-		 * @private
 		 */
-		static private var allInstanceRegExp:RegExp = new RegExp(".*\/\\*", "");
+		static public const allInstanceRegExp:RegExp = new RegExp(".*\/\\*", "");
+		
+		/**
+		 * Regular expression used to match a Module/# route
+		 */
+		static public const unqualifiedGroupRegExp:RegExp = new RegExp("^.*/#$", ""); 
 
 		/**
 		 * Extracts the wrapped source notification from the body of the
@@ -55,10 +48,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 			var router:IRouter = fabrication.router;
 			var transport:TransportNotification = note.getBody() as TransportNotification;
 			var to:Object = transport.getTo();
+			var toStr:String = to as String;
 			var message:IRouterMessage = new RouterMessage(Message.NORMAL);
 			
-			// The if condition below is optimized in the order of the most likely 
-			// "to" destination address.			
 			if (to == null) {
 				to = fabrication.defaultRoute;
 				
@@ -66,9 +58,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing
 					to = "*";
 				}
 			} else if (
-				to is String && to != "*" && !allInstanceRegExp.test(to as String) && !ModuleAddress.inputSuffixRegExp.test(to as String)
+					to is String && 
+					toStr != "*" && 
+					!allInstanceRegExp.test(toStr) && 
+					!ModuleAddress.inputSuffixRegExp.test(toStr) &&
+					!DynamicJunction.MODULE_GROUP_REGEXP.test(toStr)
 				) {
-				to = (to as String) + ModuleAddress.INPUT_SUFFIX;
+				if (unqualifiedGroupRegExp.test(toStr) && fabrication.moduleGroup != null) {
+					to = toStr + fabrication.moduleGroup;
+				} else {
+					to = toStr + ModuleAddress.INPUT_SUFFIX;
+				}
 			} else if (to is IModuleAddress) {
 				to = (to as IModuleAddress).getInputName();
 			}

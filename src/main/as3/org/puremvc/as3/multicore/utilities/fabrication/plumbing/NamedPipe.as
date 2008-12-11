@@ -34,12 +34,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		protected var name:String;
 		
 		/**
+		 * Stores the module group's name.
+		 */
+		protected var _moduleGroup:String = null;
+		
+		/**
 		 * Creates a new NamedPipe object.
 		 * 
 		 * @param name The name of the pipe
 		 * @param ouput The pipes connected output fitting.
 		 */
-		public function NamedPipe(name:String = null, output:IPipeFitting = null ) {
+		public function NamedPipe(name:String = null, output:IPipeFitting = null) {
 			super(output);
 			
 			setName(name);
@@ -60,10 +65,26 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		}
 		
 		/**
+		 * Optional name of the group that this pipe fitting's module belongs to.
+		 */
+		public function get moduleGroup():String {
+			return _moduleGroup;
+		}
+		 
+		/**
+		 * @private
+		 */
+		public function set moduleGroup(moduleGroup:String):void {
+			_moduleGroup = moduleGroup;
+		}
+		
+		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
 			name = null;
+			_moduleGroup = null;
+			
 			disconnect();
 		}
 	}
