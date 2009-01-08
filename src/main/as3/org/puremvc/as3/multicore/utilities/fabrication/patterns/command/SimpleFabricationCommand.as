@@ -24,7 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;		
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;	
 
 	/**
 	 * SimpleFabricationCommand is the base class for all fabrication commands.
@@ -41,12 +41,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		public function executeCommand(clazz:Class, body:Object = null, note:INotification = null):ICommand {
 			return fabFacade.executeCommandClass(clazz, body, note);
 		}
-		
+
 		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
-			
 		}
 
 		/**
@@ -180,6 +179,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		 */
 		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
+		}
+
+		/**
+		 * Alias to fabFacade.registerInterceptor
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#registerInterceptor
+		 */
+		public function registerInterceptor(noteName:String, clazz:Class, parameters:Object = null):void {
+			fabFacade.registerInterceptor(noteName, clazz, parameters);
+		}
+
+		/**
+		 * Alias to fabFacade.removeInterceptor
+		 * 
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#removeInterceptor
+		 */
+		public function removeInterceptor(noteName:String, clazz:Class = null):void {
+			fabFacade.removeInterceptor(noteName, clazz);
 		}
 	}
 }

@@ -177,5 +177,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			return mock.executeCommandClass(clazz, body, note);
 		}
 		
+		override public function registerInterceptor(noteName:String, clazz:Class, parameters:Object = null):void {
+			mock.registerInterceptor(noteName, clazz, parameters);
+		}
+		
+		override public function removeInterceptor(noteName:String, clazz:Class = null):void {
+			mock.removeInterceptor(noteName, clazz);
+		}
+		
 	}
 }

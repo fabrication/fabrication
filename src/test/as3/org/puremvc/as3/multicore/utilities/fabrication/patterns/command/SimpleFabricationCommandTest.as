@@ -15,16 +15,17 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
-	import com.anywebcam.mock.Mock;
-	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
 	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.InterceptorMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
-	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;	
+	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;
+	
+	import com.anywebcam.mock.Mock;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -54,6 +55,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 			var mediator0:Mediator = new Mediator("m0");
 			var mediator1:Mediator = new Mediator("m1");
 			var body:Object = new Object();
+			var parameters:Object = new Object();
 			
 			facade.mock.method("getFabrication").withNoArgs.returns(fabrication).atLeast(1);
 			fabrication.mock.property("router").returns(router);
@@ -80,6 +82,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 			facade.mock.method("executeCommandClass").withArgs(SimpleFabricationCommandMock, nullarg, nullarg).returns(new SimpleFabricationCommandMock()).once;
 			facade.mock.method("executeCommandClass").withArgs(SimpleFabricationCommandMock, body, nullarg).returns(new SimpleFabricationCommandMock()).once;
 			facade.mock.method("executeCommandClass").withArgs(SimpleFabricationCommandMock, nullarg, notification).returns(new SimpleFabricationCommandMock()).once;
+			
+			facade.mock.method("registerInterceptor").withArgs("n0", InterceptorMock, nullarg).once;
+			facade.mock.method("registerInterceptor").withArgs("n0", InterceptorMock, parameters).once;
 			
 			executeCommand();
 			
@@ -109,6 +114,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 			assertType(SimpleFabricationCommandMock, command.executeCommand(SimpleFabricationCommandMock));
 			assertType(SimpleFabricationCommandMock, command.executeCommand(SimpleFabricationCommandMock, body));
 			assertType(SimpleFabricationCommandMock, command.executeCommand(SimpleFabricationCommandMock, null, notification));
+			
+			command.registerInterceptor("n0", InterceptorMock);
+			command.registerInterceptor("n0", InterceptorMock, parameters);
 			
 			verifyMock(facade.mock);
 			verifyMock(fabrication.mock);

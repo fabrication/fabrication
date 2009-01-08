@@ -106,5 +106,33 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			return mock.executeCommandClass(clazz, body, note);
 		}
 		
+		override public function registerInterceptor(note:String, clazz:Class, parameters:Object = null):void {
+			mock.registerInterceptor(note, clazz, parameters);
+		}
+		
+		override public function removeInterceptor(note:String, clazz:Class = null):void {
+			mock.removeInterceptor(note, clazz);
+		}
+		
+		override public function intercept(note:INotification):Boolean {
+			return mock.intercept(note);
+		}
+		
+		override public function hasInterceptor(note:String):Boolean {
+			return mock.hasInterceptor(note);
+		}
+		
+		override public function get fabricationView():FabricationView {
+			return mock.fabricationView;
+		}
+		
+		override public function get groupID():String {
+			return mock.groupID;
+		}
+		
+		override public function set groupID(groupID:String):void {
+			mock.groupID = groupID;
+		}
+		
 	}
 }

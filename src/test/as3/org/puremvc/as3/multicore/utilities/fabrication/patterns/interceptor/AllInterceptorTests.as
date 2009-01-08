@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2009 Darshan Sawardekar.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import flexunit.framework.SimpleTestSuite;	
-	
+
+package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
+	import flexunit.framework.SimpleTestSuite;		
+
 	/**
 	 * @author Darshan Sawardekar
 	 */
-	public class AllUndoableCommandTests extends SimpleTestSuite {
-		
-		public function AllUndoableCommandTests() {
+	public class AllInterceptorTests extends SimpleTestSuite {
+
+		public function AllInterceptorTests() {
 			super();
 			
-			addTestCase(AbstractUndoableCommandTest);
-			addTestCase(SimpleUndoableCommandTest);
-			addTestCase(FabricationUndoCommandTest);
-			addTestCase(FabricationRedoCommandTest);
-			addTestCase(UndoableMacroCommandTest);
-			addTestCase(ChangeUndoGroupCommandTest);
+			addTestCase(NotificationProcessorTest);
 		}
-		
 	}
 }

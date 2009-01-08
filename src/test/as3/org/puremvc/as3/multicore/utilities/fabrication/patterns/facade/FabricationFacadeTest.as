@@ -333,5 +333,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			verifyMock(controller.mock);
 		}
 		
+		public function testFabricationFacadeRegistersDefaultUndoCommands():void {
+			assertTrue(facade.hasCommand(FabricationNotification.UNDO));
+			assertTrue(facade.hasCommand(FabricationNotification.REDO));
+			assertTrue(facade.hasCommand(FabricationNotification.CHANGE_UNDO_GROUP));
+		}
+		
 	}
 }

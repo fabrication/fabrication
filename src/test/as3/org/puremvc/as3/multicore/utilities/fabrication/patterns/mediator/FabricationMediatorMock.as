@@ -40,7 +40,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		
 		public function get mock():Mock {
 			if (_mock == null) {
-				_mock = new Mock(this);				
+				_mock = new Mock(this, true);				
 			}
 			
 			return _mock;

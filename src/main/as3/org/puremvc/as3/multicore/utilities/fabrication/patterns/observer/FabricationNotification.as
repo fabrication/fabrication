@@ -52,6 +52,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		 * Redo's the last command undone.
 		 */
 		static public const REDO:String = "redo";
+		
+		/**
+		 * Changes the current undo group. The notification body is the name of the undo group.
+		 */
+		static public const CHANGE_UNDO_GROUP:String = "changeUndoGroup";
 
 		/**
 		 * Creates a new FabricationNotification object.

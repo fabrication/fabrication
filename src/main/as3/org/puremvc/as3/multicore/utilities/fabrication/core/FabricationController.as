@@ -20,8 +20,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.patterns.observer.Observer;
+	import org.puremvc.as3.multicore.utilities.fabrication.events.NotificationProcessorEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IInterceptor;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.NotificationProcessor;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.UndoableNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;	
@@ -55,16 +58,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		}
 
 		/**
-		 * The undoable command stack
-		 */
-		//protected var undoStack:Stack;
-		
-		/**
-		 * The redoable command stack.
-		 */
-		//protected var redoStack:Stack;
-		
-		/**
 		 * Stores the different undo groups in the controller. 
 		 */
 		protected var groupsHashMap:HashMap;
@@ -75,6 +68,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		protected var _groupID:String = DEFAULT_GROUP_ID;
 
 		/**
+		 * Mappings of interceptors against their notification names.
+		 */
+		protected var interceptorMappings:HashMap;
+
+		/**
+		 * Stores the active notification processors.
+		 */
+		protected var activeProcessors:Array;
+
+		/**
 		 * Creates the FabricationController and initializes the undo and
 		 * redo stacks.
 		 */
@@ -82,6 +85,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			super(key);
 			
 			groupsHashMap = new HashMap();
+			interceptorMappings = new HashMap();
+			activeProcessors = new Array();
 		}
 
 		/**
@@ -92,13 +97,26 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			groupsHashMap = null;
 			
 			commandMap.splice(0);
-			commandMap = null;		
+			commandMap = null;
 			
+			var n:int = activeProcessors.length;
+			var processor:NotificationProcessor;
+			for (var i:int = 0;i < n; i++) {
+				processor = activeProcessors[i];
+				processor.dispose();
+				
+				activeProcessors[i] = null;
+			}		
+			
+			interceptorMappings.dispose();
+			interceptorMappings = null;
+						
+			activeProcessors = null;
 			view = null;	
 			
 			removeController(multitonKey);
 		}
-		
+
 		/**
 		 * Overrides Controller to use the FabricationView
 		 */
@@ -152,7 +170,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 				}				
 			}
 		}
-		
+
 		/**
 		 * Executes the command class specified and returns its instance.
 		 * 
@@ -176,7 +194,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return command;
 		}
-		
+
 		/**
 		 * Fabrication allows multiple commands to be mapped to the same notification. This
 		 * method provides the means to remove a specific command to notification mapping.
@@ -221,7 +239,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		public function undoSize():int {
 			return undoStack.length();
 		}
-		
+
 		/**
 		 * The current size of the redo stack
 		 */
@@ -332,7 +350,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			view.notifyObservers(notification);
 		}
-		
+
 		/**
 		 * Sends a COMMAND_GROUP_CHANGED notification using the view object
 		 */
@@ -340,14 +358,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			var notification:UndoableNotification = new UndoableNotification(UndoableNotification.COMMAND_GROUP_CHANGED);
 			view.notifyObservers(notification);
 		}
-		
+
 		/**
 		 * Helper to get the index of a specific command in the command list
 		 */
 		private function findCommandIndex(commandList:Array, clazz:Class):int {
 			var n:int = commandList.length;
 			var commandClazz:Class;
-			for (var i:int = 0; i < n; i++) {
+			for (var i:int = 0;i < n; i++) {
 				commandClazz = commandList[i];
 				if (commandClazz == clazz) {
 					return i;
@@ -356,14 +374,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return -1;
 		}
-		
+
 		/**
 		 * The unique identifier of the current undo-redo group.
 		 */
 		public function get groupID():String {
 			return _groupID;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -377,7 +395,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			notifyCommandGroupChanged();
 			notifyCommandHistoryChanged();
 		}
-		
+
 		/**
 		 * Disposes the specified undo-redo group.
 		 * 
@@ -390,7 +408,161 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 				groupsHashMap.remove($groupID);
 			}
 		}
-		
+
+		/**
+		 * Registers an interceptor to notification mapping.
+		 * 
+		 * @param noteName The name of the notification to register the interceptor with.
+		 * @param clazz The concrete interceptor class.
+		 * @param parameters Optional parameters for the interceptor.
+		 */
+		public function registerInterceptor(noteName:String, clazz:Class, parameters:Object = null):void {
+			var mappings:Array;
+			
+			if (interceptorMappings.exists(noteName)) {
+				mappings = interceptorMappings.find(noteName) as Array; 
+			} else {
+				mappings = interceptorMappings.put(noteName, new Array()) as Array;
+			}
+			
+			mappings.push(new InterceptorMapping(noteName, clazz, parameters));
+		}
+
+		/**
+		 * Removes an interceptor to notification mapping. The clazz is optional and if
+		 * not specified all mapping for the specified notification will be removed.
+		 * 
+		 * @param noteName The name of the notification whose interceptor is to be removed.
+		 * @param clazz The name of the concrete interceptor class that was registered earlier with this noteName.
+		 */
+		public function removeInterceptor(noteName:String, clazz:Class = null):void {
+			if (clazz == null) {
+				interceptorMappings.remove(noteName);
+			} else {
+				var mappings:Array = interceptorMappings.find(noteName) as Array;
+				var index:int = -1;
+				var n:int = mappings.length;
+				
+				for (var i:int = 0;i < n; i++) {
+					if (mappings[i].clazz == clazz) {
+						index = i;
+						break;
+					}
+				}
+				
+				if (index >= 0) {
+					mappings.splice(clazz, 1);
+				}
+				
+				if (mappings.length == 0) {
+					interceptorMappings.remove(noteName);
+				}
+			}
+		}
+
+		/**
+		 * Returns a boolean depending on whether an interceptor mapping exists for the
+		 * specified notification name.
+		 * 
+		 * @param noteName The name of the notification whose mapping is to be looked up. 
+		 */
+		public function hasInterceptor(noteName:String):Boolean {
+			return interceptorMappings.exists(noteName);
+		}
+
+		/**
+		 * Intercepts the notification, creates the interceptor instances and 
+		 * a notification processor and runs the notification against it.
+		 * 
+		 * @param note The notification object to intercept.
+		 */
+		public function intercept(note:INotification):Boolean {
+			var noteName:String = note.getName();
+			if (hasInterceptor(noteName)) {
+				var mappings:Array = interceptorMappings.find(noteName) as Array;
+				var processor:NotificationProcessor = new NotificationProcessor(note);
+				var n:int = mappings.length;
+				var interceptor:IInterceptor;
+				var mapping:InterceptorMapping;
+				
+				for (var i:int = 0;i < n; i++) {
+					mapping = mappings[i];
+					interceptor = createInterceptor(mapping);
+					
+					processor.addInterceptor(interceptor);
+				}
+				
+				processor.addEventListener(NotificationProcessorEvent.PROCEED, proceedListener);
+				processor.addEventListener(NotificationProcessorEvent.FINISH, finishListener);
+				
+				processor.run();
+				
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		/**
+		 * Helper casts the view reference as FabricationView.
+		 */
+		public function get fabricationView():FabricationView {
+			return view as FabricationView;
+		}
+
+		/**
+		 * Creates an interceptor object from the specified parameters.
+		 */
+		protected function createInterceptor(mapping:InterceptorMapping):IInterceptor {
+			var clazz:Class = mapping.clazz;
+			var interceptor:IInterceptor = new clazz() as IInterceptor;
+			interceptor.initializeNotifier(multitonKey);
+			interceptor.parameters = mapping.parameters;
+			
+			return interceptor;
+		}
+
+		/**
+		 * Proceeds with the notification after interception.
+		 */
+		protected function proceedListener(event:NotificationProcessorEvent):void {
+			var processor:NotificationProcessor = event.target as NotificationProcessor;
+			var note:INotification = event.notification;
+			if (note == null) {
+				note = processor.getNotification();
+			}
+			
+			fabricationView.notifyObserversAfterInterception(note);
+		}
+
+		/**
+		 * Disposes the notification processor. 
+		 */
+		protected function finishListener(event:NotificationProcessorEvent):void {
+			var processor:NotificationProcessor = event.target as NotificationProcessor;
+			removeProcessor(processor);
+		}
+
+		/**
+		 * Saves the processor until it is active.
+		 */
+		protected function addProcessor(processor:NotificationProcessor):void {
+			activeProcessors.push(processor);
+		}
+
+		/**
+		 * Removes the processor and disposes it.
+		 */
+		protected function removeProcessor(processor:NotificationProcessor):void {
+			var index:int = activeProcessors.indexOf(processor);
+			if (index >= 0) {
+				processor.removeEventListener(NotificationProcessorEvent.PROCEED, proceedListener);
+				processor.removeEventListener(NotificationProcessorEvent.FINISH, finishListener);
+				
+				activeProcessors.splice(index, 1);
+			}
+		}
+
 		/**
 		 * Returns the object in the groups hash map storing the undo-redo stacks
 		 * for the specified group. The group store is created here if it isn't already
@@ -408,46 +580,43 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return store;
 		}
-		
+
 		/**
 		 * Initialize the undo-redo stack store for the specified group. 
 		 */
 		protected function createGroupStore($groupID:String = null):GroupStore {
-			return groupsHashMap.put(
-				$groupID, new GroupStore(new Stack(), new Stack())
-			) as GroupStore;
+			return groupsHashMap.put($groupID, new GroupStore(new Stack(), new Stack())) as GroupStore;
 		}
-		
+
 		/**
 		 * Returns the undo stack for the current group.
 		 */
 		protected function get undoStack():Stack {
 			return getGroupStore().undoStack;
 		}
-		
+
 		/**
 		 * Returns the redo stack for the current group.
 		 */
 		protected function get redoStack():Stack {
 			return getGroupStore().redoStack;
 		}
-		
 	}
 }
 
-import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;
 import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;
 
 internal class GroupStore implements IDisposable {
 
 	public var undoStack:Stack;
 	public var redoStack:Stack;
-	
+
 	public function GroupStore(undoStack:Stack, redoStack:Stack) {
 		this.undoStack = undoStack;
 		this.redoStack = redoStack;
 	}
-	
+
 	public function dispose():void {
 		undoStack.dispose();
 		undoStack = null;
@@ -455,5 +624,23 @@ internal class GroupStore implements IDisposable {
 		redoStack.dispose();
 		redoStack = null;	
 	}
-	
+}
+
+internal class InterceptorMapping implements IDisposable {
+
+	public var noteName:String;
+	public var clazz:Class;
+	public var parameters:Object;
+
+	public function InterceptorMapping(noteName:String, clazz:Class, parameters:Object) {
+		this.noteName = noteName;
+		this.clazz = clazz;
+		this.parameters = parameters;
+	}
+
+	public function dispose():void {
+		noteName = null;
+		clazz = null;
+		parameters = null;
+	}
 }

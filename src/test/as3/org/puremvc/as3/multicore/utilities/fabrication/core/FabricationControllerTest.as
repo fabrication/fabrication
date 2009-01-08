@@ -15,13 +15,10 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;	
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.SimpleUndoableCommand;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.ConfigurableInterceptor;	
 	
-	import flexunit.framework.SimpleAssert;
-	import flexunit.framework.SimpleTestCase;
-	
-	import com.anywebcam.mock.Mock;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.puremvc.as3.multicore.core.Controller;
 	import org.puremvc.as3.multicore.core.View;
@@ -32,6 +29,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationViewMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.SimpleUndoableCommand;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.InterceptorMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock1;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleFabricationCommandMock2;
@@ -46,13 +45,25 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mock.SimpleUndoableCommandMock5;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.UndoableNotification;
 	
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;		
+	import com.anywebcam.mock.Mock;
+	
+	import flexunit.framework.SimpleAssert;
+	import flexunit.framework.SimpleTestCase;
+	import flexunit.framework.TestSuite;	
 
 	/**
 	 * @author Darshan Sawardekar
 	 */
 	public class FabricationControllerTest extends SimpleTestCase {
+		
+		/* *
+		static public function suite():TestSuite {
+			var suite:TestSuite = new TestSuite();
+			suite.addTest(new FabricationControllerTest("testFabricationControllerForwardsNotificationAfterProcessing"));
+			
+			return suite;
+		}
+		/* */
 
 		private var controller:FabricationController = null;
 		public var classesToLink:Array = [
@@ -439,9 +450,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		
 		public function testFabricationControllerResetsAfterDisposal():void {
 			var controller:FabricationController = new FabricationController("X" + methodName);
+			controller.registerInterceptor(methodName, InterceptorMock);
 			controller.dispose();
 			
 			assertThrows(Error);
+			controller.hasInterceptor(methodName);
 			controller.undo();
 			controller.redo();
 			controller.registerCommand(null, null);
@@ -650,6 +663,115 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			for (var i:int = 0; i < times; i++) {
 				controller.executeCommand(note);
 			}
+		}
+		
+		public function testFabricationControllerCanStoreInterceptors():void {
+			var interceptorList:Array = new Array();
+			var interceptor:InterceptorMock;
+			var sampleSize:int = 25;
+			var i:int = 0;
+			
+			for (i = 0; i < sampleSize; i++) {
+				controller.registerInterceptor(methodName, InterceptorMock, {id:i});
+			}
+			
+			for (i = 0; i < sampleSize; i++) {
+				assertTrue(controller.hasInterceptor(methodName));
+				controller.removeInterceptor(methodName, InterceptorMock);
+			}
+		}
+		
+		public function testFabricationControllerCanRemoveStoredInterceptors():void {
+			controller.registerInterceptor(methodName, InterceptorMock);
+			controller.removeInterceptor(methodName, InterceptorMock);
+			assertFalse(controller.hasInterceptor(methodName));
+		}
+		
+		public function testFabricationControllerRemovesMappingAfterLastInterceptor():void {
+			controller.registerInterceptor(methodName, InterceptorMock);
+			controller.registerInterceptor(methodName, InterceptorMock);
+
+			controller.removeInterceptor(methodName, InterceptorMock);
+			
+			assertTrue(controller.hasInterceptor(methodName));
+			controller.removeInterceptor(methodName, InterceptorMock);
+			
+			assertFalse(controller.hasInterceptor(methodName));			
+		}
+		
+		public function testFabricationControllerRemovesAllMappingsIfClassParameterIsNotSpecified():void {
+			var sampleSize:int = 25;
+			
+			for (var i:int = 0; i < sampleSize; i++) {
+				controller.registerInterceptor(methodName, InterceptorMock);
+			}
+			
+			controller.removeInterceptor(methodName);
+			assertFalse(controller.hasInterceptor(methodName));
+		}
+		
+		public function testFabricationControllerHasFabricationViewReference():void {
+			assertType(FabricationView, controller.fabricationView);
+		}
+		
+		public function testFabricationControllerContainsInterceptorAfterRegistration():void {
+			assertFalse(controller.hasInterceptor(methodName));
+			controller.registerInterceptor(methodName, InterceptorMock);
+			assertTrue(controller.hasInterceptor(methodName));
+		}
+		
+		public function testFabricationControllerDoesNotInterceptNotificationWithAnyInterceptors():void {
+			assertFalse(controller.intercept(new Notification(methodName)));
+		}
+		
+		public function testFabricationControllerInterceptsNotificationWithRegisteredInterceptors():void {
+			controller.registerInterceptor(methodName, InterceptorMock);
+			assertTrue(controller.intercept(new Notification(methodName)));
+		}
+		
+		public function testFabricationControllerForwardsNotificationAfterProcessing():void {
+			var multitonKey:String = methodName + "X";
+			var view:FabricationViewMock = FabricationViewMock.getInstance(multitonKey);
+			var controller:FabricationController = FabricationController.getInstance(multitonKey);
+			var note:Notification = new Notification(methodName + "Note");
+			
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"proceed"});
+			
+			view.mock.method("notifyObserversAfterInterception").withArgs(note).once;
+			controller.intercept(note);
+			
+			verifyMock(view.mock);
+		}
+		
+		public function testFabricationControllerDoesNotForwardNotificationAfterAbort():void {
+			var multitonKey:String = methodName + "X";
+			var view:FabricationViewMock = FabricationViewMock.getInstance(multitonKey);
+			var controller:FabricationController = FabricationController.getInstance(multitonKey);
+			var note:Notification = new Notification(methodName + "Note");
+			
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"abort"});
+			
+			view.mock.method("notifyObserversAfterInterception").withArgs(note).never;
+			controller.intercept(note);
+			
+			verifyMock(view.mock);
+		}
+		
+		public function testFabricationControllerDoesNotForwardNotificationAfterSkip():void {
+			var multitonKey:String = methodName + "X";
+			var view:FabricationViewMock = FabricationViewMock.getInstance(multitonKey);
+			var controller:FabricationController = FabricationController.getInstance(multitonKey);
+			var note:Notification = new Notification(methodName + "Note");
+			
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"skip"});
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"skip"});
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"skip"});
+			controller.registerInterceptor(note.getName(), ConfigurableInterceptor, {action:"skip"});
+			
+			view.mock.method("notifyObserversAfterInterception").withArgs(note).never;
+			controller.intercept(note);
+			
+			verifyMock(view.mock);
 		}
 		
 	}

@@ -29,6 +29,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 			addTestCase(RouterFirewallEventTest);
 			addTestCase(ComponentResolverEventTest);
 			addTestCase(MediatorRegistrarEventTest);
+			addTestCase(NotificationProcessorEventTest);
 		}
 		
 	}

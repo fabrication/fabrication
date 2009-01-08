@@ -15,21 +15,22 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication {
-	import flexunit.framework.SimpleTestSuite;
-	
 	import org.puremvc.as3.multicore.utilities.fabrication.components.AllFabricationTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.AllFabricatorTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.core.AllFabricationCoreActorTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.AllFabricationEventsTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.AllCommandTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.AllFacadeTests;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.AllInterceptorTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.AllMediatorTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.AllObserverTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.AllProxyTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.plumbing.AllPlumbingTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.AllRoutingTests;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.AllUtilsTests;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.AllValueObjectTests;		
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.AllValueObjectTests;
+
+	import flexunit.framework.SimpleTestSuite;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -52,6 +53,7 @@ package org.puremvc.as3.multicore.utilities.fabrication {
 			addTestCase(AllRoutingTests);
 			addTestCase(AllUtilsTests);
 			addTestCase(AllValueObjectTests);
+			addTestCase(AllInterceptorTests);
 		}
 	}
 }

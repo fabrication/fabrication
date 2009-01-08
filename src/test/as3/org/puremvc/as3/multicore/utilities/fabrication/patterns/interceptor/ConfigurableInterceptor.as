@@ -14,23 +14,15 @@
  * limitations under the License.
  */
  
-package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import flexunit.framework.SimpleTestSuite;	
-	
+package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
+
 	/**
 	 * @author Darshan Sawardekar
 	 */
-	public class AllUndoableCommandTests extends SimpleTestSuite {
+	public class ConfigurableInterceptor extends AbstractInterceptor {
 		
-		public function AllUndoableCommandTests() {
-			super();
-			
-			addTestCase(AbstractUndoableCommandTest);
-			addTestCase(SimpleUndoableCommandTest);
-			addTestCase(FabricationUndoCommandTest);
-			addTestCase(FabricationRedoCommandTest);
-			addTestCase(UndoableMacroCommandTest);
-			addTestCase(ChangeUndoGroupCommandTest);
+		override public function intercept():void {
+			this[parameters.action]();
 		}
 		
 	}

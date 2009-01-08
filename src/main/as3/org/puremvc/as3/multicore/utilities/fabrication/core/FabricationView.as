@@ -15,8 +15,10 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
+	import org.puremvc.as3.multicore.interfaces.IController;	
 	import org.puremvc.as3.multicore.core.View;
 	import org.puremvc.as3.multicore.interfaces.IMediator;
+	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
 
 	/**
@@ -40,6 +42,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return instanceMap[multitonKey] as FabricationView;
 		}
+		
+		/**
+		 * The notification received after interception is saved here. notifyObservers
+		 * checks the specified notification against it to allow the notificatio through.
+		 */
+		protected var allowedNote:INotification;
+		
+		/**
+		 * Local reference to the controller.
+		 */
+		protected var _controller:FabricationController;
 
 		/**
 		 * Creates the instance of the FabricationView
@@ -49,6 +62,34 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		public function FabricationView(multitonKey:String) {
 			super(multitonKey);
 		}
+		
+		/**
+		 * Overrides notifyObservers to only allow notification to go through if
+		 * it is the allowed notification.
+		 */
+		override public function notifyObservers(note:INotification):void {
+			if ((allowedNote != null && note == allowedNote) || controller == null) {
+				super.notifyObservers(note);
+				allowedNote = null;
+			} else {
+				var result:Boolean = controller.intercept(note);
+				if (!result) {
+					super.notifyObservers(note);
+					allowedNote = null;
+				}
+			}
+		}
+		
+		/**
+		 * Calls notifyObservers getting around the interceptor hook.
+		 * 
+		 * @param note The notification to send to observers.
+		 */
+		public function notifyObserversAfterInterception(note:INotification):void {
+			allowedNote = note;
+			notifyObservers(note);
+		}
+		
 
 		/**
 		 * TODO : improve this using HashMap to store the mediators. 
@@ -72,6 +113,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			mediatorMap = null;
 			removeView(multitonKey);
+			allowedNote = null;
+			_controller = null;
+		}
+		
+		/**
+		 * Reference to the current application's controller.
+		 */
+		public function get controller():FabricationController {
+			return _controller;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set controller(controller:FabricationController):void {
+			_controller = controller;
 		}
 		
 	}		

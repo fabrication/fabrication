@@ -15,6 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
+	import flash.utils.getQualifiedClassName;
+
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.facade.Facade;
@@ -23,14 +25,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationView;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.ChangeUndoGroupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationRedoCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationUndoCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
-	
-	import flash.utils.getQualifiedClassName;	
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;	
 
 	/**
 	 * FabricationFacade is a concrete PureMVC facade implementation that
@@ -95,7 +96,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * The calculated name of the current application.
 		 */
 		protected var applicationName:String;
-		
+
 		/**
 		 * The custom singleton object instances map
 		 */
@@ -150,7 +151,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			model = FabricationModel.getInstance(multitonKey);
 		}
-		
+
 		/**
 		 * Override the initializeView to create a FabricationView instead of
 		 * the PureMVC default
@@ -161,6 +162,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			}
 			
 			view = FabricationView.getInstance(multitonKey);
+			(view as FabricationView).controller = controller as FabricationController;
 		}		
 
 		/**
@@ -177,6 +179,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			registerCommand(FabricationNotification.UNDO, FabricationUndoCommand);
 			registerCommand(FabricationNotification.REDO, FabricationRedoCommand);
+			registerCommand(FabricationNotification.CHANGE_UNDO_GROUP, ChangeUndoGroupCommand);
 		}
 
 		/**
@@ -268,19 +271,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * 			  the message will be routed to all instances of the ModuleName.
 		 */
 		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
-			var transportNotification:TransportNotification = new TransportNotification(
-				noteName, noteBody, noteType, to
-			);
+			var transportNotification:TransportNotification = new TransportNotification(noteName, noteBody, noteType, to);
 			sendNotification(RouterNotification.SEND_MESSAGE_VIA_ROUTER, transportNotification);
 		}
-		
+
 		/**
 		 * Alias to fabricationController.registerCommandClass
 		 */
 		public function executeCommandClass(clazz:Class, body:Object = null, note:INotification = null):ICommand {
 			return fabricationController.executeCommandClass(clazz, body, note);
 		}
-		
+
 		/**
 		 * Stores the instance with the specified key in the singleton hash map.
 		 * 
@@ -290,7 +291,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function saveInstance(key:String, instance:Object):Object {
 			return singletonInstanceMap.put(key, instance);
 		}
-		
+
 		/**
 		 * Returns the singleton instance for the corresponding key.
 		 * 
@@ -299,7 +300,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function findInstance(key:String):Object {
 			return singletonInstanceMap.find(key);
 		}
-		
+
 		/**
 		 * Returns a boolean depending on whether an instance for the specified key 
 		 * exists in the singleton hash map.
@@ -309,7 +310,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function hasInstance(key:String):Object {
 			return singletonInstanceMap.exists(key);
 		}
-		
+
 		/**
 		 * Removes the instance for the specified key from the singleton hash map
 		 * 
@@ -319,5 +320,25 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			return singletonInstanceMap.remove(key);
 		}
 
+		/**
+		 * Registers the interceptor with the fabrication controller.
+		 * 
+		 * @param noteName The name of the notification to register the interceptor with.
+		 * @param clazz The concrete interceptor class.
+		 * @param parameters Optional parameters for the interceptor.
+		 */
+		public function registerInterceptor(noteName:String, clazz:Class, parameters:Object = null):void {
+			fabricationController.registerInterceptor(noteName, clazz, parameters);
+		}
+
+		/**
+		 * Removes the interceptor from the fabrication controller.
+		 * 
+		 * @param noteName The name of the notification whose interceptor is to be removed.
+		 * @param clazz The name of the concrete interceptor class that was registered earlier with this noteName.
+		 */		
+		public function removeInterceptor(noteName:String, clazz:Class = null):void {
+			fabricationController.removeInterceptor(noteName, clazz);
+		}
 	}
 }

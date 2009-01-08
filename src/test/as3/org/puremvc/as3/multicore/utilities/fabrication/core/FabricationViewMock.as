@@ -86,5 +86,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			return mock.hasMediator(mediatorName);
 		}
 		
+		override public function notifyObserversAfterInterception(note:INotification):void {
+			mock.notifyObserversAfterInterception(note);
+		}
+		
 	}
 }
