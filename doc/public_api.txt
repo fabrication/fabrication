@@ -24,3 +24,6 @@ UndoableMacroCommand
 UndoableNotification
 RouterFirewallEvent
 FabricationFacade
+AbstractInterceptor
+IInterceptor
+NotificationProcessor
