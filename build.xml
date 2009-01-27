@@ -147,7 +147,7 @@
 	</target>
 	
 	<target name="swc-dependencies" description="Create swcs for all fabrication dependencies"
-		depends="swc-main-dependencies, swc-test-dependencies">	
+		depends="swc-main-dependencies, swc-test-dependencies, swc-test-utils">	
 	</target>
 	
 	<target name="swc-main-dependencies" description="Creates a common swcs of all the main line dependencies">
@@ -167,6 +167,14 @@
 				<include name="FlexUnit.swc" />
 			</fileset>
 		</merge-swcs>	
+	</target>
+
+	<target name="swc-test-utils" description="Creates an swc of all flex utilities used in the fabrication test cases">
+		<flex-comp output="${fabrication.test.utils.swc}" test="yes">
+			<fileset dir="${src.test.flash}">
+				<include name="flexunit/framework/*.as" />
+			</fileset>
+		</flex-comp>
 	</target>
 	
 	<target name="build" description="Builds runner, modules and resolver layouts"

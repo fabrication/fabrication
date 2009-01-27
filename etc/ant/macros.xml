@@ -271,6 +271,7 @@
 			<propertyregex property="classpath.file" input="@{file}" regexp="(/)" replace="." />
 			<propertyregex property="classpath" input="${classpath.file}" regexp="(\.as$)" replace="" />
 			<var name="runner.template" value="${templates.dir}/test/TestRunner_template.mxml" />
+
 			<var name="runner.name" value="${filename}Runner.mxml" />
 			<var name="test-class-runner" value="${src.test.flash}/${runner.name}" />
 			
@@ -280,6 +281,9 @@
 					<filter token="testclassname" value="${filename}" />
 				</filterset>
 			</copy>
+
+			<property name="test.runner.width" value="950" />
+			<property name="test.runner.height" value="600" />
 			
 			<test-flex-app 
 				mainclass="${runner.name}" output="@{output}"

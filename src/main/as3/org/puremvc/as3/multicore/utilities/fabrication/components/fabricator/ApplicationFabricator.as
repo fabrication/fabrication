@@ -261,6 +261,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			
 			return _applicationInstanceName;
 		}
+		
+		/**
+		 * Saves the application instance name. This allows using manual instance names. This value
+		 * must be unique if multiple instances of the same module would be created.
+		 */
+		public function set applicationInstanceName(applicationInstanceName:String):void {
+			_applicationInstanceName = applicationInstanceName;
+		}
 
 		/**
 		 * The current application's message router.
@@ -290,7 +298,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			if (_startupCommand == null) {
 				try {
 					// While testing we need to have startup command, because the events
-					// escape out the try-catch
+					// escape out of the try-catch
 					var testCase:Class = getDefinitionByName("flexunit.framework.TestCase") as Class;
 					if (testCase != null) {
 						_startupCommand = getDefinitionByName("org.puremvc.as3.multicore.utilities.fabrication.components.empty.EmptyFlexModuleStartupCommand") as Class;

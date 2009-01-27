@@ -27,7 +27,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.NotificationProcessor;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.UndoableNotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;	
+	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.InterceptorMapping;
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.UndoRedoGroupStore;	
 
 	/**
 	 * FabricationController is the custom controller used by fabrication.
@@ -402,7 +404,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		 * @param $groupID The unique undo-redo group to remove.
 		 */
 		public function removeGroup($groupID:String):void {
-			var store:GroupStore = getGroupStore($groupID);
+			var store:UndoRedoGroupStore = getUndoRedoGroupStore($groupID);
 			if (store != null) {
 				store.dispose();
 				groupsHashMap.remove($groupID);
@@ -568,14 +570,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		 * for the specified group. The group store is created here if it isn't already
 		 * present.
 		 */
-		protected function getGroupStore($groupID:String = null):GroupStore {
+		protected function getUndoRedoGroupStore($groupID:String = null):UndoRedoGroupStore {
 			if ($groupID == null) {
 				$groupID = groupID;
 			}
 			
-			var store:GroupStore = groupsHashMap.find($groupID) as GroupStore;
+			var store:UndoRedoGroupStore = groupsHashMap.find($groupID) as UndoRedoGroupStore;
 			if (store == null) {
-				store = createGroupStore($groupID);
+				store = createUndoRedoGroupStore($groupID);
 			}
 			
 			return store;
@@ -584,63 +586,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		/**
 		 * Initialize the undo-redo stack store for the specified group. 
 		 */
-		protected function createGroupStore($groupID:String = null):GroupStore {
-			return groupsHashMap.put($groupID, new GroupStore(new Stack(), new Stack())) as GroupStore;
+		protected function createUndoRedoGroupStore($groupID:String = null):UndoRedoGroupStore {
+			return groupsHashMap.put($groupID, new UndoRedoGroupStore(new Stack(), new Stack())) as UndoRedoGroupStore;
 		}
 
 		/**
 		 * Returns the undo stack for the current group.
 		 */
 		protected function get undoStack():Stack {
-			return getGroupStore().undoStack;
+			return getUndoRedoGroupStore().undoStack;
 		}
 
 		/**
 		 * Returns the redo stack for the current group.
 		 */
 		protected function get redoStack():Stack {
-			return getGroupStore().redoStack;
+			return getUndoRedoGroupStore().redoStack;
 		}
-	}
-}
-
-import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
-import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;
-
-internal class GroupStore implements IDisposable {
-
-	public var undoStack:Stack;
-	public var redoStack:Stack;
-
-	public function GroupStore(undoStack:Stack, redoStack:Stack) {
-		this.undoStack = undoStack;
-		this.redoStack = redoStack;
-	}
-
-	public function dispose():void {
-		undoStack.dispose();
-		undoStack = null;
-		
-		redoStack.dispose();
-		redoStack = null;	
-	}
-}
-
-internal class InterceptorMapping implements IDisposable {
-
-	public var noteName:String;
-	public var clazz:Class;
-	public var parameters:Object;
-
-	public function InterceptorMapping(noteName:String, clazz:Class, parameters:Object) {
-		this.noteName = noteName;
-		this.clazz = clazz;
-		this.parameters = parameters;
-	}
-
-	public function dispose():void {
-		noteName = null;
-		clazz = null;
-		parameters = null;
 	}
 }

@@ -257,5 +257,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 			assertNull(fabricator.facade);
 			assertNull(fabricator.router);
 		}
+		
+		public function testApplicationFabricatorAllowsManualInstanceNames():void {
+			addInitSequenceMocks();
+			fabricator.applicationInstanceName = methodName + "Instance";
+			
+			fabrication.dispatchEvent(new Event("mockReady"));
+			
+			assertEquals(methodName + "Instance", fabricator.applicationInstanceName);
+			verifyMock(fabricatorMock);
+		}
+		
+		
 	}
 }

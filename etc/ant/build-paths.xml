@@ -19,7 +19,7 @@
 	<mkdir dir="${libs}" />
 	
 	<!-- templates directory -->
-	<property name="templates.dir" location="${fabrication${etc}/templates" />
+	<property name="templates.dir" location="${fabrication.common.dirname}/etc/templates" />
 	
 	<!-- generated asdocs -->
 	<property name="doc.asdoc.public" location="${doc}/asdoc/public" />

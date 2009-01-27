@@ -28,6 +28,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			addTestCase(ModuleAddressTest);
 			addTestCase(NotificationInterestsTest);
 			addTestCase(ReactionTest);
+			addTestCase(InterceptorMappingTest);
+			addTestCase(UndoRedoGroupStoreTest);
 		}
 		
 	}
