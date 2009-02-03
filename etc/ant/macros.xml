@@ -440,10 +440,18 @@
 			<var-pathconvert variable="temp.file.classes.list" refid="@{refid}" pathsep="@{pathsep}" />
 			
 			<!-- escapes the backslash in the paths -->
-			<propertyregex property="temp.dir.exp"
-				input="${temp.dir.name}"
-				regexp="(\\)"
-				replace="\\\\\\\\" />
+			<if>
+				<os family="windows" />
+				<then>
+					<propertyregex property="temp.dir.exp"
+						input="${temp.dir.name}"
+						regexp="(\\)"
+						replace="\\\\\\\\" />
+				</then>
+				<else>
+					<var name="temp.dir.exp" value="${temp.dir.name}" />
+				</else>
+			</if>
 			
 			<!-- strips the directory and parts from the classpath list -->
 			<propertyregex property="@{variable}"
@@ -578,7 +586,7 @@
 			</path>
 			
 			<!-- platform specific regular expression part separator -->
-			<condition property="regexp.separator" value="\\" else="${path.separator}">
+			<condition property="regexp.separator" value="\\" else="/">
 				<os family="windows"/>
 			</condition>
 			
