@@ -289,7 +289,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			var methodNameRe:RegExp = new RegExp("^" + notificationHandlerPrefix + "(.*)$", ""); 
 			var respondToMethods:XMLList = clazzInfo..method.((methodNameRe as RegExp).exec(@name) != null);
-			var respondToMethodsCount:int = respondToMethods.children().length();
+			var respondToMethodsCount:int = respondToMethods.length();
 			var proxyNameRegExpMatch:Object;
 			var methodNameReMatch:Object;
 			var hasProxyInterests:Boolean = false;
@@ -443,7 +443,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			var clazzInfo:XML = describeType(clazz);
 			
 			var reactionMethods:XMLList = clazzInfo..method.((reactionRegExp as RegExp).test(@name) == true);
-			var reactionMethodsCount:int = reactionMethods.children().length();
+			var reactionMethodsCount:int = reactionMethods.length();
 			
 			if (reactionMethodsCount == 0) {
 				// early exit if no reactions were found
