@@ -15,15 +15,9 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import flexunit.framework.TestContainer;	
+	import flexunit.framework.SimpleTestCase;
 	
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
-	import flash.events.MouseEvent;
-	
-	import mx.containers.HBox;
-	import mx.controls.Button;
-	import mx.core.UIComponent;
+	import com.anywebcam.mock.Mock;
 	
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
@@ -38,9 +32,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.RouterMock;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	
-	import com.anywebcam.mock.Mock;
+	import mx.core.UIComponent;
 	
-	import flexunit.framework.SimpleTestCase;		
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;	
 
 	/**
 	 * @author Darshan Sawardekar
@@ -171,6 +166,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			var expectedInterests:Array = ["note",
 				"note1",
 				"note2",
+				"MY_NOTE1",
+				"MY_NOTE2",
+				"MY_NOTE3",
 				FabricationProxy.NOTIFICATION_FROM_PROXY];
 
 			mediator.initializeNotifier(multitonKey);			
@@ -350,6 +348,53 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			verifyMock(facade.mock);
 			verifyMock(fabrication.mock);			
 		}
+		
+		public function testFabricationMediatorConstantFormatRegExpIsValid():void {
+			var re:RegExp = FabricationMediator.constantRegExp;
+			assertMatch(re, "MY_CONSTANT");
+			assertNoMatch(re, "myConstant");
+			assertMatch(re, "DATA_CHANGE");
+			assertNoMatch(re, "dataChange");
+		}
+		
+		public function testFabricationMediatorDetectsConstantFormatAccurately():void {
+			var mediator:FabricationMediator = new FabricationMediatorTestMock(methodName);
+			assertTrue(mediator.isConstantFormat("MY_CONSTANT"));
+			assertFalse(mediator.isConstantFormat("myConstant"));
+		}
+
+		public function testFabricationMediatorExecutesRespondToCONSTANT_FORMSyntax():void {
+			var mediator:FabricationMediator = new FabricationMediatorTestMock(methodName);
+			var notificationCache:HashMap = new HashMap();
+			
+			facade.mock.method("hasInstance").withArgs(String).returns(true).atLeast(1);
+			facade.mock.method("findInstance").withArgs(FabricationMediator.notificationCacheKey).returns(notificationCache).atLeast(1);
+			facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
+			
+			mediator.initializeNotifier(multitonKey);
+			var mediatorMock:Mock = (mediator as IMockable).mock;
+			
+			mediatorMock.method("respondToMY_NOTE1").withArgs(function(note:INotification):Boolean {
+				assertEquals("MY_NOTE1", note.getName());
+				return true;
+			}).once;
+			mediatorMock.method("respondToMY_NOTE2").withArgs(function(note:INotification):Boolean {
+				assertEquals("MY_NOTE2", note.getName());
+				return true;
+			}).once;
+			mediatorMock.method("respondToMY_NOTE3").withArgs(function(note:INotification):Boolean {
+				assertEquals("MY_NOTE3", note.getName());
+				return true;
+			}).once;
+						
+			invokeHandleNotification(mediator, null, "MY_NOTE1");
+			invokeHandleNotification(mediator, null, "MY_NOTE2");
+			invokeHandleNotification(mediator, null, "MY_NOTE3");
+
+			verifyMock(mediatorMock);			
+			verifyMock(facade.mock);
+			verifyMock(fabrication.mock);			
+		}
 
 		public function testFabricationMediatorDoesNotHaveRouterKey():void {
 			assertFalse((FabricationMediator as Class).hasOwnProperty("routerKey"));
@@ -424,6 +469,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			confirmReaction(mock, myButton, "reactToMyButtonMouseDown", "mouseDown");
 			confirmReaction(mock, myButton, "reactToMyButtonMouseUp", "mouseUp");
 			confirmReaction(mock, myButton, "reactToMyButtonCustomEvent", "customEvent");
+			
+			// reactions in CONSTANT_FORMAT
+			confirmReaction(mock, myButton, "reactToMyButtonCLICK", "CLICK");
+			confirmReaction(mock, myButton, "reactToMyButtonMOUSE_DOWN", "MOUSE_DOWN");
+			confirmReaction(mock, myButton, "reactToMyButtonMOUSE_UP", "MOUSE_UP");
+			confirmReaction(mock, myButton, "reactToMyButtonCUSTOM_EVENT", "CUSTOM_EVENT");
 
 			verifyMock(mock);
 			verifyMock(facade.mock);

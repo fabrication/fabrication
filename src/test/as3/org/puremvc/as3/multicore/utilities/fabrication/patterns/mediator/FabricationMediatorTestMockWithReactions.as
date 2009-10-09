@@ -65,6 +65,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			mock.reactToMyButtonMouseDown(event);
 		}
 		
+		public function reactToMyButtonCLICK(event:Event):void {
+			mock.reactToMyButtonCLICK(event);
+		}
+
+		public function reactToMyButtonMOUSE_DOWN(event:Event):void {
+			mock.reactToMyButtonMOUSE_DOWN(event);
+		}
+
+		public function reactToMyButtonMOUSE_UP(event:Event):void {
+			mock.reactToMyButtonMOUSE_UP(event);
+		}
+
+		public function reactToMyButtonCUSTOM_EVENT(event:Event):void {
+			mock.reactToMyButtonCUSTOM_EVENT(event);
+		}
+		
 		public function getReactions():Array {
 			return currentReactions;
 		}

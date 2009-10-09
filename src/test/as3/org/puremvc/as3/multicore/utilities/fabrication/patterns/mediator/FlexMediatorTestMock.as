@@ -69,5 +69,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			return mock.qualifyNotificationInterests();
 		}
 		
+		public function respondToMY_NOTE1(note:Notification):void {
+			mock.respondToMY_NOTE1(note);
+		}
+		
+		public function respondToMY_NOTE2(note:INotification):void {
+			mock.respondToMY_NOTE2(note);
+		}
+		
+		public function respondToMY_NOTE3(note:INotification):void {
+			mock.respondToMY_NOTE3(note);
+		}
+		
 	}
 }

@@ -12,13 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import flash.events.IEventDispatcher;
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
-	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
@@ -32,7 +29,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;	
+	import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;
+	
+	import flash.events.IEventDispatcher;
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;	
 
 	/**
 	 * FabricationMediator is the base mediator class for all application mediator
@@ -83,6 +84,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		static public var notificationCacheKey:String = "notificationCache";
 
+		/**
+		 * Regular expression used to detect if the notification string 
+		 * is in "constant" format
+		 */
+		static public var constantRegExp:RegExp = new RegExp("^[A-Z]\w*", "");
+		
 		/**
 		 * Stores list of qualified notifications. Notifications should be
 		 * qualified if there are multiple notifications with the same
@@ -579,12 +586,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				this[name](note);
 			}
 		}
+		
+		/**
+		 * Checks if input is of the form, CONSTANT_VALUE
+		 */
+		internal function isConstantFormat(body:String):Boolean {
+			return (null != body.match(constantRegExp)) && (body == body.toUpperCase());
+		} 		
 
 		/**
 		 * Utility to convert the first character of the string to uppercase.
 		 * @private
 		 */
 		private function ucfirst(body:String):String {
+			if (isConstantFormat(body)) {
+				return body;
+			}
+			
 			var result:Object = body.match(firstCharRegExp);
 			return body.replace(firstCharRegExp, result[1].toUpperCase());
 			//return body.substring(0, 1).toUpperCase() + body.substring(1); 
@@ -595,6 +613,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * @private
 		 */
 		private function lcfirst(body:String):String {
+			if (isConstantFormat(body)) {
+				return body;
+			}
+			
 			var result:Object = body.match(firstCharRegExp);
 			return body.replace(firstCharRegExp, result[1].toLowerCase());
 			//return body.substring(0, 1).toLowerCase() + body.substring(1);
