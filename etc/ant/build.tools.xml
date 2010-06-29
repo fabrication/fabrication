@@ -1,0 +1,181 @@
+<project name="build.tools">
+
+
+    <!--
+
+        Paths and tasks declarations
+
+    -->
+    <path id="antlib.path">
+        <fileset dir="${antlib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!--ant-contrib, flexunit nad SVN task definitions-->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="antlib.path"/>
+    <taskdef resource="flexUnitTasks.tasks" classpathref="antlib.path"/>
+    <taskdef name="gcupload" classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpathref="antlib.path"/>
+
+
+    <condition property="flex.mxmlc" value="${flex.home}/bin/mxmlc.exe" else="${flex.home}/bin/mxmlc">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.amxmlc" value="${flex.home}/bin/amxml.bat" else="${flex.home}/bin/amxmlc">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.compc" value="${flex.home}/bin/compc.exe" else="${flex.home}/bin/compc">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.acompc" value="${flex.home}/bin/acompc.bat" else="${flex.home}/bin/acompc">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.adl" value="${flex.home}/bin/adl.exe" else="${flex.home}/bin/adl">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.adt" value="${flex.home}/bin/adt.bat" else="${flex.home}/bin/adt">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.asdoc" value="${flex.home}/bin/asdoc.exe" else="${flex.home}/bin/asdoc">
+        <os family="windows"/>
+    </condition>
+    <condition property="flex.standalone.player" value="${flex.home}/runtimes/player/10/win/FlashPlayer.exe"
+               else="${flex.home}/runtimes/player/10/mac/Flash\ Player.app">
+        <os family="windows"/>
+    </condition>
+
+
+    <!-- ================================================================================================================================
+
+   MACROS
+
+   ================================================================================================================================ -->
+
+
+    <!--
+
+         FLEX.COMPILE
+
+         description:
+
+                This task is used to provide quick way for Flex/AIR applications compiling. All you have to
+                to is provide on or more config.xml files with all parameters you want to use in compile process
+
+         params:
+
+                air             [ true/false, default: false ]  - this has to be set to true when compiling AIR application
+                argline         [ default: "" ]                 - additional compiler params ( when needed to change dynamically )
+                config-files    [ REQUIRED ]                    - FileSet or FileList element with all config files that should be used
+
+    -->
+
+    <macrodef name="flex.compile">
+        <attribute name="air" default="false"/>
+        <attribute name="main.class"/>
+        <attribute name="output.swf"/>
+        <element name="args"/>
+        <sequential>
+            <if>
+                <equals arg1="@{air}" arg2="true"/>
+                <then>
+                    <var name="compiler" value="${flex.amxmlc}"/>
+                    <var name="sdk.config" value="air-config.xml"/>
+                </then>
+                <else>
+                    <var name="compiler" value="${flex.mxmlc}"/>
+                    <var name="sdk.config" value="flex-config.xml"/>
+                </else>
+            </if>
+            <exec executable="${compiler}" failonerror="true">
+                <arg line="-file-specs=@{main.class}"/>
+                <arg line="-output=@{output.swf}"/>
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="flex.compile.test.module">
+        <attribute name="module.src.path"/>
+        <sequential>
+            <path location="@{module.src.path}" id="moduleSrcPath"/>
+            <pathconvert property="module.src.file" refid="moduleSrcPath">
+                <chainedmapper>
+                    <globmapper from="${test.module.layouts.src.dir}${file.separator}" to=""/>
+                    <globmapper from="*.mxml" to="*"/>
+                </chainedmapper>
+            </pathconvert>
+            <flex.compile main.class="${test.module.layouts.src.dir}/${module.src.file}.mxml"
+                          output.swf="${tests.bin.dir}/modules/${module.src.file}.swf">
+                <args>
+                    <arg line="-sp+=${src.dir}"/>
+                    <arg line="-sp+=${tests.src.dir}"/>
+                    <arg line="-include-libraries+=${puremvc.lib}"/>
+                    <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
+                    <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
+                </args>
+            </flex.compile>
+            <echo file="${tests.bin.dir}/moduleLayouts.xml" append="true"
+                  message="&lt;module path='modules/${module.src.file}.swf'/&gt;"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="flex.run">
+        <attribute name="flex.standalone.player" default=""/>
+        <attribute name="swf.file"/>
+        <sequential>
+            <echo message="flex.run :: running @{swf.file}"/>
+            <exec executable="open" failonerror="true">
+                <arg line="@{flex.standalone.player}"/>
+                <arg line="@{swf.file}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="air.run">
+        <attribute name="descriptior.xml"/>
+        <sequential>
+            <echo message="air.run :: running @{descriptior.xml}"/>
+            <exec executable="${flex.adl}" failonerror="true">
+                <arg line="@{descriptior.xml}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="run.tests">
+        <sequential>
+            <flexunit>
+            </flexunit>
+        </sequential>
+    </macrodef>
+
+
+    <macrodef name="compile.fabrication.library">
+        <attribute name="air"/>
+        <attribute name="swc.name"/>
+        <attribute name="classes.list"/>
+
+        <sequential>
+            <if>
+                <equals arg1="@{air}" arg2="true"/>
+                <then>
+                    <var name="compiler" value="${flex.acompc}"/>
+                </then>
+                <else>
+                    <var name="compiler" value="${flex.compc}"/>
+                </else>
+            </if>
+
+            <exec executable="${compiler}" failonerror="true" failifexecutionfails="true">
+
+                <arg line="+flex.home=${flex.home}"/>
+                <arg line="-include-classes @{classes.list}"/>
+                <arg line="-load-config fabrication-config.xml"/>
+                <!--<arg line="-link-report=${dist.dir}/@{swc.name}.xml"/>-->
+                <arg line="-output ${bin.dir}/@{swc.name}"/>
+
+            </exec>
+        </sequential>
+    </macrodef>
+
+
+</project>

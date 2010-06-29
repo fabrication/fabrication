@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (C) 2010 Rafał Szemraj.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project name="fabrication.tests" default="main">
+
+    <!-- load user properties -->
+    <property file="user.properties"/>
+    <property file="project.properties"/>
+    <import file="${basedir}/etc/ant/build.tools.xml"/>
+
+    <property name="test.module.layouts.src.dir"
+              value="${basedir}/tests/org/puremvc/as3/multicore/utilities/fabrication/addons/layouts"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="tests.src.dir" value="${basedir}/tests"/>
+    <property name="tests.bin.dir" value="${bin.dir}/tests"/>
+
+
+    <target name="main">
+        <delete dir="${tests.bin.dir}"/>
+        <antcall target="compile.testRunner"/>
+        <antcall target="compile.testLayoutModules"/>
+        <antcall target="run.testRunner"/>
+        <antcall target="prepare.test.htmlView"/>
+    </target>
+
+
+    <target name="compile.testRunner">
+
+        <flex.compile main.class="${tests.src.dir}/FabricationTestRunner.mxml"
+                      output.swf="${tests.bin.dir}/FabricationTestRunner.swf"
+                      air="false">
+            <args>
+                <arg line="-sp+=${src.dir}"/>
+                <arg line="-sp+=${tests.src.dir}"/>
+                <arg line="-sp+=${tests.src.dir}"/>
+                <arg line="-l+=${puremvc.lib}"/>
+                <arg line="-l+=${flexunit.lib}"/>
+                <arg line="-l+=${mockas3.lib}"/>
+                <arg line="-keep-as3-metadata+=InjectProxy"/>
+                <arg line="-keep-as3-metadata+=InjectMediator"/>
+            </args>
+        </flex.compile>
+
+    </target>
+
+    <target name="compile.testLayoutModules">
+
+        <flex.compile air="false"
+                      main.class="${tests.src.dir}/org/puremvc/as3/multicore/utilities/fabrication/addons/module/EmptyFlexModule.mxml"
+                      output.swf="${tests.bin.dir}/modules/EmptyFlexModule.swf">
+            <args>
+                <arg line="-sp+=${tests.src.dir}"/>
+                <arg line="-sp+=${src.dir}"/>
+                <arg line="-l+=${puremvc.lib}"/>
+                <arg line="-l+=${flexunit.lib}"/>
+                <arg line="-l+=${mockas3.lib}"/>
+            </args>
+        </flex.compile>
+
+        <mkdir dir="${tests.bin.dir}/modules"/>
+        <echo file="${tests.bin.dir}/moduleLayouts.xml" append="false"
+              message="&lt;?xml version='1.0' encoding='UTF-8' standalone='no'?&gt;"/>
+        <echo file="${tests.bin.dir}/moduleLayouts.xml" append="true"
+              message="&lt;modules&gt;"/>
+        <foreach target="compile.test.layoutModule" param="module.src.path">
+            <fileset dir="${test.module.layouts.src.dir}">
+                <include name="**/*.mxml"/>
+            </fileset>
+        </foreach>
+        <echo file="${tests.bin.dir}/moduleLayouts.xml" append="true" message="&lt;/modules&gt;"/>
+    </target>
+
+
+    <target name="compile.test.layoutModule">
+        <flex.compile.test.module module.src.path="${module.src.path}"/>
+    </target>
+
+
+    <target name="run.testRunner">
+
+        <delete dir="${tests.bin.dir}/results"/>
+        <delete dir="${tests.bin.dir}/test_reports"/>
+        <mkdir dir="${tests.bin.dir}/results"/>
+        <mkdir dir="${tests.bin.dir}/test_reports"/>
+
+        <flexunit swf="${tests.bin.dir}/FabricationTestRunner.swf"
+                  toDir="${tests.bin.dir}/results"
+                  player="flash"
+                  haltonfailure="@{haltonfailure}"
+                  verbose="true"
+                  localtrusted="true"
+                  timeout="60000"/>
+        <fail if="flexunit.failed" message="Tests failed. Build aborted."/>
+        <junitreport todir="${tests.bin.dir}/test_reports">
+            <fileset dir="${tests.bin.dir}/results">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${tests.bin.dir}/test_reports"/>
+        </junitreport>
+    </target>
+
+    <target name="prepare.test.htmlView">
+
+        <mkdir dir="${tests.bin.dir}/swfobject"/>
+
+        <copy todir="${tests.bin.dir}/swfobject">
+            <fileset dir="${basedir}/etc/templates/swfobject" includes="**/*.*"/>
+        </copy>
+        <copy file="${basedir}/etc/templates/html_template.html" tofile="${tests.bin.dir}/index.html"/>
+        <replace file="${tests.bin.dir}/index.html" token="@project.output@" value="FabricationTestRunner.swf"/>
+        <replace file="${tests.bin.dir}/index.html" token="@project.name@" value="Fabrication Test Runner"/>
+        <replace file="${tests.bin.dir}/index.html" token="@project.output.width@" value="1000"/>
+        <replace file="${tests.bin.dir}/index.html" token="@project.output.height@" value="650"/>
+        <replace file="${tests.bin.dir}/index.html" token="@flashplayer.version@" value="10.0.0.0"/>
+
+    </target>
+
+</project>
