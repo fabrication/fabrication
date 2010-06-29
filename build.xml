@@ -142,8 +142,17 @@
                 <include name="etc/**"/>
                 <include name="*.xml"/>
                 <include name="COPYING"/>
-                <include name="**/*_license.txt"/>
                 <include name="project.properties"/>
+
+                <exclude name="**/*.swc"/>
+                <exclude name="bin/tests/results/*.*"/>
+                <exclude name="bin/tests/results"/>
+                <exclude name="bin/tests/reports/**/*.*"/>
+                <exclude name="bin/tests/reports/*.*"/>
+                <exclude name="bin/tests/reports"/>
+                <exclude name="bin/tests/swfobject/*.*"/>
+                <exclude name="bin/tests/swfobject"/>
+                <exclude name="bin/tests/index.html"/>
             </fileset>
             <fileset dir="${basedir}">
                 <include name="bin/fabrication-${fabrication.version}.swc"/>
@@ -157,9 +166,18 @@
         <ftp server="${blog.ftp.server}"
              userid="${blog.ftp.user}" password="${blog.ftp.password}"
              action="put"
-             remotedir="${blog.ftp.remotedir}">
+             remotedir="${blog.ftp.remotedir}/tests">
             <fileset dir="${bin.dir}/tests">
                <exclude  name="results/*.*"/>
+            </fileset>
+        </ftp>
+
+        <ftp server="${blog.ftp.server}"
+             userid="${blog.ftp.user}" password="${blog.ftp.password}"
+             action="put"
+             remotedir="${blog.ftp.remotedir}/api">
+            <fileset dir="${doc.dir}">
+               <include  name="public/*.*"/>
             </fileset>
         </ftp>
 

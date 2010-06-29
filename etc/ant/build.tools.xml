@@ -109,7 +109,7 @@
                 <args>
                     <arg line="-sp+=${src.dir}"/>
                     <arg line="-sp+=${tests.src.dir}"/>
-                    <arg line="-include-libraries+=${puremvc.lib}"/>
+                    <arg line="-external-library-path ${puremvc.lib}"/>
                     <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
                     <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
                 </args>

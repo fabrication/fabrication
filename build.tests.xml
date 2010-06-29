@@ -93,9 +93,9 @@
     <target name="run.testRunner">
 
         <delete dir="${tests.bin.dir}/results"/>
-        <delete dir="${tests.bin.dir}/test_reports"/>
+        <delete dir="${tests.bin.dir}/reports"/>
         <mkdir dir="${tests.bin.dir}/results"/>
-        <mkdir dir="${tests.bin.dir}/test_reports"/>
+        <mkdir dir="${tests.bin.dir}/reports"/>
 
         <flexunit swf="${tests.bin.dir}/FabricationTestRunner.swf"
                   toDir="${tests.bin.dir}/results"
@@ -105,11 +105,11 @@
                   localtrusted="true"
                   timeout="60000"/>
         <fail if="flexunit.failed" message="Tests failed. Build aborted."/>
-        <junitreport todir="${tests.bin.dir}/test_reports">
+        <junitreport todir="${tests.bin.dir}/reports">
             <fileset dir="${tests.bin.dir}/results">
                 <include name="TEST-*.xml"/>
             </fileset>
-            <report format="frames" todir="${tests.bin.dir}/test_reports"/>
+            <report format="frames" todir="${tests.bin.dir}/reports"/>
         </junitreport>
     </target>
 
