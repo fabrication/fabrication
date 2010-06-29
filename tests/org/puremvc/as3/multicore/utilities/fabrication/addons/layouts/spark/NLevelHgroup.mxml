@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fab:LayoutModule
+        xmlns:fab="org.puremvc.as3.multicore.utilities.fabrication.addons.layouts.*"
+        xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:s="library://ns.adobe.com/flex/spark">
+    <fx:Script>
+		<![CDATA[
+
+
+        public function get routes():Array
+        {
+            return [
+                {id:"harry", path:"0.0.0.0.0.0.0.harry", expr:self..harry, component:harry},
+                {id:"ron", path:"0.1.0.0.0.0.0.ron", expr:self..ron, component:ron},
+                {id:"hermione", path:"0.2.0.0.0.0.0.hermione", expr:self..hermione, component:hermione}
+            ];
+        }
+						
+		]]>
+	</fx:Script>
+    <s:VGroup>
+        <s:VGroup>
+            <s:VGroup>
+                <s:VGroup>
+                    <s:VGroup>
+                        <s:VGroup>
+                            <s:VGroup>
+                                <s:Button id="harry" label="harry"/>
+                            </s:VGroup>
+                        </s:VGroup>
+                    </s:VGroup>
+                </s:VGroup>
+            </s:VGroup>
+        </s:VGroup>
+        <s:VGroup>
+            <s:VGroup>
+                <s:VGroup>
+                    <s:VGroup>
+                        <s:VGroup>
+                            <s:VGroup>
+                                <s:Button id="ron" label="ron"/>
+                            </s:VGroup>
+                        </s:VGroup>
+                    </s:VGroup>
+                </s:VGroup>
+            </s:VGroup>
+        </s:VGroup>
+        <s:VGroup>
+            <s:VGroup>
+                <s:VGroup>
+                    <s:VGroup>
+                        <s:VGroup>
+                            <s:VGroup>
+                                <s:Button id="hermione" label="hermione"/>
+                            </s:VGroup>
+                        </s:VGroup>
+                    </s:VGroup>
+                </s:VGroup>
+            </s:VGroup>
+        </s:VGroup>
+    </s:VGroup>
+</fab:LayoutModule>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fab:LayoutModule
+	xmlns:fab="org.puremvc.as3.multicore.utilities.fabrication.addons.layouts.*"
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark">
+	<fx:Script>
+		<![CDATA[
+
+
+        public function get routes():Array
+        {
+            return [
+                {id:"hagrid", path:"0.0.0.0.0.hagrid", expr:self..hagrid, component:hagrid},
+                {id:"harry", path:"0.0.0.0.0.0.0.harry", expr:self..harry, component:harry},
+                {id:"ron", path:"0.1.0.0.0.0.0.ron", expr:self..ron, component:ron},
+                {id:"hermione", path:"0.2.0.0.0.0.0.hermione", expr:self..hermione, component:hermione},
+                {id:"dumbledore", path:"0.1.0.0.dumbledore", expr:self..dumbledore, component:dumbledore},
+                {id:"ginny", path:"0.2.0.ginny", expr:self..ginny, component:ginny}
+            ];
+        }
+						
+		]]>
+	</fx:Script>
+	<s:HGroup>
+		<s:HGroup>
+			<s:HGroup>
+				<s:HGroup>
+					<s:HGroup>
+						<s:HGroup>
+							<s:HGroup>
+								<s:Label id="harry" text="harry" />
+							</s:HGroup>
+						</s:HGroup>
+						<s:Label id="hagrid" name="Hagrid" text="hagrid" />
+					</s:HGroup>
+				</s:HGroup>
+			</s:HGroup>
+		</s:HGroup>
+		<s:HGroup>
+			<s:HGroup>
+				<s:HGroup>
+					<s:HGroup>
+						<s:HGroup>
+							<s:HGroup>
+								<s:Label id="ron" text="ron" />
+							</s:HGroup>
+						</s:HGroup>
+					</s:HGroup>
+					<s:Label id="dumbledore" name="Dumbledore" text="dumbledore" />
+				</s:HGroup>
+			</s:HGroup>
+		</s:HGroup>
+		<s:HGroup>
+			<s:HGroup>
+				<s:HGroup>
+					<s:HGroup>
+						<s:HGroup>
+							<s:HGroup>
+								<s:Label id="hermione" text="hermione" />
+							</s:HGroup>
+						</s:HGroup>
+					</s:HGroup>
+				</s:HGroup>
+				<s:Label id="ginny" name="Ginny" text="ginny" />
+			</s:HGroup>
+		</s:HGroup>
+	</s:HGroup>
+</fab:LayoutModule>

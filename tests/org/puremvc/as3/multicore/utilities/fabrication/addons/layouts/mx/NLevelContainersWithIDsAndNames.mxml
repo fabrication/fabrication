@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fab:LayoutModule
+	xmlns:fab="org.puremvc.as3.multicore.utilities.fabrication.addons.layouts.*"
+	xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+
+
+        public function get routes():Array
+        {
+            return [
+                {id:"hagrid", path:"0.0.0.0.0.hagrid", expr:self..hagrid, component:hagrid},
+                {id:"harry", path:"0.0.0.0.0.0.0.harry", expr:self..harry, component:harry},
+                {id:"ron", path:"0.1.0.0.0.0.0.ron", expr:self..ron, component:ron},
+                {id:"hermione", path:"0.2.0.0.0.0.0.hermione", expr:self..hermione, component:hermione},
+                {id:"dumbledore", path:"0.1.0.0.dumbledore", expr:self..dumbledore, component:dumbledore},
+                {id:"ginny", path:"0.2.0.ginny", expr:self..ginny, component:ginny}
+            ];
+        }
+						
+		]]>
+	</mx:Script>
+	<mx:HBox>
+		<mx:HBox>
+			<mx:HBox>
+				<mx:HBox>
+					<mx:HBox>
+						<mx:HBox>
+							<mx:HBox>
+								<mx:Label id="harry" text="harry" />
+							</mx:HBox>
+						</mx:HBox>
+						<mx:Label id="hagrid" name="Hagrid" text="hagrid" />
+					</mx:HBox>
+				</mx:HBox>
+			</mx:HBox>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:HBox>
+				<mx:HBox>
+					<mx:HBox>
+						<mx:HBox>
+							<mx:HBox>
+								<mx:Label id="ron" text="ron" />
+							</mx:HBox>
+						</mx:HBox>
+					</mx:HBox>
+					<mx:Label id="dumbledore" name="Dumbledore" text="dumbledore" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:HBox>
+				<mx:HBox>
+					<mx:HBox>
+						<mx:HBox>
+							<mx:HBox>
+								<mx:Label id="hermione" text="hermione" />
+							</mx:HBox>
+						</mx:HBox>
+					</mx:HBox>
+				</mx:HBox>
+				<mx:Label id="ginny" name="Ginny" text="ginny" />
+			</mx:HBox>
+		</mx:HBox>
+	</mx:HBox>
+</fab:LayoutModule>

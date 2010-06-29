@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fab:FlexModule
+	xmlns:fab="org.puremvc.as3.multicore.utilities.fabrication.components.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Text text="Empty Flex Module for use inside unit tests"/>
+	
+	<mx:Script>
+		<![CDATA[
+			
+			override public function getStartupCommand():Class {
+				return EmptyFlexModuleStartupCommand;		
+			}
+			
+		]]>
+	</mx:Script>
+	
+</fab:FlexModule>
