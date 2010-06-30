@@ -18,20 +18,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
     import org.puremvc.as3.multicore.interfaces.IAsyncCommand;
     import org.puremvc.as3.multicore.interfaces.INotification;
 
+    /**
+	 * AsyncFabricationCommand extends SimpleFabricationCommand and implements IAsyncCommand
+	 * @author Rafa? Szemraj
+	 */
     public class AsyncFabricationCommand extends SimpleFabricationCommand implements IAsyncCommand {
 
         private var onComplete:Function;
 
-        public function AsyncFabricationCommand()
-        {
-            super();
-        }
-
+        /**
+		 * Registers the callback for a parent <code>AsyncMacroCommand</code>.
+		 * @param value	The <code>AsyncMacroCommand</code> method to call on completion
+		 */
         public function setOnComplete(value:Function):void
         {
             onComplete = value;
         }
 
+        /**
+		 * Notify the parent <code>AsyncMacroCommand</code> that this command is complete.
+		 * <P>
+		 * Call this method from your subclass to signify that your asynchronous command
+		 * has finished.</P>
+		 */   
         protected function commandComplete():void {
 
             onComplete();
