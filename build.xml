@@ -159,6 +159,18 @@
             </fileset>
         </zip>
 
+        <zip destfile="${dist.dir}/fabrication-api-full.zip">
+            <fileset dir="${asdoc.full.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </zip>
+
+        <zip destfile="${dist.dir}/fabrication-api-public.zip">
+            <fileset dir="${asdoc.public.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </zip>
+
     </target>
 
     <target name="publish.to.blog">
@@ -166,18 +178,22 @@
         <ftp server="${blog.ftp.server}"
              userid="${blog.ftp.user}" password="${blog.ftp.password}"
              action="put"
-             remotedir="${blog.ftp.remotedir}/tests">
+             remotedir="${blog.ftp.remotedir}/tests" newer="true">
             <fileset dir="${bin.dir}/tests">
-               <exclude  name="results/*.*"/>
+                <exclude name="results/**/*.*"/>
             </fileset>
         </ftp>
 
         <ftp server="${blog.ftp.server}"
              userid="${blog.ftp.user}" password="${blog.ftp.password}"
              action="put"
-             remotedir="${blog.ftp.remotedir}/api">
+             remotedir="${blog.ftp.remotedir}/api" newer="true">
             <fileset dir="${doc.dir}">
-               <include  name="public/*.*"/>
+                <include name="public/**/*.*"/>
+                <include name="full/**/*.*"/>
+            </fileset>
+            <fileset dir="${dist.dir}">
+                <include name="fabrication-api*.zip"/>
             </fileset>
         </ftp>
 
