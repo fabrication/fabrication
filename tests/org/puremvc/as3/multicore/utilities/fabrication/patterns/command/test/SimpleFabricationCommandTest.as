@@ -36,8 +36,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
 		override public function createCommand():ICommand {
 			return new SimpleFabricationCommandTestMock();
 		}
-		
-		public function testSimpleFabricationCommandHasValidType():void {
+
+        [Test]
+		public function simpleFabricationCommandHasValidType():void {
 			assertType(SimpleFabricationCommand, command);
 			assertType(SimpleCommand, command);
 			assertType(IDisposable, command);

@@ -1,5 +1,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import org.puremvc.as3.multicore.utilities.fabrication.injection.test.ClassInfoTest;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.test.InjectorTest;
 
     [Suite]
     [RunWith( "org.flexunit.runners.Suite" )]
@@ -7,6 +8,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
 
         public var classInfoTest:ClassInfoTest;
+        public var injectorTest:InjectorTest;
 
     }
 }

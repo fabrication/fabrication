@@ -1,8 +1,11 @@
 package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
+    import flash.utils.getDefinitionByName;
+
     import org.puremvc.as3.multicore.utilities.fabrication.addons.BaseTestCase;
     import org.puremvc.as3.multicore.utilities.fabrication.addons.InjectionClientClass;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ClassInfo;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.Injector;
 
     public class ClassInfoTest extends BaseTestCase {
         private var clientInstance:InjectionClientClass;
@@ -21,10 +24,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         {
 
 
-            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_PROXY);
+            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_PROXY);
             assertEquals(2, proxies.length);
 
-            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_MEDIATOR);
+            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_MEDIATOR);
             assertEquals(2, mediators.length);
 
 
@@ -35,12 +38,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         {
 
             var injectedField:InjectionField;
-            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_PROXY);
+            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_PROXY);
 
             var proxyByNameAndType:InjectionField = new InjectionField();
             proxyByNameAndType.fieldName = "proxyByNameAndType";
-            proxyByNameAndType.fieldType = "org.puremvc.as3.multicore.interfaces::IProxy";
-            proxyByNameAndType.fieldTypeIsInterface = true;
+            proxyByNameAndType.elementClass = getDefinitionByName( "org.puremvc.as3.multicore.interfaces.IProxy" ) as Class;
+            proxyByNameAndType.elementTypeIsInterface = true;
             proxyByNameAndType.elementName = "MyProxy";
 
             var exists:Boolean;
@@ -52,12 +55,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
             }
             assertTrue(exists);
 
-            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_MEDIATOR);
+            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_MEDIATOR);
 
             var mediatorByNameAndType:InjectionField = new InjectionField();
             mediatorByNameAndType.fieldName = "mediatorByNameAndType";
-            mediatorByNameAndType.fieldType = "org.puremvc.as3.multicore.interfaces::IMediator";
-            mediatorByNameAndType.fieldTypeIsInterface = true;
+            mediatorByNameAndType.elementClass = getDefinitionByName( "org.puremvc.as3.multicore.interfaces.IMediator" ) as Class;
+            mediatorByNameAndType.elementTypeIsInterface = true;
             mediatorByNameAndType.elementName = "MyMediator";
 
             exists = false;
@@ -78,12 +81,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         {
 
             var injectedField:InjectionField;
-            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_PROXY);
+            var proxies:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_PROXY);
 
             var proxyByClass:InjectionField = new InjectionField();
             proxyByClass.fieldName = "proxyByClass";
-            proxyByClass.fieldType = "org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy::FabricationProxy";
-            proxyByClass.fieldTypeIsInterface = false;
+            proxyByClass.elementClass = getDefinitionByName( "org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy" ) as Class;
+            proxyByClass.elementTypeIsInterface = false;
 
             var exists:Boolean;
             for each(injectedField in proxies) {
@@ -94,12 +97,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
             }
             assertTrue(exists);
 
-            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(ClassInfo.INJECT_MEDIATOR);
+            var mediators:Vector.<InjectionField> = classInfo.getInjectionFieldsByInjectionType(Injector.INJECT_MEDIATOR);
 
             var mediatorByClass:InjectionField = new InjectionField();
             mediatorByClass.fieldName = "mediatorByClass";
-            mediatorByClass.fieldType = "org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator::FabricationMediator";
-            mediatorByClass.fieldTypeIsInterface = false;
+            mediatorByClass.elementClass = getDefinitionByName( "org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FabricationMediator" ) as Class;
+            mediatorByClass.elementTypeIsInterface = false;
 
             exists = false;
             for each(injectedField in mediators) {
@@ -124,9 +127,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         private function comapreFields(field1:InjectionField, field2:InjectionField):Boolean
         {
             return field1.fieldName == field2.fieldName &&
-                   field1.fieldType == field2.fieldType &&
+                   field1.elementClass == field2.elementClass &&
                    field1.elementName == field2.elementName &&
-                   field1.fieldTypeIsInterface == field2.fieldTypeIsInterface;
+                   field1.elementTypeIsInterface == field2.elementTypeIsInterface;
         }
 
     }
