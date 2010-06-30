@@ -32,6 +32,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         public function tearDown():void
         {
 
+            facade = null;
             context = null;
             proxyInjector = null;
             mediatorInjector = null;

@@ -6,6 +6,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.addons {
 
     public class InjectionClientClass {
 
+        public static const NAME:String = "InjectionClientClass_NAME";
 
         [InjectProxy(name="MyProxy")]
         public var proxyByNameAndType:IProxy;
