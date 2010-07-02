@@ -36,9 +36,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         private static var CACHED_CONTEXT_INJECTION_DATA:Dictionary = new Dictionary();
 
-        public function Injector( facade:IFacade, context:*, injectionMetadataTagName:String)
+        public function Injector(facade:IFacade, context:*, injectionMetadataTagName:String)
         {
-            super( context );
+            super(context);
             this.facade = facade;
             this.injectionMetadataTagName = injectionMetadataTagName;
 
@@ -76,7 +76,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             for (var i:int = 0; i < injectionDataLength; ++i) {
 
                 var fieldName:String = processSingleField(contextInjectionData[ i ] as InjectionField, preprocessFields);
-                if( fieldName )
+                if (fieldName)
                     fieldNames[ fieldNames.length ] = fieldName;
             }
             return fieldNames;
@@ -125,14 +125,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             //            logger.error("field [ " + fieldName + " ] is typed as interface, so name for [ " + injectionMetadataTagName + " ] MUST be given.");
         }
 
-         /**
+        /**
          * Returns name of element to be injected
          * @param injectionField field instance to process
          * @param tagName name of injection tag
          */
-        protected function getElementName(injectionField:InjectionField ):String
+        protected function getElementName(injectionField:InjectionField):String
         {
-            return injectionField.elementName;
+            var name:String = injectionField.elementName;
+            if (name == null && !injectionField.elementTypeIsInterface)
+                name = injectionField.elementClass['NAME'];
+            return name;
         }
 
 
@@ -148,9 +151,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
 
             if (preprocessFields) {
-                
+
                 // retrieve element name
-                var elementName:String = getElementName( injectionField );
+                var elementName:String = getElementName(injectionField);
                 if (elementName && !elementExist(elementName)) {
 
                     onNoPatternElementAvaiable(elementName);
@@ -196,8 +199,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
                     var field:InjectionField = new InjectionField();
                     field.fieldName = "" + variable.@name;
-                    field.elementClass = getClass( ""+variable.@type );
-                    field.elementTypeIsInterface = checkTypeIsIneterface( field.elementClass );
+                    field.elementClass = getClass("" + variable.@type);
+                    field.elementTypeIsInterface = checkTypeIsIneterface(field.elementClass);
                     metadataName = metadata.arg.(attribute("key") == "name" )[0] as XML;
                     if (metadataName) {
 

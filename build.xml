@@ -67,8 +67,18 @@
         </fileset>
 
 
-        <compile.fabrication.library air="true" swc.name="fabrication_air.swc" classes.list="${all}"/>
-        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}"/>
+        <compile.fabrication.library air="true" swc.name="fabrication_air.swc" classes.list="${all}">
+            <namespace>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-air-manifest.xml"/>
+                <arg line="-include-namespaces ${fabrication.namespace}"/>
+            </namespace>
+        </compile.fabrication.library>
+        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}">
+            <namespace>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-manifest.xml"/>
+                <arg line="-include-namespaces ${fabrication.namespace}"/>
+            </namespace>
+        </compile.fabrication.library>
         <compile.fabrication.library air="false" swc.name="fabrication_as3.swc" classes.list="${no_air_flex}"/>
 
 
