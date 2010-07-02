@@ -15,7 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;	
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
@@ -31,7 +32,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 	 * FabricationProxy is the base Proxy class for fabrication proxies.
 	 * It provides part name based notifications.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FabricationProxy extends Proxy implements IDisposable {
 
@@ -67,19 +68,44 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		 */
 		protected var proxyNameCache:HashMap;
 
+        /**
+         * Names of injected properites
+         */
+        protected var injectionFieldsNames:Vector.<String>;
+
 		/**
 		 * Creates a new FabricationProxy object.
 		 */
 		public function FabricationProxy(name:String = null, data:Object = null) {
 			super(name, data);
 		}
-		
-		/**
+
+
+        /**
+         * @inheritDoc
+         */
+        override public function onRegister():void
+        {
+            super.onRegister();
+            performInjections();
+        }
+
+
+        /**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
 			data = null;
 			proxyNameCache = null;
+            if (injectionFieldsNames) {
+                var injectedFieldsNum:uint = injectionFieldsNames.length;
+                for (var i:int = 0; i < injectedFieldsNum; i++) {
+
+                    var fieldName:String = ""+injectionFieldsNames[i];
+                    this[ fieldName ] = null;
+                }
+                injectionFieldsNames = null;
+            }
 		}
 		
 		/**
@@ -171,6 +197,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 			}
 		}
 
+        /**
+         * Alias to facade.notifiObservers method. Also sends a NOTIFICATION_FROM_PROXY
+		 * system notification which can be used by mediators to listen
+		 * to a mediators notification using respondToProxyName methods.  
+		 */
+        public function notifyObservers( notification:INotification ):void {
+              if( fabFacade != null ) {
+
+                  fabFacade.notifyObservers( notification );
+                  super.sendNotification( NOTIFICATION_FROM_PROXY, notification, getProxyName() );
+
+              }
+        }
+
 		/**
 		 * Overrides initializeNotifier to create the proxy name cache.
 		 */
@@ -211,5 +251,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 		protected function getCachedDefaultProxyName():String {
 			return proxyNameCache.find(getQualifiedClassName(this)) as String;
 		}
+
+        /**
+         * Performs injection action on current Proxy.
+         * By convention we allow only proxies injection on
+         * FabricationProxy instance
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector
+         */
+        protected function performInjections():void
+        {
+            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
+        }
 	}
 }

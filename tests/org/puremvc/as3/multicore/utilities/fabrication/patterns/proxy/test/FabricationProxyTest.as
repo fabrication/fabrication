@@ -17,7 +17,10 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
     import flash.utils.getQualifiedClassName;
 
+    import mx.utils.UIDUtil;
+
     import org.puremvc.as3.multicore.interfaces.INotification;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.observer.Notification;
     import org.puremvc.as3.multicore.patterns.proxy.Proxy;
     import org.puremvc.as3.multicore.utilities.fabrication.addons.BaseTestCase;
@@ -34,7 +37,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
      */
     public class FabricationProxyTest extends BaseTestCase {
 
-        public var proxy:FabricationProxy;
+        public var proxy:FabricationProxyTestMock;
         public var facade:FacadeMock;
         public var fabrication:FabricationMock;
 
@@ -203,6 +206,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
             }
 
             verifyMock(fabrication.mock);
+        }
+
+        [Test]
+        public function proxyInjection():void {
+
+            facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
+            facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+
+            var proxyWithInjection:FabricationProxyTestMock = new FabricationProxyTestMock( instanceName );
+            proxyWithInjection.initializeNotifier(instanceName + "_setup");
+            proxyWithInjection.onRegister();
+            assertNotNull( proxyWithInjection.injectedProxy );
+            assertTrue( FabricationProxy, proxyWithInjection.injectedProxy );
+
+            assertNotNull( proxyWithInjection.injectedProxyByName );
+            assertTrue( IProxy, proxyWithInjection.injectedProxy );
+
+            proxyWithInjection.dispose();
+            assertNull( proxyWithInjection.injectedProxy );
+            assertNull( proxyWithInjection.injectedProxyByName );
+
+            verifyMock( facade.mock );
         }
     }
 }

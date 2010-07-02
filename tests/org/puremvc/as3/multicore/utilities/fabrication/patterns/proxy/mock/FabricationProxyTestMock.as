@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.mock {
     import com.anywebcam.mock.Mock;
 
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.addons.IMockable;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.*;
 
@@ -24,7 +25,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.mock {
 	 * @author Darshan Sawardekar
 	 */
 	public class FabricationProxyTestMock extends FabricationProxy implements IMockable {
-		
+
+
+        [InjectProxy]
+        public var injectedProxy:FabricationProxy;
+
+        [InjectProxy(name="MyProxy")]
+        public var injectedProxyByName:IProxy;
+
 		static public const NAME:String = "FabricatonTestMockProxy";
 		private var _mock:Mock;
 		

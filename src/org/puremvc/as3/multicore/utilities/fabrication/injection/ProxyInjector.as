@@ -62,19 +62,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             return proxy;
         }
 
-        /**
-         * Returns name of element to be injected. Because here we are looking for registered proxy
-         * we can ommit metadata "name" param and try to retrieve proxy by static NAME property of
-         * field class
-         * @param field field instance to process
-         */
-        override protected function getElementName(field:InjectionField ):String
-        {
-            var name:String = super.getElementName(field);
-            if (name == null && !field.elementTypeIsInterface )
-                name = field.elementClass['NAME'];
-            return name;
-        }
+//        /**
+//         * Returns name of element to be injected. Because here we are looking for registered proxy
+//         * we can ommit metadata "name" param and try to retrieve proxy by static NAME property of
+//         * field class
+//         * @param field field instance to process
+//         */
+//        override protected function getElementName(field:InjectionField ):String
+//        {
+//            var name:String = super.getElementName(field);
+//            if (name == null && !field.elementTypeIsInterface )
+//                name = field.elementClass['NAME'];
+//            return name;
+//        }
 
 
     }
