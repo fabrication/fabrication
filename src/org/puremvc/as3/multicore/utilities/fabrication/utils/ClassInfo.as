@@ -1,55 +1,51 @@
-package org.puremvc.as3.multicore.utilities.fabrication.injection {
+/**
+ * Copyright (C) 2010 Rafał Szemraj.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.puremvc.as3.multicore.utilities.fabrication.utils {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
     import flash.utils.getQualifiedClassName;
 
+    /**
+	 * Utility to gather class info accross domains.
+	 *
+	 * @author Rafał Szemraj
+	 */
     public class ClassInfo {
 
 
-        private var description:XML;
+        protected var description:XML;
         private var _clazz:Class;
+        protected var context:*;
 
 
         public function ClassInfo(context:*, applicationDomain:ApplicationDomain = null)
         {
 
+            this.context = context;
             description = describeType(getClass(context, applicationDomain));
 
         }
 
-
-        public function getInjectionFieldsByInjectionType(injectionType:String):Vector.<InjectionField>
-        {
-
-            var fields:Vector.<InjectionField> = new Vector.<InjectionField>();
-
-            var variables:XMLList = description..variable;
-            var metadata:XML;
-            var metadataName:XML;
-            for each(var variable:XML in variables) {
-
-                metadata = variable.metadata.(@name == injectionType )[0] as XML;
-                if (metadata) {
-
-                    var field:InjectionField = new InjectionField();
-                    field.fieldName = "" + variable.@name;
-                    field.elementClass = getClass( ""+variable.@type );
-                    field.elementTypeIsInterface = checkTypeIsIneterface( field.elementClass );
-                    metadataName = metadata.arg.(attribute("key") == "name" )[0] as XML;
-                    if (metadataName) {
-
-                        field.elementName = "" + metadataName.@value;
-                    }
-                    fields.push(field)
-                }
-
-            }
-            return fields;
-
-
-        }
-
-        private function checkTypeIsIneterface(type:Class):Boolean
+        /**
+         * Checks if given type is interface
+         * @param type type to check
+         * @return <b>true</b> if type is interface, otherwise <b>false</b>
+         */
+        public static function checkTypeIsIneterface(type:Class):Boolean
         {
 
             var typeDescription:XML = describeType( type );
@@ -57,7 +53,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         }
 
-        private function getClass(context:*, applicationDomain:ApplicationDomain = null):Class
+        /**
+         * Returns class instance for given context and application domain ( optionally )
+         * @param context object or sting ( type name )
+         * @param applicationDomain application domain object ( optional )
+         * @return
+         */
+        protected function getClass(context:*, applicationDomain:ApplicationDomain = null):Class
         {
 
             if (context is Class) {
@@ -69,7 +71,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             else {
                 applicationDomain = (applicationDomain == null) ? ApplicationDomain.currentDomain : applicationDomain;
                 var className:String = context is String ? "" + context : getQualifiedClassName(context);
-
+                
                 if (!applicationDomain) {
                     applicationDomain = ApplicationDomain.currentDomain;
                 }
@@ -93,6 +95,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             return clazz;
         }
 
+        /**
+         * Returns resolved class Object
+         * @return Class object
+         */
         public function get clazz():Class
         {
             return _clazz;

@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2010 Rafał Szemraj, ( http://szemraj.eu )
+/**
+ * Copyright (C) 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,30 +19,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import flash.utils.getQualifiedClassName;
 
     import org.puremvc.as3.multicore.interfaces.IFacade;
+    import org.puremvc.as3.multicore.utilities.fabrication.utils.ClassInfo;
 
     /**
      * Injector is utility that performs dependency injections on given context.
      * Type of injection depends on injction metatag name
      * @author Rafał Szemraj
      */
-    public class Injector {
+    public class Injector extends ClassInfo {
 
         public static const INJECT_PROXY:String = "InjectProxy";
         public static const INJECT_MEDIATOR:String = "InjectMediator";
 
         protected var facade:IFacade;
-        protected var context:*;
         protected var injectionMetadataTagName:String;
 
         private static var CACHED_CONTEXT_INJECTION_DATA:Dictionary = new Dictionary();
-        /* of InjectionVO */
-
 
         public function Injector( facade:IFacade, context:*, injectionMetadataTagName:String)
         {
-
+            super( context );
             this.facade = facade;
-            this.context = context;
             this.injectionMetadataTagName = injectionMetadataTagName;
 
         }
@@ -65,7 +62,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
                 // there is no cached injection data, so process current class
 
                 contextInjectionData = new Vector.<InjectionField>();
-                var injectionFields:Vector.<InjectionField> = ( new ClassInfo(context) ).getInjectionFieldsByInjectionType(injectionMetadataTagName);
+                var injectionFields:Vector.<InjectionField> = getInjectionFieldsByInjectionType(injectionMetadataTagName);
                 for each(injectionField in injectionFields) {
 
                     contextInjectionData[ contextInjectionData.length ] = injectionField;
@@ -176,6 +173,43 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             else
                 onNoPatternElementAvaiable(elementName);
             return injectionField.fieldName;
+        }
+
+        /**
+         * Returns info about context properties described by injection metatag
+         * @param injectionType type of injection ( metatag name )
+         * @return Vector instance of InjectionField elements
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField
+         */
+        public function getInjectionFieldsByInjectionType(injectionType:String):Vector.<InjectionField>
+        {
+
+            var fields:Vector.<InjectionField> = new Vector.<InjectionField>();
+
+            var variables:XMLList = description..variable;
+            var metadata:XML;
+            var metadataName:XML;
+            for each(var variable:XML in variables) {
+
+                metadata = variable.metadata.(@name == injectionType )[0] as XML;
+                if (metadata) {
+
+                    var field:InjectionField = new InjectionField();
+                    field.fieldName = "" + variable.@name;
+                    field.elementClass = getClass( ""+variable.@type );
+                    field.elementTypeIsInterface = checkTypeIsIneterface( field.elementClass );
+                    metadataName = metadata.arg.(attribute("key") == "name" )[0] as XML;
+                    if (metadataName) {
+
+                        field.elementName = "" + metadataName.@value;
+                    }
+                    fields.push(field)
+                }
+
+            }
+            return fields;
+
+
         }
 
 
