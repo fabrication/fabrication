@@ -17,6 +17,10 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
     import mx.core.UIComponent;
 
+    import mx.utils.UIDUtil;
+
+    import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.*;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorTestMock;
@@ -24,6 +28,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 
     /**
@@ -144,6 +149,43 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
 
             flexMediator.dispose();
             assertTrue(flexMediator.disposed);
+        }
+
+        [Test]
+        public function mediaorInjection():void {
+
+            facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
+            facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "hasMediator" ).withArgs( "MyMediator" ).returns( true );
+            facade.mock.method( "hasMediator" ).withArgs( "FlexMediator" ).returns( true );
+            facade.mock.method( "retrieveMediator" ).withArgs( "MyMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "retrieveMediator" ).withArgs( "FlexMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method("getFabrication").withNoArgs.returns(fabrication).atLeast(1);
+
+            var component:UIComponent = new UIComponent();
+            var mediatorWithInjection:FlexMediatorTestMock = new FlexMediatorTestMock( instanceName );
+            mediatorWithInjection.setViewComponent( component );            
+            mediatorWithInjection.initializeNotifier(multitonKey);
+            mediatorWithInjection.onRegister();
+            assertNotNull( mediatorWithInjection.injectedProxy );
+            assertTrue( FabricationProxy, mediatorWithInjection.injectedProxy );
+
+            assertNotNull( mediatorWithInjection.injectedMediator );
+            assertTrue( FabricationMediator, mediatorWithInjection.injectedMediator );
+
+            assertNotNull( mediatorWithInjection.injectedProxyByName );
+            assertTrue( IProxy, mediatorWithInjection.injectedProxy );
+
+            assertNotNull( mediatorWithInjection.injectedMediatorByName );
+            assertTrue( IMediator, mediatorWithInjection.injectedMediatorByName );
+
+            mediatorWithInjection.dispose();
+            assertNull( mediatorWithInjection.injectedProxy );
+            assertNull( mediatorWithInjection.injectedProxyByName );
+            assertNull( mediatorWithInjection.injectedMediator );
+            assertNull( mediatorWithInjection.injectedMediatorByName );
+
+            verifyMock( facade.mock );
         }
 
     }

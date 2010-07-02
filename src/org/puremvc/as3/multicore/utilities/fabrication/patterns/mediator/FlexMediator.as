@@ -17,7 +17,9 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FabricationMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
@@ -64,6 +66,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		protected var routeMapper:ComponentRouteMapper;
 
+        /**
+         * Names of injected properites
+         */
+        protected var injectionFieldsNames:Vector.<String>;
+
 		/**
 		 * Creates a new FlexMediator object and initializes the registrars.
 		 */
@@ -72,8 +79,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			registrars = new Array();
 		}
-		
-		/**
+
+        /**
+         * @inheritDoc
+         */
+        override public function onRegister():void
+        {
+            super.onRegister();
+            performInjections();
+        }
+
+        /**
 		 * Removes the registrars used by the mediator.
 		 * 
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
@@ -99,7 +115,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			registrars = null;
 			routeMapper = null;
-			
+
+            if (injectionFieldsNames) {
+                var injectedFieldsNum:uint = injectionFieldsNames.length;
+                for ( i = 0; i < injectedFieldsNum; i++) {
+
+                    var fieldName:String = ""+injectionFieldsNames[i];
+                    this[ fieldName ] = null;
+                }
+                injectionFieldsNames = null;
+            }
+
 			super.dispose();
 		}
 		
@@ -238,6 +264,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			//var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
 			//trace("AutoRegistration removed for mediator " + event.mediator.getMediatorName());
 		}
+
+        /**
+         * Performs injection action on current FlexMediator.
+         * By convention we allow proxies and mediators injection on
+         * FlexMediator instance
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector
+         */
+        protected function performInjections():void
+        {
+            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
+        }
 		
 	}
 }
