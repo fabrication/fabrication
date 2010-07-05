@@ -497,16 +497,27 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				patternList.push(extractRegExp);
 			}
 
+            accessorMethodsCount++;
+            patternList.push( /^(reactTo|trap)([a-zA-Z0-9]+)\$(.*)$/ );
+
+            var reactionCreated:Boolean = false;
 			for (i = 0;i < reactionMethodsCount; i++) {
 				handlerName = reactionMethods[i].@name;
+                reactionCreated = false;
 				for (j = 0;j < accessorMethodsCount; j++) {
 					extractRegExp = patternList[j];
 					matchResult = extractRegExp.exec(handlerName);
 					if (matchResult != null) {
 						eventPhase = matchResult[1];
-						eventSourceName = matchResult[2];
-						eventSource = this[lcfirst(eventSourceName)];
-						eventType = lcfirst(matchResult[3]);
+						eventSourceName = lcfirst( matchResult[2] );
+//						eventSource = this[lcfirst(eventSourceName)];
+                        eventSource = this.hasOwnProperty( eventSourceName ) ? this[ eventSourceName ] : ( viewComponent.hasOwnProperty( eventSourceName ) ? viewComponent[eventSourceName] : null );
+						eventType = matchResult[3];
+
+                        if( eventType.indexOf( "$" ) == 0 )
+                            continue;
+                        
+                        eventType = lcfirst( eventType );
 						eventHandler = this[handlerName];
 						useCapture = eventPhase == captureHandlerPrefix;
 
@@ -514,6 +525,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 						currentReactions.push(reaction);
 
 						reaction.start();
+                        reactionCreated = true;
 					}
 				}
 			}

@@ -398,14 +398,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
             assertNoMatch(re, "dataChange");
         }
 
-        /*[Ignore]
-        [Test(description="Ignore this test before introducing favrication namespace")]
-        public function testFabricationMediatorDetectsConstantFormatAccurately():void
-        {
-            var mediator:FabricationMediator = new FabricationMediatorTestMock(instanceName);
-            assertTrue(mediator.isConstantFormat("MY_CONSTANT"));
-            assertFalse(mediator.isConstantFormat("myConstant"));
-        }*/
 
         [Test]
         public function fabricationMediatorExecutesRespondToCONSTANT_FORMSyntax():void
@@ -534,12 +526,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
             confirmReaction(mock, myButton, "reactToMyButtonMouseDown", "mouseDown");
             confirmReaction(mock, myButton, "reactToMyButtonMouseUp", "mouseUp");
             confirmReaction(mock, myButton, "reactToMyButtonCustomEvent", "customEvent");
+            confirmReaction(mock, myButton, "reactToMyButton$CustomEvent", "customEvent");
+            confirmReaction(mock, myButton, "reactToMyButton$MouseUp", "mouseUp");
 
             // reactions in CONSTANT_FORMAT
             confirmReaction(mock, myButton, "reactToMyButtonCLICK", "CLICK");
             confirmReaction(mock, myButton, "reactToMyButtonMOUSE_DOWN", "MOUSE_DOWN");
             confirmReaction(mock, myButton, "reactToMyButtonMOUSE_UP", "MOUSE_UP");
             confirmReaction(mock, myButton, "reactToMyButtonCUSTOM_EVENT", "CUSTOM_EVENT");
+            confirmReaction(mock, myButton, "reactToMyButton$CUSTOM_EVENT", "CUSTOM_EVENT");
+            confirmReaction(mock, myButton, "reactToMyButton$MOUSE_UP", "MOUSE_UP");
 
             verifyMock(mock);
             verifyMock(facade.mock);

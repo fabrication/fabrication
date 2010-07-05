@@ -57,11 +57,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock {
 		}
 		
 		public function trapMyButtonChildAdd(event:Event):void {
-			mock.reactToMyButtonClick(event);
+			mock.trapMyButtonChildAdd(event);
 		}
 
 		public function trapMyButtonBarEvent(event:Event):void {
-			mock.reactToMyButtonMouseDown(event);
+			mock.trapMyButtonBarEvent(event);
 		}
 		
 		public function reactToMyButtonCLICK(event:Event):void {
@@ -79,7 +79,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock {
 		public function reactToMyButtonCUSTOM_EVENT(event:Event):void {
 			mock.reactToMyButtonCUSTOM_EVENT(event);
 		}
-		
+
+        public function reactToMyButton$CustomEvent( event:Event ):void {
+            mock.reactToMyButton$CustomEvent(event);
+        }
+
+        public function reactToMyButton$CUSTOM_EVENT( event:Event ):void {
+            mock.reactToMyButton$CUSTOM_EVENT(event);
+        }
+
+        public function reactToMyButton$MouseUp( event:Event ):void {
+            mock.reactToMyButton$MouseUp(event);
+        }
+        
+        public function reactToMyButton$MOUSE_UP( event:Event ):void {
+            mock.reactToMyButton$MOUSE_UP(event);
+        }
+
+
 		public function getReactions():Array {
 			return currentReactions;
 		}
