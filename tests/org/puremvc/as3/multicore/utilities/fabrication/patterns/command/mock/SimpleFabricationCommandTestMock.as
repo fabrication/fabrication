@@ -17,14 +17,30 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.mock {
     import com.anywebcam.mock.Mock;
 
+    import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.addons.IMockable;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.*;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FlexMediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
 
     /**
 	 * @author Darshan Sawardekar
 	 */
 	public class SimpleFabricationCommandTestMock extends SimpleFabricationCommand implements IMockable {
-		
+
+        [InjectProxy]
+        public var injectedProxy:FabricationProxy;
+
+        [InjectProxy(name="MyProxy")]
+        public var injectedProxyByName:IProxy;
+
+        [InjectMediator]
+        public var injectedMediator:FlexMediator;
+
+        [InjectMediator(name="MyMediator")]
+        public var injectedMediatorByName:IMediator;
+
 		private var _mock:Mock;
 		
 		public function SimpleFabricationCommandTestMock() {

@@ -20,7 +20,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
@@ -35,6 +37,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	 */
 	public class SimpleFabricationCommand extends SimpleCommand implements ICommandProcessor, IDisposable {
 
+        /**
+         * Names of injected properites
+         */
+        protected var injectionFieldsNames:Vector.<String>;
+
 		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces#executeCommand()
 		 */
@@ -42,10 +49,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 			return fabFacade.executeCommandClass(clazz, body, note);
 		}
 
-		/**
+        /**
+         * @inheritDoc
+         */
+        override public function execute(notification:INotification):void
+        {
+            super.execute(notification);
+            performInjections();
+        }
+
+        /**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
+
+            if (injectionFieldsNames) {
+                var injectedFieldsNum:uint = injectionFieldsNames.length;
+                for (var i:int = 0; i < injectedFieldsNum; i++) {
+
+                    var fieldName:String = ""+injectionFieldsNames[i];
+                    this[ fieldName ] = null;
+                }
+                injectionFieldsNames = null;
+            }
 		}
 
 		/**
@@ -207,5 +233,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		public function removeInterceptor(noteName:String, clazz:Class = null):void {
 			fabFacade.removeInterceptor(noteName, clazz);
 		}
+
+        /**
+         * Performs injection action on current SimpleCommand.
+         * By convention we allow proxies and mediators injection on
+         * FabricationProxy instance
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector
+         */
+        protected function performInjections():void
+        {
+            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
+        }
 	}
 }

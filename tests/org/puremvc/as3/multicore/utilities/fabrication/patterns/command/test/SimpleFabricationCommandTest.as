@@ -15,7 +15,11 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
+    import mx.utils.UIDUtil;
+
     import org.puremvc.as3.multicore.interfaces.ICommand;
+    import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
     import org.puremvc.as3.multicore.patterns.mediator.Mediator;
     import org.puremvc.as3.multicore.patterns.proxy.Proxy;
@@ -25,6 +29,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.mock.SimpleFabricationCommandMock;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.mock.SimpleFabricationCommandTestMock;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor.mock.InterceptorMock;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FabricationMediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FlexMediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FlexMediatorTestMock;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.routing.mock.RouterMock;
 
     /**
@@ -120,6 +128,40 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
 			verifyMock(facade.mock);
 			verifyMock(fabrication.mock);
 		}
+
+        [Test]
+        public function simpleCommandInjection():void {
+
+            facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
+            facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "hasMediator" ).withArgs( "MyMediator" ).returns( true );
+            facade.mock.method( "hasMediator" ).withArgs( "FlexMediator" ).returns( true );
+            facade.mock.method( "retrieveMediator" ).withArgs( "MyMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "retrieveMediator" ).withArgs( "FlexMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
+
+            var simpleCommandWithInjections:SimpleFabricationCommandTestMock = new SimpleFabricationCommandTestMock();
+            simpleCommandWithInjections.initializeNotifier(multitonKey);
+            simpleCommandWithInjections.execute( null );
+            assertNotNull( simpleCommandWithInjections.injectedProxy );
+            assertTrue( FabricationProxy, simpleCommandWithInjections.injectedProxy );
+
+            assertNotNull( simpleCommandWithInjections.injectedMediator );
+            assertTrue( FabricationMediator, simpleCommandWithInjections.injectedMediator );
+
+            assertNotNull( simpleCommandWithInjections.injectedProxyByName );
+            assertTrue( IProxy, simpleCommandWithInjections.injectedProxy );
+
+            assertNotNull( simpleCommandWithInjections.injectedMediatorByName );
+            assertTrue( IMediator, simpleCommandWithInjections.injectedMediatorByName );
+
+            simpleCommandWithInjections.dispose();
+            assertNull( simpleCommandWithInjections.injectedProxy );
+            assertNull( simpleCommandWithInjections.injectedProxyByName );
+            assertNull( simpleCommandWithInjections.injectedMediator );
+            assertNull( simpleCommandWithInjections.injectedMediatorByName );
+
+            verifyMock( facade.mock );
+        }
 		
 	}
 }

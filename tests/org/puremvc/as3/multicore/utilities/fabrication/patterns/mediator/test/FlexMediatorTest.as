@@ -152,7 +152,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
         }
 
         [Test]
-        public function mediaorInjection():void {
+        public function mediatorInjection():void {
 
             facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
             facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
