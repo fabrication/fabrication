@@ -49,6 +49,7 @@
                 <arg line="-l+=${puremvc.lib}"/>
                 <arg line="-l+=${flexunit.lib}"/>
                 <arg line="-l+=${mockas3.lib}"/>
+                <arg line="-l+=${reflection.lib}"/>
                 <arg line="-keep-as3-metadata+=InjectProxy"/>
                 <arg line="-keep-as3-metadata+=InjectMediator"/>
             </args>
