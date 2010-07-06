@@ -18,36 +18,33 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
 
+    import org.as3commons.reflect.Accessor;
+    import org.as3commons.reflect.Field;
+    import org.as3commons.reflect.MetaData;
+    import org.as3commons.reflect.MetaDataArgument;
+    import org.as3commons.reflect.Type;
     import org.puremvc.as3.multicore.interfaces.IFacade;
-    import org.puremvc.as3.multicore.utilities.fabrication.utils.ClassInfo;
 
-    /**
-     * Injector is utility that performs dependency injections on given context.
-     * Type of injection depends on injction metatag name
-     * @author Rafał Szemraj
-     */
-    public class Injector extends ClassInfo {
+    public class Injector {
 
         public static const INJECT_PROXY:String = "InjectProxy";
         public static const INJECT_MEDIATOR:String = "InjectMediator";
 
+        private static var CACHED_CONTEXT_INJECTION_DATA:Dictionary = new Dictionary();
+
         protected var facade:IFacade;
         protected var injectionMetadataTagName:String;
 
-        private static var CACHED_CONTEXT_INJECTION_DATA:Dictionary = new Dictionary();
+        protected var context:*;
 
         public function Injector(facade:IFacade, context:*, injectionMetadataTagName:String)
         {
-            super(context);
             this.facade = facade;
+            this.context = context;
             this.injectionMetadataTagName = injectionMetadataTagName;
 
         }
 
-        /**
-         * Provides injection mechanism on current context
-         * @return array of injected fields' names
-         */
         public function inject():Vector.<String>
         {
 
@@ -55,14 +52,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             var injectionField:InjectionField;
             var contextInjectionDataMarkup:String = getQualifiedClassName(context) + "_" + injectionMetadataTagName;
             var contextInjectionData:Vector.<InjectionField> = CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] as Vector.<InjectionField>;
-            var preprocessFields:Boolean = !contextInjectionData;
             // chek if here is already cached injection data for given context type
-            if (preprocessFields) {
+            if (!contextInjectionData) {
 
                 // there is no cached injection data, so process current class
 
                 contextInjectionData = new Vector.<InjectionField>();
-                var injectionFields:Vector.<InjectionField> = getInjectionFieldsByInjectionType(injectionMetadataTagName);
+                var injectionFields:Vector.<InjectionField> = getInjectionFieldsByInjectionType( Type.forInstance(context), injectionMetadataTagName);
                 for each(injectionField in injectionFields) {
 
                     contextInjectionData[ contextInjectionData.length ] = injectionField;
@@ -75,11 +71,49 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             var injectionDataLength:int = contextInjectionData.length;
             for (var i:int = 0; i < injectionDataLength; ++i) {
 
-                var fieldName:String = processSingleField(contextInjectionData[ i ] as InjectionField, preprocessFields);
+                var fieldName:String = processSingleField(contextInjectionData[ i ] as InjectionField);
                 if (fieldName)
                     fieldNames[ fieldNames.length ] = fieldName;
             }
             return fieldNames;
+        }
+
+         /**
+         * Returns info about context properties described by injection metatag
+         * @param injectionType type of injection ( metatag name )
+         * @return Vector instance of InjectionField elements
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField
+         */
+        private function getInjectionFieldsByInjectionType(type:Type, injectionMetadataTagName:String):Vector.<InjectionField>
+        {
+
+            var injectionFields:Vector.<InjectionField> = new Vector.<InjectionField>();
+            var fields:Array = type.fields;
+            for each(var field:Field in fields) {
+
+                var fieldMetadatas:Array = field.metaData;
+                if (fieldMetadatas && fieldMetadatas.length) {
+
+                    for each(var metadata:MetaData in fieldMetadatas) {
+
+                        if (metadata.name == injectionMetadataTagName) {
+
+                            var injectionField:InjectionField = new InjectionField();
+                            injectionField.fieldName = field.name;
+                            injectionField.elementTypeIsInterface = field.type.isInterface;
+                            injectionField.elementClass = field.type.clazz;
+
+                            var nameArgument:MetaDataArgument = metadata.getArgument( "name" );
+                            if( nameArgument )
+                                injectionField.elementName = nameArgument.value;
+                            injectionFields.push( injectionField );
+
+                        }
+
+                    }
+                }
+            }
+            return injectionFields;
         }
 
         /**
@@ -144,28 +178,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
          * @param injectionField field instance
          * @param tagName name of the metadata tag to resolve injection type
          */
-        private function processSingleField(injectionField:InjectionField, preprocessFields:Boolean = false):String
+        private function processSingleField(injectionField:InjectionField):String
         {
 
             if (context[ injectionField.fieldName ] != null) return null;
 
-
-            if (preprocessFields) {
-
-                // retrieve element name
-                var elementName:String = getElementName(injectionField);
-                if (elementName && !elementExist(elementName)) {
-
-                    onNoPatternElementAvaiable(elementName);
-                    return null;
-                }
-                if (!elementName && injectionField.elementTypeIsInterface) {
-
-                    onUnambiguousPatternElementName(injectionField.fieldName);
-                    return null;
-                }
+            // retrieve element name
+            var elementName:String = getElementName(injectionField);
+            if (elementName && !elementExist(elementName)) {
+                onNoPatternElementAvaiable(elementName);
+                return null;
             }
-
+            if (!elementName && injectionField.elementTypeIsInterface) {
+                onUnambiguousPatternElementName(injectionField.fieldName);
+                return null;
+            }
             // put element into cache
 
             var elementClass:Class = injectionField.elementClass;
@@ -178,42 +205,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             return injectionField.fieldName;
         }
 
-        /**
-         * Returns info about context properties described by injection metatag
-         * @param injectionType type of injection ( metatag name )
-         * @return Vector instance of InjectionField elements
-         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField
-         */
-        public function getInjectionFieldsByInjectionType(injectionType:String):Vector.<InjectionField>
-        {
-
-            var fields:Vector.<InjectionField> = new Vector.<InjectionField>();
-
-            var variables:XMLList = description..variable;
-            var metadata:XML;
-            var metadataName:XML;
-            for each(var variable:XML in variables) {
-
-                metadata = variable.metadata.(@name == injectionType )[0] as XML;
-                if (metadata) {
-
-                    var field:InjectionField = new InjectionField();
-                    field.fieldName = "" + variable.@name;
-                    field.elementClass = getClass("" + variable.@type);
-                    field.elementTypeIsInterface = checkTypeIsIneterface(field.elementClass);
-                    metadataName = metadata.arg.(attribute("key") == "name" )[0] as XML;
-                    if (metadataName) {
-
-                        field.elementName = "" + metadataName.@value;
-                    }
-                    fields.push(field)
-                }
-
-            }
-            return fields;
-
-
-        }
 
 
     }
