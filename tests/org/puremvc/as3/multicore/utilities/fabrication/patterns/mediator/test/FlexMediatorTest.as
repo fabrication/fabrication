@@ -155,7 +155,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
         public function mediatorInjection():void {
 
             facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
+            facade.mock.method( "hasProxy" ).withArgs( "FabricationProxy" ).returns( true );
             facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "retrieveProxy" ).withArgs( "FabricationProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
             facade.mock.method( "hasMediator" ).withArgs( "MyMediator" ).returns( true );
             facade.mock.method( "hasMediator" ).withArgs( "FlexMediator" ).returns( true );
             facade.mock.method( "retrieveMediator" ).withArgs( "MyMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
@@ -164,7 +166,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
 
             var component:UIComponent = new UIComponent();
             var mediatorWithInjection:FlexMediatorTestMock = new FlexMediatorTestMock( instanceName );
-            mediatorWithInjection.setViewComponent( component );            
+            mediatorWithInjection.setViewComponent( component );
             mediatorWithInjection.initializeNotifier(multitonKey);
             mediatorWithInjection.onRegister();
             assertNotNull( mediatorWithInjection.injectedProxy );

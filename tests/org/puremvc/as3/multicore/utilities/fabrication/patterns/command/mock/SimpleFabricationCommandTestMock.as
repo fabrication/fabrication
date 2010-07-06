@@ -54,6 +54,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.mock {
 			
 			return _mock;
 		}
-		
-	}
+
+
+    }
 }

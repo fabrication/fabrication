@@ -133,11 +133,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
         public function simpleCommandInjection():void {
 
             facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
-            facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "hasProxy" ).withArgs( "FabricationProxy" ).returns( true );
+            facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName ) );
+            facade.mock.method( "retrieveProxy" ).withArgs( "FabricationProxy" ).returns( new FabricationProxy( instanceName  ) );
             facade.mock.method( "hasMediator" ).withArgs( "MyMediator" ).returns( true );
             facade.mock.method( "hasMediator" ).withArgs( "FlexMediator" ).returns( true );
-            facade.mock.method( "retrieveMediator" ).withArgs( "MyMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
-            facade.mock.method( "retrieveMediator" ).withArgs( "FlexMediator" ).returns( new FlexMediator( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "retrieveMediator" ).withArgs( "MyMediator" ).returns( new FlexMediator( instanceName  ) );
+            facade.mock.method( "retrieveMediator" ).withArgs( "FlexMediator" ).returns( new FlexMediator( instanceName  ) );
 
             var simpleCommandWithInjections:SimpleFabricationCommandTestMock = new SimpleFabricationCommandTestMock();
             simpleCommandWithInjections.initializeNotifier(multitonKey);
@@ -149,7 +151,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.test {
             assertTrue( FabricationMediator, simpleCommandWithInjections.injectedMediator );
 
             assertNotNull( simpleCommandWithInjections.injectedProxyByName );
-            assertTrue( IProxy, simpleCommandWithInjections.injectedProxy );
+            assertTrue( IProxy, simpleCommandWithInjections.injectedProxyByName );
 
             assertNotNull( simpleCommandWithInjections.injectedMediatorByName );
             assertTrue( IMediator, simpleCommandWithInjections.injectedMediatorByName );

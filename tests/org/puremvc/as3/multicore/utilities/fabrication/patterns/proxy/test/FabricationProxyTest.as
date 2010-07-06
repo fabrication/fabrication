@@ -212,7 +212,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
         public function proxyInjection():void {
 
             facade.mock.method( "hasProxy" ).withArgs( "MyProxy" ).returns( true );
+            facade.mock.method( "hasProxy" ).withArgs( "FabricationProxy" ).returns( true );
             facade.mock.method( "retrieveProxy" ).withArgs( "MyProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
+            facade.mock.method( "retrieveProxy" ).withArgs( "FabricationProxy" ).returns( new FabricationProxy( instanceName + UIDUtil.createUID() ) );
 
             var proxyWithInjection:FabricationProxyTestMock = new FabricationProxyTestMock( instanceName );
             proxyWithInjection.initializeNotifier(instanceName + "_setup");

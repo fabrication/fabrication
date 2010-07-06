@@ -47,10 +47,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.test {
         public function proxyInjectorGetPatternElementForInjection():void
         {
 
-            facade.mock.method( "registerProxy" ).withAnyArgs.once;
             proxyInjector.getPatternElementForInjectionMethod( "element", FabricationProxy );
             assertNull( proxyInjector.getPatternElementForInjectionMethod( "element", Object ) );            
-            verifyMock( facade.mock );
 
         }
 
