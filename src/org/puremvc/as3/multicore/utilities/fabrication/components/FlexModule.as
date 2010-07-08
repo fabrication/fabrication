@@ -210,5 +210,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		public function notifyFabricationRemoved():void {
 			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_REMOVED));			
 		}
+
+        /**
+         * @inheritDoc
+         */
+        public function get fabricationLoggerEnabled():Boolean
+        {
+            return false;
+        }
 	}
 }

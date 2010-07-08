@@ -336,7 +336,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		 * Creates the facade for the current application.
 		 */
 		protected function initializeFacade():void {
+
 			_facade = FabricationFacade.getInstance(multitonKey);
+            _facade.fabricationLoggerEnabled = _fabrication.fabricationLoggerEnabled;
 		}
 
 		/**

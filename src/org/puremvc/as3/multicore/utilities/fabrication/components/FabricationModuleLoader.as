@@ -156,13 +156,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
             _moduleInfo.addEventListener(ModuleEvent.ERROR, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.PROGRESS, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.SETUP, dispatchEvent);
-            _moduleInfo.load(applicationDomain);
+            _moduleInfo.load(applicationDomain || ApplicationDomain.currentDomain );
         }
 
 
-        protected function moduleReadyListener(event:Event):void
+        protected function moduleReadyListener(event:ModuleEvent):void
         {
-            var moduleFactory:IFlexModuleFactory = IFlexModuleFactory(event.target);
+            var moduleFactory:IFlexModuleFactory =  event.module.factory;
             _moduleInstance = moduleFactory.create() as FlexModule;
             _moduleInstance.id = _id;
             _moduleInstance.router = _router;
