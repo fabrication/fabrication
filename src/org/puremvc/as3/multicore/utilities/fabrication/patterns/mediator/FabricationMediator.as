@@ -16,26 +16,26 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import org.puremvc.as3.multicore.interfaces.IMediator;
-	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.interfaces.IProxy;
-	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
-	import org.puremvc.as3.multicore.patterns.observer.Notifier;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
-	import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;
+    import flash.events.IEventDispatcher;
+    import flash.utils.describeType;
+    import flash.utils.getQualifiedClassName;
 
-	import flash.events.IEventDispatcher;
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
+    import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.interfaces.INotification;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
+    import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
+    import org.puremvc.as3.multicore.utilities.fabrication.logging.FabricationLogger;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
+    import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
+    import org.puremvc.as3.multicore.utilities.fabrication.vo.NotificationInterests;
+    import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;
 
-	/**
+    /**
 	 * FabricationMediator is the base mediator class for all application mediator
 	 * classes. This class should be subclassed for providing environment
 	 * specific operations.
@@ -347,12 +347,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			}
 
 			respondToMethods = null;
-			clazzInfo = null;
+			interests = interests.concat( listNotificationsInterestByNamespaces( clazzInfo ) );
+            clazzInfo = null;
 
 			notificationCache.put(qpath, new NotificationInterests(qpath, interests, qualifiedNotifications));
-
 			return interests;
 		}
+
+        private function listNotificationsInterestByNamespaces(clazzInfo:XML):Array
+        {
+            var interests:Array = [];
+            var methodXML:XML;
+            var respondToMethods:XMLList = clazzInfo..method.( @name == 'processNotification' );
+            var respondToMethodsCount:uint = respondToMethods.length();
+            var noteName:String;
+            for (var i:int = 0; i < respondToMethodsCount; i++) {
+
+                methodXML = respondToMethods[i];
+                noteName = methodXML.@uri;
+                interests[ interests.length ] = noteName;
+            }
+
+            return interests;
+        }
 
 		/**
 		 * Handles the PureMVC notification and invokes the reflected method
@@ -501,6 +518,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             patternList.push( /^(reactTo|trap)([a-zA-Z0-9]+)\$(.*)$/ );
 
             var reactionCreated:Boolean = false;
+            var logger:FabricationLogger = fabFacade.logger;
 			for (i = 0;i < reactionMethodsCount; i++) {
 				handlerName = reactionMethods[i].@name;
                 reactionCreated = false;
@@ -508,18 +526,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 					extractRegExp = patternList[j];
 					matchResult = extractRegExp.exec(handlerName);
 					if (matchResult != null) {
+
+
+                        if( !matchResult[0] || !matchResult[1] || !matchResult[2] ) {
+
+                            logger.error("Wrong reactTo method pattern [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                            continue;
+                        }
+
 						eventPhase = matchResult[1];
 						eventSourceName = lcfirst( matchResult[2] );
-//						eventSource = this[lcfirst(eventSourceName)];
                         eventSource = this.hasOwnProperty( eventSourceName ) ? this[ eventSourceName ] : ( viewComponent.hasOwnProperty( eventSourceName ) ? viewComponent[eventSourceName] : null );
-						eventType = matchResult[3];
-
+                        eventType = matchResult[3];
                         if( eventType.indexOf( "$" ) == 0 )
                             continue;
-                        
-                        eventType = lcfirst( eventType );
+                        eventType = formatEventType( eventType );
 						eventHandler = this[handlerName];
 						useCapture = eventPhase == captureHandlerPrefix;
+
+                        if (null == eventSource) {
+                            logger.error("Cannot acces eventSource for Reaction for [ " + eventSourceName + " ] at [ " + qpath + " ] mediator.");
+                            break;
+
+                        }
 
 						reaction = new Reaction(eventSource, eventType, eventHandler, useCapture);
 						currentReactions.push(reaction);
@@ -528,6 +557,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
                         reactionCreated = true;
 					}
 				}
+
+                if (!reactionCreated) {
+                    logger.warn("Cannot resolve reaction for [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                }
 			}
 
 			accessorMethods = null;
@@ -608,6 +641,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			if (this.hasOwnProperty(name)) {
 				this[name](note);
 			}
+
+            var ns:Namespace = new Namespace( note.getName() );
+            var q:QName = new QName( ns, "processNotification" );
+            if( q ) {
+
+                    var func:Function = this[ q ] as Function;
+                    if (func != null)
+                        func.apply(this, [ note ]);
+                }
+
 		}
 
 		/**
@@ -644,5 +687,37 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			return body.replace(firstCharRegExp, result[1].toLowerCase());
 			//return body.substring(0, 1).toLowerCase() + body.substring(1);
 		}
+
+        protected function formatEventType( body:String ):String {
+
+            var result:Object
+            if( body.indexOf( "_") != -1 ) {
+                var parts:Array = body.split("_");
+                for( var i:int = 0; i<parts.length; i++ ) {
+
+                    var part:String = parts[i];
+                    part = part.toLowerCase();
+                    if( i != 0) {
+
+                        result = part.match(firstCharRegExp);
+                        part = part.replace(firstCharRegExp, result[1].toUpperCase());
+                    }
+                    parts[i] = part;
+
+
+                }
+                return parts.join("");
+            }
+
+            result = body.match( constantRegExp );
+            if( result && body == body.toUpperCase() ) {
+
+                return body.toLowerCase();
+
+            }
+            result = body.match(firstCharRegExp);
+            return body.replace(firstCharRegExp, result[1].toLowerCase());
+
+        }
 	}
 }
