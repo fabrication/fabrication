@@ -107,6 +107,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * Sends a FABRICATION_REMOVED event to listeners.
 		 */ 
 		function notifyFabricationRemoved():void;
-		
+
+        /**
+         * Returns info if current fabrication should send info to FabricationConsole
+         * application. You should override this method in your application base
+         * class if you want to turn console logging on.
+         * @return false by default
+         *  @example The following code is the implementation of the fabrication
+		 * <listing>
+		 * 	public function get fabricationLoggerEnabled():Boolean {
+		 *
+         *      return true;
+		 * 	}
+		 * </listing>
+         */
+        function get fabricationLoggerEnabled():Boolean;
 	}
 }

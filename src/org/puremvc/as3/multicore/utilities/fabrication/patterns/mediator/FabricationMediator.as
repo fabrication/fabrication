@@ -29,6 +29,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.FabricationLogger;
+    import org.puremvc.as3.multicore.utilities.fabrication.logging.Logger;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
@@ -518,7 +519,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             patternList.push( /^(reactTo|trap)([a-zA-Z0-9]+)\$(.*)$/ );
 
             var reactionCreated:Boolean = false;
-            var logger:FabricationLogger = fabFacade.logger;
+            var fabricationLogger:FabricationLogger = fabFacade.logger as FabricationLogger;
 			for (i = 0;i < reactionMethodsCount; i++) {
 				handlerName = reactionMethods[i].@name;
                 reactionCreated = false;
@@ -530,7 +531,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
                         if( !matchResult[0] || !matchResult[1] || !matchResult[2] ) {
 
-                            logger.error("Wrong reactTo method pattern [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                            fabricationLogger.frameworkError("Wrong reactTo method pattern [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
                             continue;
                         }
 
@@ -545,7 +546,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 						useCapture = eventPhase == captureHandlerPrefix;
 
                         if (null == eventSource) {
-                            logger.error("Cannot acces eventSource for Reaction for [ " + eventSourceName + " ] at [ " + qpath + " ] mediator.");
+                            fabricationLogger.frameworkError("Cannot acces eventSource for Reaction for [ " + eventSourceName + " ] at [ " + qpath + " ] mediator.");
                             break;
 
                         }
@@ -559,7 +560,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				}
 
                 if (!reactionCreated) {
-                    logger.warn("Cannot resolve reaction for [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                    fabricationLogger.frameworkWarn("Cannot resolve reaction for [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
                 }
 			}
 
@@ -638,19 +639,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Helper function to invoke the notification handler if it exists.
 		 */
 		protected function invokeNotificationHandler(name:String, note:INotification):void {
+
+
 			if (this.hasOwnProperty(name)) {
-				this[name](note);
+				    this[name](note);
 			}
+            else {
 
-            var ns:Namespace = new Namespace( note.getName() );
-            var q:QName = new QName( ns, "processNotification" );
-            if( q ) {
+                var ns:Namespace = new Namespace( name );
+                var q:QName = new QName( ns, "processNotification" );
+                if( q && this[ q ] ) {
 
-                    var func:Function = this[ q ] as Function;
-                    if (func != null)
-                        func.apply(this, [ note ]);
+                        var func:Function = this[ q ] as Function;
+                        if (func != null)
+                            func.apply(this, [ note ]);
                 }
 
+            }
 		}
 
 		/**
@@ -719,5 +724,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             return body.replace(firstCharRegExp, result[1].toLowerCase());
 
         }
+
 	}
 }

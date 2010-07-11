@@ -35,6 +35,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.Action;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.ActionType;
+    import org.puremvc.as3.multicore.utilities.fabrication.logging.channel.FabricationLoggerChannel;
 
     /**
      * @author Rafał Szemraj
@@ -58,8 +59,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private var _flowActionsCounter:int = 0;
 
-        private var _logHandlers:Array = [];
-        /* of Function */
 
 
         public function FabricationLogger(se:SingletonEnforcer)
@@ -71,12 +70,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             _lc.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _lc_securityErrorHandler, false, 0, true);
             _lc.addEventListener(StatusEvent.STATUS, _lc_securityStatusHandler, false, 0, true);
 
-        }
-
-        public function addLogHandler(func:Function):void
-        {
-
-            _logHandlers.push(func);
         }
 
         public function logFabricatorStart(fabrication:IFabrication, fabricationName:String):void
@@ -281,7 +274,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             callObject.fault = fault;
             action.infoObject = callObject;
             logAction(action);
-            error("fault on call for [ " + fault.toString() + " ]");
+            frameworkError("fault on call for [ " + fault.toString() + " ]");
         }
 
         public function logAction(action:Action):void
@@ -353,13 +346,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             return infoObject;
         }
 
-        public function error(message:String):void
+        public function frameworkError(message:String):void
         {
             logFrameworkMessage(message, LogLevel.ERROR.getName());
 
         }
 
-        public function warn(message:String):void
+        public function frameworkWarn(message:String):void
         {
             logFrameworkMessage(message, LogLevel.WARN.getName());
         }
@@ -382,7 +375,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private function _lc_securityErrorHandler(event:SecurityErrorEvent):void
         {
-            error(event.toString());
+            frameworkError(event.toString());
         }
 
 
