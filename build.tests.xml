@@ -68,6 +68,7 @@
                 <arg line="-l+=${puremvc.lib}"/>
                 <arg line="-l+=${flexunit.lib}"/>
                 <arg line="-l+=${mockas3.lib}"/>
+                <arg line="-l+=${reflection.lib}"/>
             </args>
         </flex.compile>
 
