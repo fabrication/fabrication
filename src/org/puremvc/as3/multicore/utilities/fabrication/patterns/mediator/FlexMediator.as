@@ -69,7 +69,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
         /**
          * Names of injected properites
          */
-        protected var injectionFieldsNames:Vector.<String>;
+        protected var injectionFieldsNames:Array;
 
 		/**
 		 * Creates a new FlexMediator object and initializes the registrars.
@@ -274,7 +274,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
          */
         protected function performInjections():void
         {
-            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
         }

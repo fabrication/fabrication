@@ -40,7 +40,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
         /**
          * Names of injected properites
          */
-        protected var injectionFieldsNames:Vector.<String>;
+        protected var injectionFieldsNames:Array;
 
 		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces#executeCommand()
@@ -243,7 +243,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
          */
         protected function performInjections():void
         {
-            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
         }

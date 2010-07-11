@@ -71,7 +71,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         /**
          * Names of injected properites
          */
-        protected var injectionFieldsNames:Vector.<String>;
+        protected var injectionFieldsNames:Array;
 
 		/**
 		 * Creates a new FabricationProxy object.
@@ -260,7 +260,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
          */
         protected function performInjections():void
         {
-            injectionFieldsNames = new Vector.<String>();
+            injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
         }
 	}

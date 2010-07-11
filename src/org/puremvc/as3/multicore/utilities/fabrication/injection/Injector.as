@@ -18,7 +18,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
 
-    import org.as3commons.reflect.Accessor;
     import org.as3commons.reflect.Field;
     import org.as3commons.reflect.MetaData;
     import org.as3commons.reflect.MetaDataArgument;
@@ -45,20 +44,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         }
 
-        public function inject():Vector.<String>
+        public function inject():Array
         {
 
-            var fieldNames:Vector.<String> = new Vector.<String>();
+            var fieldNames:Array = [];
             var injectionField:InjectionField;
             var contextInjectionDataMarkup:String = getQualifiedClassName(context) + "_" + injectionMetadataTagName;
-            var contextInjectionData:Vector.<InjectionField> = CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] as Vector.<InjectionField>;
+            var contextInjectionData:Array = CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] as Array;
             // chek if here is already cached injection data for given context type
             if (!contextInjectionData) {
 
                 // there is no cached injection data, so process current class
 
-                contextInjectionData = new Vector.<InjectionField>();
-                var injectionFields:Vector.<InjectionField> = getInjectionFieldsByInjectionType( Type.forInstance(context), injectionMetadataTagName);
+                contextInjectionData = [];
+                var injectionFields:Array = getInjectionFieldsByInjectionType( Type.forInstance(context), injectionMetadataTagName);
                 for each(injectionField in injectionFields) {
 
                     contextInjectionData[ contextInjectionData.length ] = injectionField;
@@ -81,13 +80,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
          /**
          * Returns info about context properties described by injection metatag
          * @param injectionType type of injection ( metatag name )
-         * @return Vector instance of InjectionField elements
+         * @return Array instance of InjectionField elements
          * @see org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField
          */
-        private function getInjectionFieldsByInjectionType(type:Type, injectionMetadataTagName:String):Vector.<InjectionField>
+        private function getInjectionFieldsByInjectionType(type:Type, injectionMetadataTagName:String):Array
         {
 
-            var injectionFields:Vector.<InjectionField> = new Vector.<InjectionField>();
+            var injectionFields:Array = [];
             var fields:Array = type.fields;
             for each(var field:Field in fields) {
 
