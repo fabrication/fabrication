@@ -153,6 +153,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.mock {
 		public function set config($config:Object):void {
 			mock.config = $config;
 		}
-		
-	}
+
+        public function get fabricationLoggerEnabled():Boolean
+        {
+            return false;
+        }
+    }
 }

@@ -530,12 +530,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
             confirmReaction(mock, myButton, "reactToMyButton$MouseUp", "mouseUp");
 
             // reactions in CONSTANT_FORMAT
-            confirmReaction(mock, myButton, "reactToMyButtonCLICK", "CLICK");
-            confirmReaction(mock, myButton, "reactToMyButtonMOUSE_DOWN", "MOUSE_DOWN");
-            confirmReaction(mock, myButton, "reactToMyButtonMOUSE_UP", "MOUSE_UP");
-            confirmReaction(mock, myButton, "reactToMyButtonCUSTOM_EVENT", "CUSTOM_EVENT");
-            confirmReaction(mock, myButton, "reactToMyButton$CUSTOM_EVENT", "CUSTOM_EVENT");
-            confirmReaction(mock, myButton, "reactToMyButton$MOUSE_UP", "MOUSE_UP");
+            confirmReaction(mock, myButton, "reactToMyButtonCLICK", "click");
+            confirmReaction(mock, myButton, "reactToMyButtonMOUSE_DOWN", "mouseDown");
+            confirmReaction(mock, myButton, "reactToMyButtonMOUSE_UP", "mouseUp");
+            confirmReaction(mock, myButton, "reactToMyButtonCUSTOM_EVENT", "customEvent");
+            confirmReaction(mock, myButton, "reactToMyButton$CUSTOM_EVENT", "customEvent");
+            confirmReaction(mock, myButton, "reactToMyButton$MOUSE_UP", "mouseUp");
 
             verifyMock(mock);
             verifyMock(facade.mock);
@@ -582,13 +582,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
             mediator.initializeNotifier(multitonKey);
             mediator.onRegister();
 
-            var event:Event = new Event("click");
-            mock.method("reactToMyButtonClick").withArgs(event).once;
+            var event:Event = new Event("mouseOver");
+            mock.method("reactToMyButtonMouseOver").withArgs( event ).once;
 
-            mediator.haltReaction("reactToMyButtonClick");
+            mediator.haltReaction("reactToMyButtonMouseOver");
             myButton.dispatchEvent(event);
 
-            mediator.resumeReaction("reactToMyButtonClick");
+            mediator.resumeReaction("reactToMyButtonMouseOver");
             myButton.dispatchEvent(event);
 
             verifyMock(mock);
