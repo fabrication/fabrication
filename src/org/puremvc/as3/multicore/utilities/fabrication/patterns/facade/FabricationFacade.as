@@ -15,25 +15,28 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
-	import flash.utils.getQualifiedClassName;
+    import flash.utils.getQualifiedClassName;
 
-	import org.puremvc.as3.multicore.interfaces.ICommand;
-	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.patterns.facade.Facade;
-	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationController;
-	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationModel;
-	import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationView;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.ChangeUndoGroupCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationRedoCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationUndoCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;	
+    import org.puremvc.as3.multicore.interfaces.ICommand;
+    import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.interfaces.INotification;
+    import org.puremvc.as3.multicore.interfaces.IProxy;
+    import org.puremvc.as3.multicore.patterns.facade.Facade;
+    import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationController;
+    import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationModel;
+    import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationView;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
+    import org.puremvc.as3.multicore.utilities.fabrication.logging.FabricationLogger;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.ChangeUndoGroupCommand;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationRedoCommand;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.FabricationUndoCommand;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
+    import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 
-	/**
+    /**
 	 * FabricationFacade is a concrete PureMVC facade implementation that
 	 * provides the typical bootstrap process of a PureMVC application.
 	 * 
@@ -101,6 +104,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * The custom singleton object instances map
 		 */
 		protected var singletonInstanceMap:HashMap;
+
+        public var logger:FabricationLogger = FabricationLogger.getInstance();
+        private var _fabricationLoggerEnabled:Boolean;
 
 		/**
 		 * Creates a new FabricationFacade object.
@@ -201,6 +207,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			sendNotification(FabricationNotification.STARTUP, application);
 			sendNotification(FabricationNotification.BOOTSTRAP, application);
+
+            if( _fabricationLoggerEnabled )
+                logger.logFabricatorStart( getFabrication(), calcApplicationName( startupCommand ) );
 		}
 
 		/**
@@ -328,7 +337,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		 * @param parameters Optional parameters for the interceptor.
 		 */
 		public function registerInterceptor(noteName:String, clazz:Class, parameters:Object = null):void {
+
 			fabricationController.registerInterceptor(noteName, clazz, parameters);
+            if( _fabricationLoggerEnabled )
+                logger.logInterceptorRegistration( clazz, noteName, parameters );
 		}
 
 		/**
@@ -340,5 +352,42 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function removeInterceptor(noteName:String, clazz:Class = null):void {
 			fabricationController.removeInterceptor(noteName, clazz);
 		}
-	}
+
+        /**
+         * @inheritDoc
+         */
+        override public function registerProxy(proxy:IProxy):void
+        {
+            super.registerProxy(proxy);
+            if( _fabricationLoggerEnabled )
+                logger.logProxyRegistration( proxy );
+        }
+
+        /**
+         * @inheritDoc
+         */
+        override public function registerMediator(mediator:IMediator):void
+        {
+            super.registerMediator(mediator);
+            if( _fabricationLoggerEnabled )
+                logger.logMediatorRegistration( mediator );
+        }
+
+        /**
+         * @inheritDoc
+         */
+        override public function registerCommand(notificationName:String, commandClassRef:Class):void
+        {
+            super.registerCommand(notificationName, commandClassRef);
+            if( _fabricationLoggerEnabled )
+                if( notificationName != FabricationNotification.STARTUP )
+                    logger.logCommandRegistration( commandClassRef, notificationName );
+        }
+
+
+        public function set fabricationLoggerEnabled(value:Boolean):void
+        {
+            _fabricationLoggerEnabled = value;
+        }
+    }
 }
