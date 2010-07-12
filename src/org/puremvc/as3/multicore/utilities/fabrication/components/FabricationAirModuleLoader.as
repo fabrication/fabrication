@@ -25,6 +25,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
     import flash.system.LoaderContext;
     import flash.utils.ByteArray;
 
+    import mx.core.IFlexModuleFactory;
     import mx.events.ModuleEvent;
 
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
@@ -73,6 +74,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         {
             var moduleBytesLoaderInfo:LoaderInfo = LoaderInfo(event.target);
             moduleBytesLoaderInfo.content.addEventListener(ModuleEvent.READY, moduleReadyListener);
+        }
+
+        override protected function retrieveModuleFactory( event:Event ):IFlexModuleFactory {
+
+            return IFlexModuleFactory( event.target );
+
         }
     }
 }

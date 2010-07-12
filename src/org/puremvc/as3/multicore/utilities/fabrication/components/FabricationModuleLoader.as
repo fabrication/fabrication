@@ -160,9 +160,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         }
 
 
-        protected function moduleReadyListener(event:ModuleEvent):void
+        protected function moduleReadyListener(event:Event):void
         {
-            var moduleFactory:IFlexModuleFactory =  event.module.factory;
+            var moduleFactory:IFlexModuleFactory =  retrieveModuleFactory( event );
             _moduleInstance = moduleFactory.create() as FlexModule;
             _moduleInstance.id = _id;
             _moduleInstance.router = _router;
@@ -190,6 +190,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 
             }
             _moduleInfo = null;
+        }
+
+        protected function retrieveModuleFactory( event:Event ):IFlexModuleFactory {
+
+            return ( event as ModuleEvent ).module.factory;
+
         }
 
 
