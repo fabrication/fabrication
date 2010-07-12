@@ -505,7 +505,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			var matchResult:Object;
 			var i:int = 0;
 			var j:int = 0;
-			var reaction:Reaction;
 
 			currentReactions = new Array();
 
@@ -551,10 +550,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
                         }
 
-						reaction = new Reaction(eventSource, eventType, eventHandler, useCapture);
-						currentReactions.push(reaction);
-
-						reaction.start();
+                        addReaction( eventSource, eventType, eventHandler, useCapture );
                         reactionCreated = true;
 					}
 				}
@@ -570,6 +566,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			reactionRegExp = null;
 			clazzInfo = null;
 		}
+
+        /**
+         * Adds reaction to mediator
+         * @param source reaction source
+         * @param type rection ( event ) type
+         * @param handler reaction handler
+         * @param useCapturePhase <b>true</b> if reaction has to be registered on capture phase, otherwise <b>true</b>
+         */
+        public function addReaction( source:IEventDispatcher, type:String,  handler:Function,  useCapturePhase:Boolean = false ):void {
+
+           var reaction:Reaction = new Reaction( source, type, handler, useCapturePhase );
+           if( currentReactions == null )
+                currentReactions = [];
+		   currentReactions.push(reaction);
+           reaction.start();
+
+        }
 
 		/**
 		 * Stops the specified reaction.
@@ -725,5 +738,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
         }
 
-	}
+        override public function onRemove():void
+        {
+            super.onRemove();
+        }
+    }
 }
