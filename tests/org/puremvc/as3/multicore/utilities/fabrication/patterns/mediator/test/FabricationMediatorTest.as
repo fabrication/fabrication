@@ -32,6 +32,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.mock.FacadeMock;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.*;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorMock;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorTestMock;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorTestMockWithOnlyProxyInterests;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorTestMockWithQualifiedProxyInterests;
@@ -636,6 +637,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
 
             mediator.dispose();
             assertNull(mediator.getReactions());
+        }
+
+        [Test]
+        public function fabricationMediatorFormatEventType():void {
+
+            var fabricationMediator:FabricationMediatorMock = new FabricationMediatorMock();
+            assertEquals( "click", fabricationMediator.formatEventTypeMethod( "CLICK" ) );
+            assertEquals( "click", fabricationMediator.formatEventTypeMethod( "Click" ) );
+            assertEquals( "click", fabricationMediator.formatEventTypeMethod( "click" ) );
+
+            assertEquals( "mouseDown", fabricationMediator.formatEventTypeMethod( "mouseDown" ) );
+            assertEquals( "mouseDown", fabricationMediator.formatEventTypeMethod( "MOUSE_DOWN" ) );
+            assertEquals( "mouseDown", fabricationMediator.formatEventTypeMethod( "MouseDown" ) );
         }
 
         public function confirmReaction(mock:Mock, source:IEventDispatcher, method:String, type:String, dispatcher:IEventDispatcher = null, times:int = 1):void

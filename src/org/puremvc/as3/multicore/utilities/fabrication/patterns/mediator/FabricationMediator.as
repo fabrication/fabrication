@@ -659,7 +659,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			}
             else {
 
-                var ns:Namespace = new Namespace( name );
+                var ns:Namespace = new Namespace( note.getName());
                 var q:QName = new QName( ns, "processNotification" );
                 if( q && this[ q ] ) {
 

@@ -118,6 +118,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock {
 		override protected function invokeNotificationHandler(name:String, note:INotification):void {
 			mock.invokeNotificationHandler(name, note);
 		}
-		
-	}
+
+        public function formatEventTypeMethod( body:String ):String {
+
+            return formatEventType( body );
+
+        }
+
+    }
 }
