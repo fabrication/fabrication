@@ -101,11 +101,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 
 		public function hasCachedRoutes(component:UIComponent):Boolean {
 			var routes:Array = getCachedRoutes(component);
-			if (routes != null && routes.length > 0) {
-				return true;
-			} else {
-				return false;
-			}
+			return routes != null && routes.length > 0;
 		}
 
 		public function getCachedRoutes(component:UIComponent):Array {

@@ -97,9 +97,11 @@
         <mkdir dir="${asdoc.full.dir}"/>
         <exec executable="${flex.asdoc}" failonerror="true">
             <arg line="-window-title='${doc.title}'"/>
+            <arg line="-footer='${doc.footer}'"/>
             <arg line="-doc-sources ${src.dir}"/>
             <arg line="-source-path=${src.dir}"/>
             <arg line="-external-library-path ${puremvc.lib}"/>
+            <arg line="-external-library-path ${reflection.lib}"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
             <arg line="-output=${asdoc.full.dir}"/>
@@ -124,9 +126,11 @@
 
         <exec executable="${flex.asdoc}" failonerror="true">
             <arg line="-window-title='${doc.title} - public API'"/>
+            <arg line="-footer='${doc.footer}'"/>
             <arg line="-doc-sources ${flist.path}"/>
             <arg line="-l=${bin.dir}/fabrication_air.swc"/>
             <arg line="-external-library-path ${puremvc.lib}"/>
+            <arg line="-external-library-path ${reflection.lib}"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
             <arg line="-output=${asdoc.public.dir}"/>

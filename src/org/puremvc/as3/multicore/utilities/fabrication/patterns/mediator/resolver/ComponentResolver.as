@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	 * ComponentResolver resolves expressions into their component objects
 	 * on demand.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	dynamic public class ComponentResolver extends Proxy implements IEventDispatcher, IDisposable {
 
@@ -305,7 +305,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * .componentName(true) is used multimode gets turn on.
 		 */
 		override flash_proxy function callProperty(name:*, ...args):* {
-			var multimode:Boolean = (args.length == 1 && args[0] == true) || (args.length == 0);
+			var multimode:Boolean = (args.length == 1 && args[0]) || (args.length == 0);
 			return resolve(name.toString(), multimode);
 		}
 
@@ -609,7 +609,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Returns a boolean if the component has been resolved earlier.
 		 */
 		private function hasResolved(component:UIComponent):Boolean {
-			return resolvedComponents[component] == true; 
+			return resolvedComponents[component];
 		}
 		
 		/* *

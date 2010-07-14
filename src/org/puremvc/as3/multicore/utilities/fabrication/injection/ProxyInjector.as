@@ -20,6 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
     /**
      * Injector implementation for PurMVC proxies
+     * @author Rafał Szemraj
      */
     public class ProxyInjector extends Injector {
 

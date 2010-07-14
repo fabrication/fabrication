@@ -36,7 +36,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		static public function nextName(name:String):String {
 			var nameObj:String = namesMap[name];
 			if (nameObj == null) {
-				nameObj = namesMap[name] = 0;
+                //noinspection NestedAssignmentJS
+                nameObj = namesMap[name] = 0;
 			} else {
 				namesMap[name]++;
 			}

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	 * loading flex modules. It implements IFabrication to allow
 	 * configuration of the module prior to it has completed loading.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FlexModuleLoader extends ModuleLoader implements IFabrication {
 

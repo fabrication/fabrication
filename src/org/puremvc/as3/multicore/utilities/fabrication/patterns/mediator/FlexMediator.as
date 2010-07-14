@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	 * mediators. It provides automatic component resolution using the 
 	 * flex component resolver. 
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FlexMediator extends FabricationMediator implements ICloneable {
 
@@ -66,10 +66,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		protected var routeMapper:ComponentRouteMapper;
 
-        /**
-         * Names of injected properites
-         */
-        protected var injectionFieldsNames:Array;
 
 		/**
 		 * Creates a new FlexMediator object and initializes the registrars.
@@ -79,15 +75,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			registrars = new Array();
 		}
-
-        /**
-         * @inheritDoc
-         */
-        override public function onRegister():void
-        {
-            super.onRegister();
-            performInjections();
-        }
 
         /**
 		 * Removes the registrars used by the mediator.
@@ -115,16 +102,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			registrars = null;
 			routeMapper = null;
-
-            if (injectionFieldsNames) {
-                var injectedFieldsNum:uint = injectionFieldsNames.length;
-                for ( i = 0; i < injectedFieldsNum; i++) {
-
-                    var fieldName:String = ""+injectionFieldsNames[i];
-                    this[ fieldName ] = null;
-                }
-                injectionFieldsNames = null;
-            }
 
 			super.dispose();
 		}
@@ -265,19 +242,5 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			//trace("AutoRegistration removed for mediator " + event.mediator.getMediatorName());
 		}
 
-        /**
-         * Performs injection action on current FlexMediator.
-         * By convention we allow proxies and mediators injection on
-         * FlexMediator instance
-         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector
-         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector
-         */
-        protected function performInjections():void
-        {
-            injectionFieldsNames = [];
-            injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
-            injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
-        }
-		
 	}
 }

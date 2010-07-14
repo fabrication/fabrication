@@ -54,6 +54,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
      * FabricationModuleLoader support modules using ModuleManager. This is not IFabricator
      * ( as FlexModuleLoader ) so you have to act on ModuleEvent.READY event and attach
      * FlexModuleLoader.flexModule as your module fabricator.
+     * @author Rafał Szemraj
      */
     public class FabricationModuleLoader extends EventDispatcher implements IDisposable {
 
@@ -144,7 +145,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         }
 
         /**
-         * Loads module from given ulr
+         * Loads module from given url
          * @param url module url address
          * @param applicationDomain target application domain
          */
@@ -192,6 +193,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
             _moduleInfo = null;
         }
 
+        /**
+         * Creates instance of flex module factory
+         * @param event flash event instance
+         * @return IFlexModuleFactory object
+         */
         protected function retrieveModuleFactory( event:Event ):IFlexModuleFactory {
 
             return ( event as ModuleEvent ).module.factory;

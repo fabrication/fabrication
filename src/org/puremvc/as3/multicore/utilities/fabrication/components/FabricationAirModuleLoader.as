@@ -32,6 +32,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 
     /**
      * FabricationModuleLoader adds support for loading modules into Air application
+     * @author Rafał Szemraj
      */
     public class FabricationAirModuleLoader extends FabricationModuleLoader {
 
@@ -76,6 +77,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
             moduleBytesLoaderInfo.content.addEventListener(ModuleEvent.READY, moduleReadyListener);
         }
 
+        /**
+         *
+         * @inheritDoc
+         * @see FabricationModuleLoader#retrieveModuleFactory
+         * 
+         */
         override protected function retrieveModuleFactory( event:Event ):IFlexModuleFactory {
 
             return IFlexModuleFactory( event.target );

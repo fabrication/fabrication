@@ -19,7 +19,7 @@ package org.puremvc.as3.multicore.utilities.fabrication {
     /**
      * Fabrication namespace
      * @author Rafał Szemraj
-     * @version 0.7.1
+     * @version 0.7.2
      */
     public namespace fabrication = "http://puremvc.org/utilities/fabrication/2010";
 

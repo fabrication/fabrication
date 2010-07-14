@@ -130,7 +130,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 				}
 			}
 			
-			return false;
 		}		
 
 		/**

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import org.puremvc.as3.multicore.interfaces.INotification;
     import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
@@ -41,7 +43,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	 * classes. This class should be subclassed for providing environment
 	 * specific operations.
 	 *
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FabricationMediator extends Mediator implements IDisposable {
 
@@ -125,6 +127,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		protected var currentReactions:Array;
 
+        /**
+         * Names of injected properites
+         */
+        protected var injectionFieldsNames:Array;
+
 		/**
 		 * Creates a new FabricationMediator object.
 		 */
@@ -136,6 +143,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		public function dispose():void {
+
+            if (injectionFieldsNames) {
+                var injectedFieldsNum:uint = injectionFieldsNames.length;
+                for ( i = 0; i < injectedFieldsNum; i++) {
+
+                    var fieldName:String = ""+injectionFieldsNames[i];
+                    this[ fieldName ] = null;
+                }
+                injectionFieldsNames = null;
+            }
+            
 			qualifiedNotifications = null;
 			notificationCache = null;
 
@@ -149,6 +167,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
 				currentReactions = null;
 			}
+
+
 		}
 
 		/**
@@ -478,7 +498,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
 			var clazzInfo:XML = describeType(clazz);
 
-			var reactionMethods:XMLList = clazzInfo..method.((reactionRegExp as RegExp).test(@name) == true);
+			var reactionMethods:XMLList = clazzInfo..method.((reactionRegExp as RegExp).test(@name));
 			var reactionMethodsCount:int = reactionMethods.length();
 
 			if (reactionMethodsCount == 0) {
@@ -489,7 +509,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			}
 
 			var accessorRegExp:RegExp = new RegExp("(::FabricationMediator$|::Mediator$|Class$)", "");
-			var accessorMethods:XMLList = clazzInfo..accessor.((accessorRegExp as RegExp).test(@declaredBy) == false);
+			var accessorMethods:XMLList = clazzInfo..accessor.(!(accessorRegExp as RegExp).test(@declaredBy));
 			var accessorMethodsCount:int = accessorMethods.length();
 
 			var eventType:String;
@@ -646,6 +666,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			if (multitonKey != null) {
 				initializeReactions();
 			}
+            performInjections();
 		}
 
 		/**
@@ -708,7 +729,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
         protected function formatEventType( body:String ):String {
 
-            var result:Object
+            var result:Object;
             if( body.indexOf( "_") != -1 ) {
                 var parts:Array = body.split("_");
                 for( var i:int = 0; i<parts.length; i++ ) {
@@ -738,9 +759,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
         }
 
-        override public function onRemove():void
+        /**
+         * Performs injection action on current FlexMediator.
+         * By convention we allow proxies and mediators injection on
+         * FlexMediator instance
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector
+         * @see org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector
+         */
+        protected function performInjections():void
         {
-            super.onRemove();
+            injectionFieldsNames = [];
+            injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
         }
     }
 }

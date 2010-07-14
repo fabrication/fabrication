@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 	 * It implements a startup method to kickstart the PureMVC apparatus
 	 * with a STARTUP notification.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FabricationFacade extends Facade implements IDisposable {
 

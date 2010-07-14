@@ -20,7 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 
     /**
 	 * AsyncFabricationCommand extends SimpleFabricationCommand and implements IAsyncCommand
-	 * @author Rafa? Szemraj
+	 * @author Rafał Szemraj
 	 */
     public class AsyncFabricationCommand extends SimpleFabricationCommand implements IAsyncCommand {
 

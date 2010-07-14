@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	 * It creates the FlashApplicationFabricator to configure the fabrication
 	 * to the flash environment.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FlashApplication extends MovieClip implements IFabrication {
 		

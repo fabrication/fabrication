@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2010 Rafał Szemraj, ( http://szemraj.eu )
+/**
+ * Copyright (C) 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.Action;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.ActionType;
-    import org.puremvc.as3.multicore.utilities.fabrication.logging.channel.FabricationLoggerChannel;
 
     /**
      * @author Rafał Szemraj
-     * @version 0.9
      */
     public class FabricationLogger {
 
@@ -60,18 +58,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
         private var _flowActionsCounter:int = 0;
 
 
-
         public function FabricationLogger(se:SingletonEnforcer)
         {
             if (se == null)
                 throw new Error("Private constructor invocation error");
-            registerClassAlias( "org.puremvc.as3.multicore.utilities.fabrication.logging.action.Action", Action );
+            registerClassAlias("org.puremvc.as3.multicore.utilities.fabrication.logging.action.Action", Action);
             _lc = new LocalConnection();
             _lc.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _lc_securityErrorHandler, false, 0, true);
             _lc.addEventListener(StatusEvent.STATUS, _lc_securityStatusHandler, false, 0, true);
 
         }
 
+        /**
+         * Logs fabricator start action
+         * @param fabrication fabricator instance
+         * @param fabricationName fabrication name
+         */
         public function logFabricatorStart(fabrication:IFabrication, fabricationName:String):void
         {
             var fabricationIsModule:Boolean = fabrication is FlexModule || fabrication is FlexModuleLoader;
@@ -87,6 +89,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             logAction(action);
         }
 
+        /**
+         * Logs mediator registration action
+         * @param mediator IMediator instance
+         */
         public function logMediatorRegistration(mediator:IMediator):void
         {
             var action:Action = new Action();
@@ -105,6 +111,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             logAction(action);
         }
 
+        /**
+         * Logs proxy registration action
+         * @param proxy IProxy instance
+         */
         public function logProxyRegistration(proxy:IProxy):void
         {
             var action:Action = new Action();
@@ -120,6 +130,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             logAction(action);
         }
 
+        /**
+         * Logs command registration action
+         * @param commandClass command Class
+         * @param notificationName notification name on wich command is registered
+         */
         public function logCommandRegistration(commandClass:Class, notificationName:String):void
         {
             if (!isFrameworkClassFlow(commandClass)) {
@@ -131,6 +146,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             }
         }
 
+        /**
+         * Logs interceptor registration action
+         * @param interceptorClass interceoptor Class
+         * @param notificationName notification name on wich interceptor is registered
+         * @param parameters [ optional ] interceptor optional parameters
+         */
         public function logInterceptorRegistration(interceptorClass:Class, notificationName:String, parameters:Object = null):void
         {
             if (!isFrameworkClassFlow(interceptorClass)) {
@@ -147,6 +168,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             }
         }
 
+        /**
+         * Logs notification route action
+         * @param sender object that sends notification
+         * @param notification INotification instance
+         * @param to notification reciever
+         */
         public function logRouteNotificationAction(sender:Object, notification:INotification, to:Object):void
         {
             var senderIsProxy:Boolean = sender is IProxy;
@@ -186,6 +213,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             logAction(action);
         }
 
+        /**
+         * Logs send notification action
+         * @param sender object that sends notification
+         * @param notification INotification instance
+         */
         public function logSendNotificationAction(sender:Object, notification:INotification):void
         {
             var senderIsProxy:Boolean = sender is IProxy;
@@ -223,61 +255,86 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             logAction(action);
         }
 
-        public function logServiceCall(proxy:IProxy, message:Object, eventArgs:Array = null):void
+        //        public function logServiceCall(proxy:IProxy, message:Object, eventArgs:Array = null):void
+        //        {
+        //            var action:Action = new Action();
+        //            action.actorName = proxy.getProxyName();
+        //            action.message = " service call by [ " + proxy.getProxyName() + " ]";
+        //            action.type = ActionType.SERVICE_CALL;
+        //            var callObject:Object = {};
+        //            var proxyObject:Object = {};
+        //            proxyObject.proxyName = proxy.getProxyName();
+        //            proxyObject.data = proxy.getData();
+        //            proxyObject = retreieveProps(proxy, proxy);
+        //            callObject.proxy = proxy;
+        //            callObject.callMessage = message;
+        //            if (eventArgs)
+        //                callObject.eventArgs = eventArgs;
+        //            action.infoObject = callObject;
+        //            logAction(action);
+        //        }
+
+        //        public function logServiceResponse(proxy:IProxy, result:Object):void
+        //        {
+        //            var action:Action = new Action();
+        //            action.actorName = proxy.getProxyName();
+        //            action.message = " response for call by [ " + proxy.getProxyName() + " ]";
+        //            action.type = ActionType.SERVICE_CALL;
+        //            var callObject:Object = {};
+        //            var proxyObject:Object = {};
+        //            proxyObject.proxyName = proxy.getProxyName();
+        //            proxyObject.data = proxy.getData();
+        //            proxyObject = retreieveProps(proxy, proxy);
+        //            callObject.proxy = proxy;
+        //            callObject.result = result;
+        //            action.infoObject = callObject;
+        //            logAction(action);
+        //        }
+
+        //        public function logServiceFault(proxy:IProxy, fault:Object):void
+        //        {
+        //            var action:Action = new Action();
+        //            action.actorName = proxy.getProxyName();
+        //            action.message = " fault for call by [ " + proxy.getProxyName() + " ]";
+        //            action.type = ActionType.SERVICE_CALL;
+        //            var callObject:Object = {};
+        //            var proxyObject:Object = {};
+        //            proxyObject.proxyName = proxy.getProxyName();
+        //            proxyObject.data = proxy.getData();
+        //            proxyObject = retreieveProps(proxy, proxy);
+        //            callObject.proxy = proxy;
+        //            callObject.fault = fault;
+        //            action.infoObject = callObject;
+        //            logAction(action);
+        //            frameworkError("fault on call for [ " + fault.toString() + " ]");
+        //        }
+
+
+        /**
+         * Logs fabrication framework error
+         * @param message error message to log
+         */
+        public function frameworkError(message:String):void
         {
-            var action:Action = new Action();
-            action.actorName = proxy.getProxyName();
-            action.message = " service call by [ " + proxy.getProxyName() + " ]";
-            action.type = ActionType.SERVICE_CALL;
-            var callObject:Object = {};
-            var proxyObject:Object = {};
-            proxyObject.proxyName = proxy.getProxyName();
-            proxyObject.data = proxy.getData();
-            proxyObject = retreieveProps(proxy, proxy);
-            callObject.proxy = proxy;
-            callObject.callMessage = message;
-            if (eventArgs)
-                callObject.eventArgs = eventArgs;
-            action.infoObject = callObject;
-            logAction(action);
+            logFrameworkMessage(message, LogLevel.ERROR.getName());
+
         }
 
-        public function logServiceResponse(proxy:IProxy, result:Object):void
+        /**
+         * Logs fabrication framework warning
+         * @param message warning message to log
+         */
+        public function frameworkWarn(message:String):void
         {
-            var action:Action = new Action();
-            action.actorName = proxy.getProxyName();
-            action.message = " response for call by [ " + proxy.getProxyName() + " ]";
-            action.type = ActionType.SERVICE_CALL;
-            var callObject:Object = {};
-            var proxyObject:Object = {};
-            proxyObject.proxyName = proxy.getProxyName();
-            proxyObject.data = proxy.getData();
-            proxyObject = retreieveProps(proxy, proxy);
-            callObject.proxy = proxy;
-            callObject.result = result;
-            action.infoObject = callObject;
-            logAction(action);
+            logFrameworkMessage(message, LogLevel.WARN.getName());
         }
 
-        public function logServiceFault(proxy:IProxy, fault:Object):void
+        private function logFrameworkMessage(message:String, logLevelName:String):void
         {
-            var action:Action = new Action();
-            action.actorName = proxy.getProxyName();
-            action.message = " fault for call by [ " + proxy.getProxyName() + " ]";
-            action.type = ActionType.SERVICE_CALL;
-            var callObject:Object = {};
-            var proxyObject:Object = {};
-            proxyObject.proxyName = proxy.getProxyName();
-            proxyObject.data = proxy.getData();
-            proxyObject = retreieveProps(proxy, proxy);
-            callObject.proxy = proxy;
-            callObject.fault = fault;
-            action.infoObject = callObject;
-            logAction(action);
-            frameworkError("fault on call for [ " + fault.toString() + " ]");
+            _lc.send(LOGGER_ID, "logFrameworkMessage", message, logLevelName);
         }
 
-        public function logAction(action:Action):void
+        private function logAction(action:Action):void
         {
 
 
@@ -293,10 +350,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         }
 
-        public function logFrameworkMessage(message:String, logLevelName:String):void
-        {
-            _lc.send(LOGGER_ID, "logFrameworkMessage", message, logLevelName);
-        }
 
         private function retreieveProps(object:Object, infoObject:Object, deepLevel:int = 0):Object
         {
@@ -346,16 +399,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             return infoObject;
         }
 
-        public function frameworkError(message:String):void
-        {
-            logFrameworkMessage(message, LogLevel.ERROR.getName());
-
-        }
-
-        public function frameworkWarn(message:String):void
-        {
-            logFrameworkMessage(message, LogLevel.WARN.getName());
-        }
 
         private function getClassName(clazz:Class):String
         {
@@ -403,11 +446,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
                 {
                     return (value is Date) || (value is Array);
                 }
+                default: return false;
             }
 
             return false;
         }
-
 
     }
 }

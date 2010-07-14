@@ -44,6 +44,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         }
 
+        /**
+         * Runs injection procedure on given context
+         * @return Array of injected field names
+         */
         public function inject():Array
         {
 
@@ -51,7 +55,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             var injectionField:InjectionField;
             var contextInjectionDataMarkup:String = getQualifiedClassName(context) + "_" + injectionMetadataTagName;
             var contextInjectionData:Array = CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] as Array;
-            // chek if here is already cached injection data for given context type
+            // chek if there is already cached injection data for given context type
             if (!contextInjectionData) {
 
                 // there is no cached injection data, so process current class
@@ -172,11 +176,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
         }
 
 
-        /**
-         * Processes single filed in context element and perform injection action
-         * @param injectionField field instance
-         * @param tagName name of the metadata tag to resolve injection type
-         */
         private function processSingleField(injectionField:InjectionField):String
         {
 

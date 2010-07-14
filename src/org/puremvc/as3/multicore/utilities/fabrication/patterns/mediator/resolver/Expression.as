@@ -287,7 +287,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * .componentName(true) is used multimode gets turn on.
 		 */
 		override flash_proxy function callProperty(name:*, ...args):* {
-			var multimode:Boolean = (args.length == 1 && args[0] == true) || (args.length == 0);
+			var multimode:Boolean = (args.length == 1 && args[0]) || (args.length == 0);
 			return resolve(name.toString(), multimode);
 		}
 		

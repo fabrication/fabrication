@@ -20,6 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
     /**
      * Injector implementation for PurMVC mediators
+     * @author Rafał Szemraj
      */
     public class MediatorInjector extends Injector {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Darshan Sawardekar.
+ * Copyright (C) 2008 Darshan Sawardekar, 2010 Rafał Szemraj.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	 * It aliases common facade.[methodName] invocations and provides
 	 * easier access to properties often required by a fabrication application.
 	 * 
-	 * @author Darshan Sawardekar
+	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class SimpleFabricationCommand extends SimpleCommand implements ICommandProcessor, IDisposable {
 
