@@ -10,6 +10,8 @@ FlexApplication
 FlexMediator
 FlexModule
 FlexModuleLoader
+FabricationModuleLoader
+FabricationAirModuleLoader
 IFirewallRule
 IModuleAddress
 IRouter
