@@ -173,6 +173,7 @@
                 <arg line="-load-config fabrication-config.xml"/>
                 <namespace/>
                 <arg line="-output ${bin.dir}/@{swc.name}"/>
+                <arg line="-link-report=${bin.dir}/@{swc.name}.xml"/>
 
             </exec>
         </sequential>

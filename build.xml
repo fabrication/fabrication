@@ -39,7 +39,7 @@
 
         <pathconvert pathsep=" " property="no_air" dirsep=".">
             <fileset dir="${src.dir}">
-                <exclude name="*.Air"/>
+                <exclude name="**/*Air*.*"/>
             </fileset>
             <chainedmapper>
                 <globmapper from="${src.dir}/" to=""/>
@@ -49,23 +49,16 @@
 
         <pathconvert pathsep=" " property="no_air_flex" dirsep=".">
             <fileset dir="${src.dir}">
-                <exclude name="**/Air*.as"/>
-                <exclude name="**/Flex*.as"/>
-                <exclude name="**/resolver/*.as"/>
+                <exclude name="**/*Air*.*"/>
+                <exclude name="**/*Flex*.*"/>
+                <exclude name="**/*ModuleLoader*.*"/>
+                <exclude name="**/resolver/*.*"/>
             </fileset>
             <chainedmapper>
                 <globmapper from="${src.dir}/" to=""/>
                 <globmapper from="*.as" to="*"/>
             </chainedmapper>
         </pathconvert>
-
-
-        <fileset dir="${src.dir}" id="no_air_flex">
-            <exclude name="**/Air*.as"/>
-            <exclude name="**/Flex*.as"/>
-            <exclude name="**/resolver/*.as"/>
-        </fileset>
-
 
         <compile.fabrication.library air="true" swc.name="fabrication_air.swc" classes.list="${all}">
             <namespace>
