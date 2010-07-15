@@ -30,8 +30,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
     import org.puremvc.as3.multicore.interfaces.IMediator;
     import org.puremvc.as3.multicore.interfaces.INotification;
     import org.puremvc.as3.multicore.interfaces.IProxy;
-    import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModule;
-    import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.Action;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.action.ActionType;
@@ -76,10 +74,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          */
         public function logFabricatorStart(fabrication:IFabrication, fabricationName:String):void
         {
-            var fabricationIsModule:Boolean = fabrication is FlexModule || fabrication is FlexModuleLoader;
             var action:Action = new Action();
             action.actorName = fabricationName;
-            action.message = " [ " + fabricationName + " ] " + ( fabricationIsModule ? "module has started" : "application has started" );
+            action.message = " [ " + fabricationName + " ] " + "fabrication has started";
             action.type = ActionType.FABRICATION_START;
             var infoObject:Object = {};
             infoObject.fabrication = fabricationName;
