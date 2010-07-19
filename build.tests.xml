@@ -52,6 +52,7 @@
                 <arg line="-l+=${reflection.lib}"/>
                 <arg line="-keep-as3-metadata+=InjectProxy"/>
                 <arg line="-keep-as3-metadata+=InjectMediator"/>
+                <arg line="-define+=FLEX4::supported,true"/>
             </args>
         </flex.compile>
 
@@ -69,6 +70,7 @@
                 <arg line="-l+=${flexunit.lib}"/>
                 <arg line="-l+=${mockas3.lib}"/>
                 <arg line="-l+=${reflection.lib}"/>
+                <arg line="-define+=FLEX4::supported,true"/>
             </args>
         </flex.compile>
 

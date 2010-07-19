@@ -20,13 +20,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 	import mx.core.Container;
 	import mx.core.UIComponent;
 	import mx.core.UIComponentDescriptor;
-    import mx.core.mx_internal;
+
 
 	import flash.utils.Dictionary;
 
-    import spark.components.Group;
+    FLEX4::supported {
+        import spark.components.Group;
+        import mx.core.mx_internal;
+        use namespace mx_internal;
+    }
 
-    use namespace mx_internal;
+
 
 	/**
 	 * ComponentRouteMapper walks the UIComponentDescriptor tree to
@@ -65,6 +69,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 			var childPath:String = "";
             var mxmlContent:Array;
 
+
+            FLEX4::supported {
+                if (component is Group) {
+
+
+                    var groupBase:Group = component as Group;
+                    mxmlContent = groupBase.mx_internal::getMXMLContent();
+                    if (mxmlContent && mxmlContent.length) {
+
+                        routes.push.apply(this, calcRoutesFromMXMLContent(mxmlContent, path));
+
+                    }
+
+                    return routes;
+
+                }
+            }
+
 			if (component is Container) {
 				var container:Container = component as Container;
 				childDescriptors = container.childDescriptors;
@@ -75,18 +97,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 				}
             }
 
-            if (component is Group) {
 
-
-                var groupBase:Group = component as Group;
-                mxmlContent = groupBase.mx_internal::getMXMLContent();
-                if (mxmlContent && mxmlContent.length) {
-
-                    routes.push..apply(this, calcRoutesFromMXMLContent(mxmlContent, path));
-
-                }
-
-			} else {
+            else {
 				childDescriptor = component.descriptor;
 				if (childDescriptor != null && childDescriptor.id != null) {
 					id = childDescriptor.id;

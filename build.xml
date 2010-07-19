@@ -37,9 +37,33 @@
             </chainedmapper>
         </pathconvert>
 
+
+        <pathconvert pathsep=" " property="all_flex3" dirsep=".">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*FlexApplication*.*"/>
+                <exclude name="**/*AirApplication*.*"/>
+            </fileset>
+            <chainedmapper>
+                <globmapper from="${src.dir}/" to=""/>
+                <globmapper from="*.as" to="*"/>
+            </chainedmapper>
+        </pathconvert>
+
+
         <pathconvert pathsep=" " property="no_air" dirsep=".">
             <fileset dir="${src.dir}">
                 <exclude name="**/*Air*.*"/>
+            </fileset>
+            <chainedmapper>
+                <globmapper from="${src.dir}/" to=""/>
+                <globmapper from="*.as" to="*"/>
+            </chainedmapper>
+        </pathconvert>
+
+        <pathconvert pathsep=" " property="no_air_flex3" dirsep=".">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*Air*.*"/>
+                <exclude name="**/*FlexApplication*.*"/>
             </fileset>
             <chainedmapper>
                 <globmapper from="${src.dir}/" to=""/>
@@ -66,12 +90,30 @@
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
             </namespace>
         </compile.fabrication.library>
-        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}">
+
+        <compile.fabrication.library air="true" swc.name="fabrication_air_no_spark.swc" classes.list="${all_flex3}" flex4.supported="false">
+            <namespace>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-air-flex3-manifest.xml"/>
+                <arg line="-include-namespaces ${fabrication.namespace}"/>
+            </namespace>
+        </compile.fabrication.library>
+
+
+        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}" flex4.supported="false">
             <namespace>
                 <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
             </namespace>
         </compile.fabrication.library>
+
+                <compile.fabrication.library air="false" swc.name="fabrication_flex_no_spark.swc" classes.list="${no_air_flex3}">
+            <namespace>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-flex3-manifest.xml"/>
+                <arg line="-include-namespaces ${fabrication.namespace}"/>
+            </namespace>
+        </compile.fabrication.library>
+
+
         <compile.fabrication.library air="false" swc.name="fabrication_as3.swc" classes.list="${no_air_flex}"/>
 
 
@@ -98,6 +140,7 @@
             <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
             <arg line="-output=${asdoc.full.dir}"/>
+            <arg line="-define+=FLEX4::supported,true"/>
         </exec>
     </target>
 
@@ -127,6 +170,7 @@
             <arg line="-external-library-path ${flex.home}/frameworks/libs"/>
             <arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>
             <arg line="-output=${asdoc.public.dir}"/>
+            <arg line="-define+=FLEX4::supported,true"/>
         </exec>
     </target>
 
@@ -135,7 +179,11 @@
         <mkdir dir="${dist.dir}"/>
         <copy file="${bin.dir}/fabrication_air.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-air.swc"
               overwrite="true"/>
+        <copy file="${bin.dir}/fabrication_air_no_spark.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-air-no-spark.swc"
+              overwrite="true"/>
         <copy file="${bin.dir}/fabrication_flex.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-flex.swc"
+              overwrite="true"/>
+        <copy file="${bin.dir}/fabrication_flex_no_spark.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-flex-no-spark.swc"
               overwrite="true"/>
         <copy file="${bin.dir}/fabrication_as3.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-as3.swc"
               overwrite="true"/>
