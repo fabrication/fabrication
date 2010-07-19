@@ -45,11 +45,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
         override protected function getPatternElementForInjection(elementName:String, elementClass:Class):Object
         {
 
-            var proxy:IProxy = facade.retrieveProxy( elementName ) as IProxy;
+            /*var proxy:IProxy = facade.retrieveProxy( elementName ) as IProxy;
             if( proxy && ( proxy is elementClass ) )
 			    return proxy;
             else
-                return null;
+                return null;*/
+
+            // in first place, try to retrieve proxy from facade
+            var proxy:IProxy = facade.retrieveProxy(elementName);
+
+            // if it fails, we can create proxy and register it in facade.This could work
+            // if proxy constructor does not need params or accept optional params
+            if (null == proxy) {
+
+                try {
+                    proxy = new elementClass() as IProxy;
+                }
+                catch(error:Error) {
+                }
+
+                if ( proxy )
+                    facade.registerProxy(proxy);
+            }
+            return proxy;
         }
 
 
