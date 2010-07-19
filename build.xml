@@ -38,7 +38,7 @@
         </pathconvert>
 
 
-        <pathconvert pathsep=" " property="all_flex3" dirsep=".">
+        <pathconvert pathsep=" " property="all_moxie" dirsep=".">
             <fileset dir="${src.dir}">
                 <exclude name="**/*FlexApplication*.*"/>
                 <exclude name="**/*AirApplication*.*"/>
@@ -60,7 +60,7 @@
             </chainedmapper>
         </pathconvert>
 
-        <pathconvert pathsep=" " property="no_air_flex3" dirsep=".">
+        <pathconvert pathsep=" " property="no_air_moxie" dirsep=".">
             <fileset dir="${src.dir}">
                 <exclude name="**/*Air*.*"/>
                 <exclude name="**/*FlexApplication*.*"/>
@@ -91,24 +91,27 @@
             </namespace>
         </compile.fabrication.library>
 
-        <compile.fabrication.library air="true" swc.name="fabrication_air_no_spark.swc" classes.list="${all_flex3}" flex4.supported="false">
+        <compile.fabrication.library air="true" swc.name="fabrication_air_moxie.swc" classes.list="${all_moxie}"
+                                     flex4.supported="false">
             <namespace>
-                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-air-flex3-manifest.xml"/>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-air-moxie-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
             </namespace>
         </compile.fabrication.library>
 
 
-        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}" flex4.supported="false">
+        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}"
+                                     flex4.supported="false">
             <namespace>
                 <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
             </namespace>
         </compile.fabrication.library>
 
-                <compile.fabrication.library air="false" swc.name="fabrication_flex_no_spark.swc" classes.list="${no_air_flex3}">
+        <compile.fabrication.library air="false" swc.name="fabrication_flex_moxie.swc"
+                                     classes.list="${no_air_moxie}">
             <namespace>
-                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-flex3-manifest.xml"/>
+                <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-moxie-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
             </namespace>
         </compile.fabrication.library>
@@ -179,11 +182,13 @@
         <mkdir dir="${dist.dir}"/>
         <copy file="${bin.dir}/fabrication_air.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-air.swc"
               overwrite="true"/>
-        <copy file="${bin.dir}/fabrication_air_no_spark.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-air-no-spark.swc"
+        <copy file="${bin.dir}/fabrication_air_moxie.swc"
+              tofile="${dist.dir}/fabrication-${fabrication.version}-air-moxie.swc"
               overwrite="true"/>
         <copy file="${bin.dir}/fabrication_flex.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-flex.swc"
               overwrite="true"/>
-        <copy file="${bin.dir}/fabrication_flex_no_spark.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-flex-no-spark.swc"
+        <copy file="${bin.dir}/fabrication_flex_moxie.swc"
+              tofile="${dist.dir}/fabrication-${fabrication.version}-flex-moxie.swc"
               overwrite="true"/>
         <copy file="${bin.dir}/fabrication_as3.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-as3.swc"
               overwrite="true"/>
@@ -251,6 +256,65 @@
                 <include name="fabrication-api*.zip"/>
             </fileset>
         </ftp>
+
+    </target>
+
+    <target name="google.code.upload">
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-air.swc"
+                targetfilename="fabrication-${fabrication.version}-air.swc"
+                summary="Fabrication ${fabrication.version} library for AIR"
+                labels="Featured, Type-Package, OpSys-All"/>
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-air-moxie.swc"
+                targetfilename="fabrication-${fabrication.version}-air-moxie.swc"
+                summary="Fabrication ${fabrication.version} library for AIR ( flex3 only )"
+                labels="Featured, Type-Package, OpSys-All"/>
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-flex.swc"
+                targetfilename="fabrication-${fabrication.version}-flex.swc"
+                summary="Fabrication ${fabrication.version} library for Flex"
+                labels="Featured, Type-Package, OpSys-All"/>
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-flex-moxie.swc"
+                targetfilename="fabrication-${fabrication.version}-flex-moxie.swc"
+                summary="Fabrication ${fabrication.version} library for Flex ( flex3 only )"
+                labels="Featured, Type-Package, OpSys-All"/>
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-as3.swc"
+                targetfilename="fabrication-${fabrication.version}-as3.swc"
+                summary="Fabrication ${fabrication.version} library for Flash ( pure as3 )"
+                labels="Featured, Type-Package, OpSys-All"/>
+
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-src.zip"
+                targetfilename="fabrication-${fabrication.version}-src.zip"
+                summary="Fabrication ${fabrication.version} Source Zip"
+                labels="Featured, Type-Archive, OpSys-All"/>
+
 
     </target>
 
