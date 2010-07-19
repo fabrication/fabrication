@@ -31,7 +31,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.FabricationLogger;
-    import org.puremvc.as3.multicore.utilities.fabrication.logging.Logger;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
@@ -550,7 +549,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
                         if( !matchResult[0] || !matchResult[1] || !matchResult[2] ) {
 
-                            fabricationLogger.frameworkError("Wrong reactTo method pattern [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                            fabricationLogger.error("Wrong reactTo method pattern [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
                             continue;
                         }
 
@@ -565,7 +564,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 						useCapture = eventPhase == captureHandlerPrefix;
 
                         if (null == eventSource) {
-                            fabricationLogger.frameworkError("Cannot acces eventSource for Reaction for [ " + eventSourceName + " ] at [ " + qpath + " ] mediator.");
+                            fabricationLogger.error("Cannot acces eventSource for Reaction for [ " + eventSourceName + " ] at [ " + qpath + " ] mediator.");
                             break;
 
                         }
@@ -576,7 +575,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 				}
 
                 if (!reactionCreated) {
-                    fabricationLogger.frameworkWarn("Cannot resolve reaction for [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
+                    fabricationLogger.warn("Cannot resolve reaction for [ " + handlerName + " ] at [ " + qpath + " ] mediator.");
                 }
 			}
 

@@ -169,7 +169,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			view = FabricationView.getInstance(multitonKey);
 			(view as FabricationView).controller = controller as FabricationController;
-		}		
+			(view as FabricationView).logger = logger;
+		}
 
 		/**
 		 * Overrides initializeController to create a FabricationController

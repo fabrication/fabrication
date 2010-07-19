@@ -15,13 +15,15 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.core {
-	import org.puremvc.as3.multicore.interfaces.IController;	
 	import org.puremvc.as3.multicore.core.View;
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+    import org.puremvc.as3.multicore.utilities.fabrication.logging.FabricationLogger;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationProxy;
 
-	/**
+    /**
 	 * FabricationView is the custom view used by fabrication.
 	 * It allows for the disposal of all currently registered mediators
 	 * at once.
@@ -42,6 +44,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			
 			return instanceMap[multitonKey] as FabricationView;
 		}
+
+        public var logger:FabricationLogger;
 		
 		/**
 		 * The notification received after interception is saved here. notifyObservers
@@ -74,6 +78,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 			} else {
 				var result:Boolean = controller.intercept(note);
 				if (!result) {
+
+                    var noteName:String = note.getName();
+                    if( noteName == FabricationProxy.NOTIFICATION_FROM_PROXY )
+                        noteName = ( note.getBody() as INotification ).getName();
+
+                    if( !isFrameworkNotification( noteName ) && observerMap[ noteName ] == null ) {
+
+                        logger.warn( "No observers registered for notification [ " + noteName + " ]" );
+
+                    }
 					super.notifyObservers(note);
 					allowedNote = null;
 				}
@@ -130,6 +144,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		public function set controller(controller:FabricationController):void {
 			_controller = controller;
 		}
+
+        private function isFrameworkNotification( noteName:String ):Boolean {
+
+
+            return noteName == FabricationNotification.BOOTSTRAP;
+
+        }
 		
 	}		
 }
