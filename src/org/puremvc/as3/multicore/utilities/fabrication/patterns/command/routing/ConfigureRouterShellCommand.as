@@ -16,8 +16,6 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.routing {
 	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.Router;
 	import org.puremvc.as3.multicore.utilities.fabrication.routing.firewall.MultiRuleFirewall;

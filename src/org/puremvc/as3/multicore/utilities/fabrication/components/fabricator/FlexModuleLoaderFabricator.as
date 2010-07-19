@@ -16,11 +16,9 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import mx.events.ModuleEvent;
-	import mx.modules.ModuleLoader;
-	
+
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModule;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexModuleLoader;
-	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;	
 

@@ -15,7 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;	
 	
 	import flash.events.EventDispatcher;

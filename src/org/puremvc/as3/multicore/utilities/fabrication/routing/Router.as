@@ -22,7 +22,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterFirewall;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterMessage;
 	import org.puremvc.as3.multicore.utilities.fabrication.plumbing.DynamicJunction;
-	import org.puremvc.as3.multicore.utilities.pipes.interfaces.IPipeFitting;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.Junction;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.PipeListener;
 	import org.puremvc.as3.multicore.utilities.pipes.plumbing.TeeMerge;	

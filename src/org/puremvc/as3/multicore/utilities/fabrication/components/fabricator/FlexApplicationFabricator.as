@@ -15,8 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
-	import org.puremvc.as3.multicore.utilities.fabrication.components.FlexHaloApplication;
-	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;

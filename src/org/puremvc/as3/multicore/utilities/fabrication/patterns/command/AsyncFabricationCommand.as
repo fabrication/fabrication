@@ -16,7 +16,6 @@
 
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
     import org.puremvc.as3.multicore.interfaces.IAsyncCommand;
-    import org.puremvc.as3.multicore.interfaces.INotification;
 
     /**
 	 * AsyncFabricationCommand extends SimpleFabricationCommand and implements IAsyncCommand

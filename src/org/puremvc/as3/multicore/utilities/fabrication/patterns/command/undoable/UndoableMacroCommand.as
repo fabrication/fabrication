@@ -18,7 +18,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IUndoableCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.AbstractUndoableCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.Stack;	
 
 	/**

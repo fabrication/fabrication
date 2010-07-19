@@ -17,10 +17,7 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent;
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.FabricationMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;

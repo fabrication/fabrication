@@ -15,7 +15,6 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable.AbstractUndoableCommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;	
 	
 	/**

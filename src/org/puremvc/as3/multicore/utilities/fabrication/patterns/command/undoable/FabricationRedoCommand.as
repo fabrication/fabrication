@@ -17,7 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoable {
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;		
 
 	/**
 	 * FabricationRedoCommand performs a redo command operation on the

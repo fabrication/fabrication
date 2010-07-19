@@ -16,7 +16,6 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;	
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IIterator;	
 	
 	/**

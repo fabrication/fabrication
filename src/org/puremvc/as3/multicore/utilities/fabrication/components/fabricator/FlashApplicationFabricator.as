@@ -16,7 +16,6 @@
  
 package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 	import org.puremvc.as3.multicore.utilities.fabrication.components.FlashApplication;
-	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ApplicationStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.startup.ModuleStartupCommand;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
