@@ -15,13 +15,12 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.logging {
+    import flash.display.DisplayObject;
     import flash.events.SecurityErrorEvent;
     import flash.events.StatusEvent;
     import flash.net.LocalConnection;
     import flash.net.registerClassAlias;
     import flash.utils.getQualifiedClassName;
-
-    import mx.core.UIComponent;
 
     import org.as3commons.reflect.Accessor;
     import org.as3commons.reflect.Field;
@@ -49,7 +48,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         }
 
-        private static const LOGGER_ID:String = "_org.puremvc.as3.multicore.utilities.fabrication";
+        public static const LOGGER_ID:String = "_org.puremvc.as3.multicore.utilities.fabrication";
 
         private var _lc:LocalConnection;
 
@@ -99,7 +98,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             action.type = ActionType.MEDIATOR_REGISTERED;
             var infoObject:Object = {};
             infoObject.mediatorName = mediatorName;
-            var mediatorComponent:UIComponent = mediator.getViewComponent() as UIComponent;
+            var mediatorComponent:DisplayObject = mediator.getViewComponent() as DisplayObject;
             if (mediatorComponent) {
                 infoObject.viewComponentClass = getQualifiedClassName(mediatorComponent);
                 infoObject.notificationInterests = mediator.listNotificationInterests();
@@ -311,7 +310,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          * Logs fabrication framework error
          * @param message error message to log
          */
-        public function frameworkError(message:String):void
+        public function error(message:String):void
         {
             logFrameworkMessage(message, LogLevel.ERROR.getName());
 
@@ -321,7 +320,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          * Logs fabrication framework warning
          * @param message warning message to log
          */
-        public function frameworkWarn(message:String):void
+        public function warn(message:String):void
         {
             logFrameworkMessage(message, LogLevel.WARN.getName());
         }
@@ -415,7 +414,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private function _lc_securityErrorHandler(event:SecurityErrorEvent):void
         {
-            frameworkError(event.toString());
+            error(event.toString());
         }
 
 
