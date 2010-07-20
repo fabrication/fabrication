@@ -45,7 +45,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         /**
          * @inheritDoc
          */
-        override public function loadModule(url:String, applicationDomain:ApplicationDomain = null):void
+        override public function loadModule(url:String):void
         {
 
             var moduleURLRequest:URLRequest = new URLRequest(url);

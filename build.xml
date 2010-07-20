@@ -100,8 +100,8 @@
         </compile.fabrication.library>
 
 
-        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}"
-                                     flex4.supported="false">
+        <compile.fabrication.library air="false" swc.name="fabrication_flex.swc" classes.list="${no_air}">
+
             <namespace>
                 <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>
@@ -109,7 +109,7 @@
         </compile.fabrication.library>
 
         <compile.fabrication.library air="false" swc.name="fabrication_flex_moxie.swc"
-                                     classes.list="${no_air_moxie}">
+                                     classes.list="${no_air_moxie}" flex4.supported="false">
             <namespace>
                 <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-flex-moxie-manifest.xml"/>
                 <arg line="-include-namespaces ${fabrication.namespace}"/>

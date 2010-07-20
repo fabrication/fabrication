@@ -149,7 +149,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
          * @param url module url address
          * @param applicationDomain target application domain
          */
-        public function loadModule(url:String, applicationDomain:ApplicationDomain = null):void
+        public function loadModule(url:String):void
         {
 
             _moduleInfo = ModuleManager.getModule(url);
@@ -157,7 +157,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
             _moduleInfo.addEventListener(ModuleEvent.ERROR, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.PROGRESS, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.SETUP, dispatchEvent);
-            _moduleInfo.load(applicationDomain || ApplicationDomain.currentDomain );
+            _moduleInfo.load( ApplicationDomain.currentDomain );
         }
 
 

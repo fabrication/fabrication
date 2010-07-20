@@ -15,7 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.components {
-	import flash.utils.getDefinitionByName;
+    import flash.system.ApplicationDomain;
+    import flash.utils.getDefinitionByName;
 	
 	import mx.modules.ModuleLoader;
 	
@@ -86,7 +87,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */
 		public function FlexModuleLoader() {
 			super();
-			
+			applicationDomain = ApplicationDomain.currentDomain;
 			initializeFabricator();
 		}
 
