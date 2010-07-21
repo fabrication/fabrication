@@ -94,7 +94,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var action:Action = new Action();
             var mediatorName:String = mediator.getMediatorName();
             action.actorName = mediatorName;
-            action.message = "[ " + action.actorName + " ] mediator has been registered";
+            action.message = " [ " + action.actorName + " ] mediator has been registered";
             action.type = ActionType.MEDIATOR_REGISTERED;
             var infoObject:Object = {};
             infoObject.mediatorName = mediatorName;
@@ -116,7 +116,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var action:Action = new Action();
             var proxyName:String = proxy.getProxyName();
             action.actorName = proxyName;
-            action.message = "[ " + action.actorName + " ] proxy has been registered";
+            action.message = " [ " + action.actorName + " ] proxy has been registered";
             action.type = ActionType.PROXY_REGISTERD;
             var infoObject:Object = {};
             infoObject.proxyName = proxyName;
@@ -136,7 +136,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             if (!isFrameworkClassFlow(commandClass)) {
                 var action:Action = new Action();
                 action.actorName = getClassName(commandClass);
-                action.message = "[ " + action.actorName + " ] command has been registered for notification [ " + notificationName + " ]";
+                action.message = " [ " + action.actorName + " ] command has been registered for notification [ " + notificationName + " ]";
                 action.type = ActionType.COMMAND_REGISTERED;
                 logAction(action);
             }
@@ -154,7 +154,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
                 var action:Action = new Action();
                 var interceptorClassName:String = getClassName(interceptorClass);
                 action.actorName = interceptorClassName;
-                action.message = "[ " + action.actorName + " ] interceptor has been registered";
+                action.message = " [ " + action.actorName + " ] interceptor has been registered";
                 action.message += " for notification [ " + notificationName + " ]";
                 action.type = ActionType.INTERCEPTOR_REGISTERED;
                 if (parameters) {
@@ -177,7 +177,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
             var action:Action = new Action();
             var notificationName:String = notification.getName() + " routed by " + senderName;
-            action.actorName = notificationName;
+            action.actorName = " " + notificationName;
             action.message = ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
             action.message += senderName + " ]";
             action.message += " route notification [ " + notificationName + " ]";
@@ -222,7 +222,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var action:Action = new Action();
             var notificationName:String = notification.getName();
             action.actorName = notificationName + " sent by " + senderName;
-            action.message = ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
+            action.message = " " + ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
             action.message += senderName + " ]";
             action.message += " sent notification [ " + notificationName + " ]";
             action.type = ActionType.NOTIFICATION_SENT;
@@ -332,17 +332,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private function logAction(action:Action):void
         {
-
-
             action.index = ++_flowActionsCounter;
-            try {
-                _lc.send(LOGGER_ID, "logAction", action);
-            }
-            catch(e:Error) {
-
-                //                error(e.message);
-                --_flowActionsCounter;
-            }
+            _lc.send(LOGGER_ID, "logAction", action);
 
         }
 

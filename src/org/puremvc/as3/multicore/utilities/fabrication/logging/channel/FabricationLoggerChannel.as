@@ -74,7 +74,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging.channel {
             var ba:ByteArray = new ByteArray();
             ba.writeObject( object );
             ba.compress();
-            lc.send(FabricationLogger.LOGGER_ID, "inspectObject", ba );
+            lc.send(FabricationLogger.LOGGER_ID, "inspectObject", ba, objectName );
         }
 
         /**
