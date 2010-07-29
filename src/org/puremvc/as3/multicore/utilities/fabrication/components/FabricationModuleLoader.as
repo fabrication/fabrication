@@ -60,6 +60,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 
 
         private var _moduleInstance:FlexModule;
+        private var _moduleFactory:IFlexModuleFactory;
         private var _router:IRouter;
         private var _moduleAddress:IModuleAddress;
         private var _id:String;
@@ -70,9 +71,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
          * @param router Irouter instance for module
          * @param moduleAddressOrGroup IModuleAddress instance or moduleGroup name ( String )
          */
-        public function FabricationModuleLoader(router:IRouter, moduleAddressOrGroup:Object)
+        public function FabricationModuleLoader( moduleFactory:IFlexModuleFactory, router:IRouter, moduleAddressOrGroup:Object)
         {
             super();
+            this.moduleFactory = moduleFactory;
             this.router = router;
             if (moduleAddressOrGroup is IModuleAddress)
                 this.moduleAddress = moduleAddressOrGroup as IModuleAddress;
@@ -89,6 +91,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         public function set id(value:String):void
         {
             _id = value;
+        }
+
+        public function set moduleFactory( value:IFlexModuleFactory ):void
+        {
+            _moduleFactory = value;
         }
 
         /**
@@ -157,7 +164,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
             _moduleInfo.addEventListener(ModuleEvent.ERROR, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.PROGRESS, dispatchEvent);
             _moduleInfo.addEventListener(ModuleEvent.SETUP, dispatchEvent);
-            _moduleInfo.load( ApplicationDomain.currentDomain );
+            _moduleInfo.load( ApplicationDomain.currentDomain, null, null, _moduleFactory );
         }
 
 
@@ -165,7 +172,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         {
             var moduleFactory:IFlexModuleFactory =  retrieveModuleFactory( event );
             _moduleInstance = moduleFactory.create() as FlexModule;
-            _moduleInstance.id = _id;
+            if( _id )
+                _moduleInstance.id = _id;
             _moduleInstance.router = _router;
             if (_moduleGroup) {
 

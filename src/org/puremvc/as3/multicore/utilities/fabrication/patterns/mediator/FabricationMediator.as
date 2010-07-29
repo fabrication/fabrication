@@ -659,7 +659,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Initializes the reactions in this mediator. Subclasses that override this method must
 		 * call super.onRegister for reactions to work.
 		 */
-		override public function onRegister():void {
+		public override function onRegister():void {
 			// This condition check allows the tests with mock mediators to work without
 			// additional mocks that are needed to support reactions
 			if (multitonKey != null) {

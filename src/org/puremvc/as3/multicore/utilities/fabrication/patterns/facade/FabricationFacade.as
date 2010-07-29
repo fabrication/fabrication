@@ -22,6 +22,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
     import org.puremvc.as3.multicore.interfaces.INotification;
     import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.facade.Facade;
+    import org.puremvc.as3.multicore.patterns.observer.Notification;
     import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationController;
     import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationModel;
     import org.puremvc.as3.multicore.utilities.fabrication.core.FabricationView;
@@ -169,7 +170,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			view = FabricationView.getInstance(multitonKey);
 			(view as FabricationView).controller = controller as FabricationController;
-			(view as FabricationView).logger = logger;
 		}
 
 		/**
@@ -283,9 +283,25 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 		public function routeNotification(noteName:Object, noteBody:Object = null, noteType:String = null, to:Object = null):void {
 			var transportNotification:TransportNotification = new TransportNotification(noteName, noteBody, noteType, to);
 			sendNotification(RouterNotification.SEND_MESSAGE_VIA_ROUTER, transportNotification);
+            if( logger )
+                logger.logRouteNotificationAction( transportNotification );
 		}
 
-		/**
+
+        override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void
+        {
+            super.sendNotification(notificationName, body, type);
+            if( _fabricationLoggerEnabled && filter( notificationName ) )
+                logger.logSendNotificationAction( new Notification(notificationName, body, type ) );
+        }
+
+
+        override public function notifyObservers(notification:INotification):void
+        {
+            super.notifyObservers(notification);
+        }
+
+        /**
 		 * Alias to fabricationController.registerCommandClass
 		 */
 		public function executeCommandClass(clazz:Class, body:Object = null, note:INotification = null):ICommand {
@@ -389,6 +405,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
         public function set fabricationLoggerEnabled(value:Boolean):void
         {
             _fabricationLoggerEnabled = value;
+        }
+
+        private function filter( notificationName:String ):Boolean {
+
+            var filtered:Boolean;
+            switch( notificationName ) {
+
+                case FabricationNotification.STARTUP: filtered = true;
+                case FabricationNotification.SHUTDOWN: filtered = true;
+                case FabricationNotification.BOOTSTRAP: filtered = true;
+                case FabricationNotification.UNDO: filtered = true;
+                case FabricationNotification.REDO: filtered = true;
+                case FabricationNotification.CHANGE_UNDO_GROUP: filtered = true;
+                case RouterNotification.RECEIVED_MESSAGE_VIA_ROUTER: filtered = true;
+                case RouterNotification.SEND_MESSAGE_VIA_ROUTER: filtered = true;
+                default:;
+
+            }
+
+            return !filtered;
+
+
         }
     }
 }
