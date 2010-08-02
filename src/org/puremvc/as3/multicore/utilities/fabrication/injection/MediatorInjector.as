@@ -15,8 +15,8 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.injection {
-    import org.puremvc.as3.multicore.interfaces.IFacade;
     import org.puremvc.as3.multicore.interfaces.IMediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 
     /**
      * Injector implementation for PurMVC mediators
@@ -25,7 +25,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     public class MediatorInjector extends Injector {
 
 
-        public function MediatorInjector(facade:IFacade, context:* )
+        public function MediatorInjector(facade:FabricationFacade, context:*)
         {
             super(facade, context, INJECT_MEDIATOR );
         }

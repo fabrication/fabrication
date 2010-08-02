@@ -15,8 +15,8 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.injection {
-    import org.puremvc.as3.multicore.interfaces.IFacade;
     import org.puremvc.as3.multicore.interfaces.IProxy;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 
     /**
      * Injector implementation for PurMVC proxies
@@ -25,7 +25,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     public class ProxyInjector extends Injector {
 
 
-        public function ProxyInjector(facade:IFacade, context:*)
+        public function ProxyInjector(facade:FabricationFacade, context:*)
         {
             super(facade, context, INJECT_PROXY );
         }

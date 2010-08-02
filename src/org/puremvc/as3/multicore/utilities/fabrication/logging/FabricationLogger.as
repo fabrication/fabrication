@@ -122,7 +122,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var infoObject:Object = {};
             infoObject.proxyName = proxyName;
             infoObject.data = proxy.getData();
-            infoObject = retreieveProps(proxy, infoObject);
+//            infoObject = retreieveProps(proxy, infoObject);
             action.infoObject = infoObject;
             logAction(action);
         }
@@ -192,7 +192,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             notificationObject.name = notificationName;
             notificationObject.body = notification.getBody();
             notificationObject.type = notification.getType();
-            notificationObject = retreieveProps(notificationObject, notificationObject);
+//            notificationObject = retreieveProps(notificationObject, notificationObject);
             var flowInfoObject:Object = {};
 //            var senderObject:Object = {};
             /*if (senderIsProxy) {
@@ -234,7 +234,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             notificationObject.name = notificationName;
             notificationObject.body = notification.getBody();
             notificationObject.type = notification.getType();
-            notificationObject = retreieveProps(notificationObject, notificationObject);
+//            notificationObject = retreieveProps(notificationObject, notificationObject);
             var flowInfoObject:Object = {};
 //            var senderObject:Object = {};
 //            if (senderIsProxy) {
@@ -342,7 +342,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
         }
 
 
-        private function retreieveProps(object:Object, infoObject:Object, deepLevel:int = 0):Object
+        /*private function retreieveProps(object:Object, infoObject:Object, deepLevel:int = 0):Object
         {
 
 
@@ -388,7 +388,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
 
             return infoObject;
-        }
+        }*/
 
 
         private function getClassName(clazz:Class):String

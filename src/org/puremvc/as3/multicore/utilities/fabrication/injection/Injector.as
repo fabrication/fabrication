@@ -22,7 +22,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import org.as3commons.reflect.MetaData;
     import org.as3commons.reflect.MetaDataArgument;
     import org.as3commons.reflect.Type;
-    import org.puremvc.as3.multicore.interfaces.IFacade;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 
     public class Injector {
 
@@ -31,12 +31,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         private static var CACHED_CONTEXT_INJECTION_DATA:Dictionary = new Dictionary();
 
-        protected var facade:IFacade;
+        protected var facade:FabricationFacade;
         protected var injectionMetadataTagName:String;
 
         protected var context:*;
 
-        public function Injector(facade:IFacade, context:*, injectionMetadataTagName:String)
+        public function Injector(facade:FabricationFacade, context:*, injectionMetadataTagName:String)
         {
             this.facade = facade;
             this.context = context;
@@ -106,7 +106,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
                             injectionField.elementTypeIsInterface = field.type.isInterface;
                             injectionField.elementClass = field.type.clazz;
 
-                            var nameArgument:MetaDataArgument = metadata.getArgument( "name" );
+                            var nameArgument:MetaDataArgument = metadata.getArgument( "" ) || metadata.getArgument( "name" );
                             if( nameArgument )
                                 injectionField.elementName = nameArgument.value;
                             injectionFields.push( injectionField );
@@ -142,12 +142,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         /**
          * Function handler invoked when there is no element present with given name
-         * @param elementName name of element
+         * @param fieldName name of element
          */
-        protected function onNoPatternElementAvaiable(elementName:String):void
+        protected function onNoPatternElementAvaiable(fieldName:String):void
         {
 
-            //            logger.error("Cannot resolve injection element [ " + elementName + " ] at [ " + getQualifiedClassName(context) + " ]");
+            facade.logger.error("Cannot resolve injection element [ " + fieldName + " ] at [ " + getQualifiedClassName(context) + " ]");
         }
 
         /**
@@ -159,7 +159,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
         {
 
 
-            //            logger.error("field [ " + fieldName + " ] is typed as interface, so name for [ " + injectionMetadataTagName + " ] MUST be given.");
+            facade.logger.error("field [ " + fieldName + " ] is typed as interface, so name for [ " + injectionMetadataTagName + " ] MUST be given.");
         }
 
         /**
@@ -184,7 +184,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             // retrieve element name
             var elementName:String = getElementName(injectionField);
             if (elementName && !elementExist(elementName)) {
-                onNoPatternElementAvaiable(elementName);
+                onNoPatternElementAvaiable(injectionField.fieldName);
                 return null;
             }
             if (!elementName && injectionField.elementTypeIsInterface) {
