@@ -35,6 +35,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.FabricationNotification;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.RouterNotification;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.observer.TransportNotification;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationDependencyProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 
     /**
@@ -203,7 +204,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			
 			this.startupCommand = startupCommand; 
 			applicationName = calcApplicationName(startupCommand);
-			
+
+            registerProxy( new FabricationDependencyProxy() );
+
 			registerCommand(FabricationNotification.STARTUP, startupCommand);
 			
 			sendNotification(FabricationNotification.STARTUP, application);
@@ -405,6 +408,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
         public function set fabricationLoggerEnabled(value:Boolean):void
         {
             _fabricationLoggerEnabled = value;
+        }
+
+
+        public function addDependenciesProvider( dependenciesProvider:* ):void {
+
+            var dependencyProxy:FabricationDependencyProxy = retrieveProxy( FabricationDependencyProxy.NAME ) as FabricationDependencyProxy;
+            dependencyProxy.addDependencyProvider( dependenciesProvider );
+            
         }
 
         private function filter( notificationName:String ):Boolean {

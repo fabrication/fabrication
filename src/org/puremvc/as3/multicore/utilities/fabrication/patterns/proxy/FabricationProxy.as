@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
 	
@@ -102,6 +103,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
                 for (var i:int = 0; i < injectedFieldsNum; i++) {
 
                     var fieldName:String = ""+injectionFieldsNames[i];
+                    var ob:Object = this[ fieldName ];
+                    if( ob is IDisposable )
+                        ( ob as IDisposable ).dispose();
                     this[ fieldName ] = null;
                 }
                 injectionFieldsNames = null;
@@ -262,6 +266,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         {
             injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new DependencyInjector(fabFacade, this) ).inject());
         }
 	}
 }

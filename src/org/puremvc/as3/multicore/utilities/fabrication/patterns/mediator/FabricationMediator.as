@@ -24,6 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import org.puremvc.as3.multicore.interfaces.INotification;
     import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
@@ -770,6 +771,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new DependencyInjector(fabFacade, this) ).inject());
         }
     }
 }

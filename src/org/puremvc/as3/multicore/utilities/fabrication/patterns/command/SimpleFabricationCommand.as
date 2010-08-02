@@ -20,6 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICommandProcessor;
@@ -235,6 +236,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		}
 
         /**
+		 * Alias to fabFacade.addDependenciesProvider
+		 *
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#addDependenciesProvider
+		 */
+        public function addDependenciesProvider( dependenciesProvider:* ):void {
+
+            fabFacade.addDependenciesProvider( dependenciesProvider );
+        }
+
+        /**
          * Performs injection action on current SimpleCommand.
          * By convention we allow proxies and mediators injection on
          * FabricationProxy instance
@@ -246,6 +257,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
             injectionFieldsNames = [];
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
+            injectionFieldsNames = injectionFieldsNames.concat(( new DependencyInjector(fabFacade, this) ).inject());
         }
 	}
 }
