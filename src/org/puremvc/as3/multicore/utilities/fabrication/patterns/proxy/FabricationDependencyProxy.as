@@ -17,6 +17,13 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
     import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependenciesProvider;
 
+    /**
+	 * FabricationDependencyProxy is internal framwork class for
+     * hanling multi dependencies providers
+	 * It provides part name based notifications.
+	 *
+	 * @author Darshan Sawardekar, Rafał Szemraj
+	 */
     final public class FabricationDependencyProxy extends FabricationProxy {
 
 

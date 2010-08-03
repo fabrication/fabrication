@@ -7,6 +7,7 @@
     <import file="${basedir}/etc/ant/build.tools.xml"/>
 
     <property name="src.dir" value="${basedir}/src"/>
+    <property name="rpc.src.dir" value="${basedir}/src_rpc"/>
 
 
     <target name="main"
@@ -175,6 +176,20 @@
             <arg line="-output=${asdoc.full.dir}"/>
             <arg line="-define+=FLEX4::supported,true"/>
         </exec>
+
+        <exec executable="${flex.asdoc}" failonerror="true">
+            <arg line="-window-title='${doc.title}'"/>
+            <arg line="-footer='${doc.footer}'"/>
+            <arg line="-doc-sources ${rpc.src.dir}"/>
+            <arg line="-source-path=${rpc.src.dir}"/>
+            <arg line="-external-library-path ${bin.dir}/fabrication_air.swc"/>
+            <!--<arg line="-external-library-path ${reflection.lib}"/>-->
+            <!--<arg line="-external-library-path ${flex.home}/frameworks/libs"/>-->
+            <!--<arg line="-external-library-path ${flex.home}/frameworks/libs/air"/>-->
+            <arg line="-output=${asdoc.rpc.dir}"/>
+            <arg line="-define+=FLEX4::supported,true"/>
+        </exec>
+
     </target>
 
     <target name="generate.public.documentation">
@@ -222,10 +237,13 @@
               overwrite="true"/>
         <copy file="${bin.dir}/fabrication_as3.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-as3.swc"
               overwrite="true"/>
+        <copy file="${bin.dir}/fabrication_rpc.swc" tofile="${dist.dir}/fabrication-${fabrication.version}-rpc.swc"
+              overwrite="true"/>
 
         <zip destfile="${dist.dir}/fabrication-${fabrication.version}-src.zip">
             <fileset dir="${basedir}">
                 <include name="src/**"/>
+                <include name="src_rpc/**"/>
                 <include name="tests/**"/>
                 <include name="bin/**"/>
                 <include name="libs/**"/>
@@ -244,9 +262,6 @@
                 <exclude name="bin/tests/swfobject"/>
                 <exclude name="bin/tests/index.html"/>
             </fileset>
-            <fileset dir="${basedir}">
-                <include name="bin/fabrication-${fabrication.version}.swc"/>
-            </fileset>
         </zip>
 
         <zip destfile="${dist.dir}/fabrication-api-full.zip">
@@ -257,6 +272,12 @@
 
         <zip destfile="${dist.dir}/fabrication-api-public.zip">
             <fileset dir="${asdoc.public.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </zip>
+
+        <zip destfile="${dist.dir}/fabrication-api-rpc.zip">
+            <fileset dir="${asdoc.rpc.dir}">
                 <include name="**/*.*"/>
             </fileset>
         </zip>
@@ -281,6 +302,7 @@
             <fileset dir="${doc.dir}">
                 <include name="public/**/*.*"/>
                 <include name="full/**/*.*"/>
+                <include name="rpc/**/*.*"/>
             </fileset>
             <fileset dir="${dist.dir}">
                 <include name="fabrication-api*.zip"/>
@@ -344,6 +366,14 @@
                 targetfilename="fabrication-${fabrication.version}-src.zip"
                 summary="Fabrication ${fabrication.version} Source Zip"
                 labels="Featured, Type-Archive, OpSys-All"/>
+        <gcupload
+                username="${googlecode.user}"
+                password="${googlecode.pass}"
+                projectname="fabrication"
+                filename="${dist.dir}/fabrication-${fabrication.version}-rpc.swc"
+                targetfilename="fabrication-${fabrication.version}-rpc.swc"
+                summary="Fabrication ${fabrication.version} RPC extension"
+                labels="Featured, Type-Package, OpSys-All"/>
 
 
     </target>
