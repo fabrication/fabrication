@@ -15,6 +15,7 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
+    import flash.utils.Dictionary;
 
 
     [DefaultProperty("dependencies")]
@@ -25,6 +26,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
 
 
         private var _dependencies:Array = [];
+        private var _dependenciesDict:Dictionary = new Dictionary( true );
 
         /**
          * adds any dependency object for further use
@@ -33,10 +35,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
          */
         public function addDependency(dependency:Object, name:String):void
         {
-            if (!hasOwnProperty(name)) {
+            if (!_dependenciesDict[name]) {
 
-                dependencies.push(dependency);
-                this[ name ] = dependency;
+                _dependencies.push(dependency);
+                _dependenciesDict[ name ] = dependency;
+                
             }
         }
 
@@ -45,7 +48,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
          */
         public function dispose():void
         {
-            dependencies = null;
+            _dependencies = null;
+            _dependenciesDict = null;
         }
 
 
@@ -54,7 +58,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
          */
         public function getDependency(name:String):Object
         {
-            if (hasOwnProperty(name)) {
+            if (_dependenciesDict[name]) {
+
+               return  _dependenciesDict[name];
+            }
+            else if( hasOwnProperty( name )) {
 
                 return this[ name ];
             }
@@ -70,7 +78,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
         {
             _dependencies = value;
         }
-
 
     }
 }

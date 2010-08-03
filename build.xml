@@ -119,8 +119,38 @@
 
         <compile.fabrication.library air="false" swc.name="fabrication_as3.swc" classes.list="${no_air_flex}"/>
 
+        <!-- add-ons -->
+
+        <!-- RPC -->
+
+        <pathconvert pathsep=" " property="fabrication_rpc" dirsep=".">
+            <fileset dir="${basedir}/src_rpc">
+
+            </fileset>
+            <chainedmapper>
+                <globmapper from="${basedir}/src_rpc/" to=""/>
+                <globmapper from="*.as" to="*"/>
+            </chainedmapper>
+        </pathconvert>
+
+        <exec executable="${flex.compc}" failonerror="true" failifexecutionfails="true">
+
+            <arg line="+flex.home=${flex.home}"/>
+            <arg line="-include-classes ${fabrication_rpc} org.puremvc.as3.multicore.utilities.fabrication.services.FabricationMockService"/>
+            <arg line="-load-config fabrication-config.xml"/>
+            <arg line="-source-path+=${basedir}/src_rpc"/>
+            <arg line="-external-library-path+=${bin.dir}"/>
+            <arg line="-external-library-path+=${flex.home}/"/>
+            <arg line="-namespace ${fabrication.namespace} ${basedir}/etc/manifests/fabrication-rpc-manifest.xml"/>
+            <arg line="-include-namespaces ${fabrication.namespace}"/>
+            <arg line="-output ${bin.dir}/fabrication_rpc.swc"/>
+            <arg line="-link-report=${bin.dir}/fabrication_rpc.swc.xml"/>
+
+        </exec>
+
 
     </target>
+
 
     <target name="generate.documentation" description="generates full and public API documentation">
         <delete dir="${doc.dir}"/>

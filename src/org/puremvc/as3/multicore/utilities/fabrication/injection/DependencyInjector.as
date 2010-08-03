@@ -26,12 +26,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         private static const INJECT:String = "Inject";
 
-        protected var dependencyProxy:FabricationDependencyProxy;
+        private var _dependencyProxy:FabricationDependencyProxy;
 
         public function DependencyInjector(facade:FabricationFacade, context:*)
         {
             super(facade, context, INJECT);
-            dependencyProxy = facade.retrieveProxy(FabricationDependencyProxy.NAME) as FabricationDependencyProxy;
+
         }
 
 
@@ -49,6 +49,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
          */
         override protected function getPatternElementForInjection(elementName:String, elementClass:Class):Object
         {
+
             var element:Object = dependencyProxy.getDependency(elementName);
             if (element && ( element is elementClass)) {
 
@@ -57,6 +58,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             }
             else
                 return null;
+        }
+
+        private function get dependencyProxy():FabricationDependencyProxy {
+
+            return _dependencyProxy ? _dependencyProxy : _dependencyProxy = facade.retrieveProxy(FabricationDependencyProxy.NAME) as FabricationDependencyProxy;
+
         }
     }
 }

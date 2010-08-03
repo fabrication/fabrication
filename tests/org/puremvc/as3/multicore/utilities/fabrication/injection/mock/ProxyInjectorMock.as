@@ -1,12 +1,12 @@
 package org.puremvc.as3.multicore.utilities.fabrication.injection.mock {
-    import org.puremvc.as3.multicore.interfaces.IFacade;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.InjectionField;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 
     public class ProxyInjectorMock extends ProxyInjector {
 
 
-        public function ProxyInjectorMock(facade:IFacade, context:*)
+        public function ProxyInjectorMock(facade:FabricationFacade, context:*)
         {
             super(facade, context);
         }
@@ -23,7 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.mock {
 
         public function getElementNameMethod(field:InjectionField):String
         {
-            return getElementName( field );
+            return getElementName(field);
         }
 
     }

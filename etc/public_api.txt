@@ -30,3 +30,4 @@ FabricationFacade
 AbstractInterceptor
 IInterceptor
 NotificationProcessor
+DependenciesProvider
