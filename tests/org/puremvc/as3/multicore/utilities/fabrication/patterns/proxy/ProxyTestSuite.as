@@ -1,4 +1,5 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test.FabricationDependencyProxyTest;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test.FabricationProxyTest;
 
     [Suite]
@@ -6,6 +7,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
     public class ProxyTestSuite {
 
         public var fabricationProxyTest:FabricationProxyTest;
+        public var fabricationDependencyProxyTest:FabricationDependencyProxyTest;
 
     }
 }
