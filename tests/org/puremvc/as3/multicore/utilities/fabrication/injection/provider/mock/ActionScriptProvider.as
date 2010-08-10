@@ -15,9 +15,9 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.injection.provider.mock {
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependenciesProvider;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependencyProvider;
 
-    public class ActionScriptProvider extends DependenciesProvider {
+    public class ActionScriptProvider extends DependencyProvider {
 
         public function ActionScriptProvider()
         {

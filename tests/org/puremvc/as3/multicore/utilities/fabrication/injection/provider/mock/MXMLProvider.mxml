@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<dprovider:DependenciesProvider xmlns:fx="http://ns.adobe.com/mxml/2009"
+<dprovider:DependencyProvider xmlns:fx="http://ns.adobe.com/mxml/2009"
                                 xmlns:mx="library://ns.adobe.com/flex/mx"
                                 xmlns:dprovider="org.puremvc.as3.multicore.utilities.fabrication.injection.provider.*">
         <fx:Array id="array">
@@ -23,4 +23,4 @@
             <fx:Object name="elemen2" value="value2"/>
             <fx:Object name="elemen3" value="value3"/>
         </fx:Array>
-</dprovider:DependenciesProvider>
+</dprovider:DependencyProvider>

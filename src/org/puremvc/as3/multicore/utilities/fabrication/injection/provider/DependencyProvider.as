@@ -22,7 +22,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
     /**
      * Base implementation of IDependenciesProvider interface
      */
-    public class DependenciesProvider implements IDependenciesProvider {
+    public class DependencyProvider implements IDependencyProvider {
 
 
         private var _dependencies:Array = [];

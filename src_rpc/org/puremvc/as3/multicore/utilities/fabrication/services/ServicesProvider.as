@@ -17,11 +17,11 @@
 package org.puremvc.as3.multicore.utilities.fabrication.services {
     import mx.rpc.AbstractService;
 
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependenciesProvider;
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependenciesProvider;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependencyProvider;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependencyProvider;
 
     [DefaultProperty("services")]
-    public class ServicesProvider implements IDependenciesProvider {
+    public class ServicesProvider implements IDependencyProvider {
 
         private var _services:Array = [];
 

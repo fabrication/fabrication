@@ -23,7 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection.provider {
      * reference
      * @see FabricationDependencyProxy
      */
-    public interface IDependenciesProvider extends IDisposable {
+    public interface IDependencyProvider extends IDisposable {
 
         /**
          * returns reference to dependency object
