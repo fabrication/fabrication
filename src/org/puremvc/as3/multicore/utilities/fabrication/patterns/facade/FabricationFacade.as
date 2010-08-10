@@ -205,15 +205,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			this.startupCommand = startupCommand; 
 			applicationName = calcApplicationName(startupCommand);
 
-            registerProxy( new FabricationDependencyProxy() );
-
 			registerCommand(FabricationNotification.STARTUP, startupCommand);
 			
 			sendNotification(FabricationNotification.STARTUP, application);
 			sendNotification(FabricationNotification.BOOTSTRAP, application);
 
-            if( _fabricationLoggerEnabled )
-                logger.logFabricatorStart( getFabrication(), calcApplicationName( startupCommand ) );
+            var fabrication:IFabrication = application as IFabrication;
+            if( fabrication ) {
+
+                registerProxy( new FabricationDependencyProxy() );
+                addDependencyProviders( fabrication.depnedencyProviders );    
+                if( _fabricationLoggerEnabled )
+                    logger.logFabricatorStart( getFabrication(), calcApplicationName( startupCommand ) );
+
+            }
 		}
 
 		/**
@@ -411,10 +416,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
         }
 
 
-        public function addDependenciesProvider( dependenciesProvider:* ):void {
+        private function addDependencyProviders( dependencyProviders:Array ):void {
 
             var dependencyProxy:FabricationDependencyProxy = retrieveProxy( FabricationDependencyProxy.NAME ) as FabricationDependencyProxy;
-            dependencyProxy.addDependencyProvider( dependenciesProvider );
+            for each( var provider:* in dependencyProviders )
+                dependencyProxy.addDependecyProvider( provider );
             
         }
 

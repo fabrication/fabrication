@@ -236,16 +236,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 		}
 
         /**
-		 * Alias to fabFacade.addDependenciesProvider
-		 *
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade#addDependenciesProvider
-		 */
-        public function addDependenciesProvider( dependenciesProvider:* ):void {
-
-            fabFacade.addDependenciesProvider( dependenciesProvider );
-        }
-
-        /**
          * Performs injection action on current SimpleCommand.
          * By convention we allow proxies and mediators injection on
          * FabricationProxy instance
