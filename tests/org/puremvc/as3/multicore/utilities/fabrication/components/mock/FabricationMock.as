@@ -158,5 +158,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.mock {
         {
             return false;
         }
+
+        public function get depnedencyProviders():Array
+        {
+            return [];
+        }
     }
 }

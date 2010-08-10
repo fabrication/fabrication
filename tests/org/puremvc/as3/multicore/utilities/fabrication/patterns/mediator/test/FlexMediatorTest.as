@@ -21,6 +21,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
 
     import org.puremvc.as3.multicore.interfaces.IMediator;
     import org.puremvc.as3.multicore.interfaces.IProxy;
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.*;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.mock.FabricationMediatorTestMock;
@@ -74,12 +75,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
         }
 
         [Test]
-        public function flexMediatorAllowsChangingMediatorNameAfterInstantiation():void
-        {
-            assertGetterAndSetter(flexMediator, "mediatorName", String, null, "MyMediator");
-        }
-
-        [Test]
         public function flexMediatorSupportsComponentResolution():void
         {
             facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
@@ -111,6 +106,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.test {
         [Test]
         public function flexMediatorAllowsRegistrationOfFlexMediatorsWithPendingComponentResolutions():void
         {
+            use namespace fabrication_internal;
+
             facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
             var notificationCache:HashMap = new HashMap();
             var routeMapper:ComponentRouteMapper = new ComponentRouteMapper();

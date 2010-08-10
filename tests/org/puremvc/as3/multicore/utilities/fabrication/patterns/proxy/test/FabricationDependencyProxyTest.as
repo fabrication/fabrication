@@ -17,7 +17,8 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
     import org.puremvc.as3.multicore.utilities.fabrication.addons.BaseTestCase;
     import org.puremvc.as3.multicore.utilities.fabrication.components.mock.FabricationMock;
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependenciesProvider;
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependencyProvider;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.Log;
     import org.puremvc.as3.multicore.utilities.fabrication.logging.Logger;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.mock.FacadeMock;
@@ -29,11 +30,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
      */
     public class FabricationDependencyProxyTest extends BaseTestCase {
 
+        use namespace fabrication_internal;
+
         public var proxy:FabricationDependencyProxy;
         public var facade:FacadeMock;
         public var fabrication:FabricationMock;
-        private var dependenciesProvider1:DependenciesProvider;
-        private var dependenciesProvider2:DependenciesProvider;
+        private var dependenciesProvider1:DependencyProvider;
+        private var dependenciesProvider2:DependencyProvider;
 
         [Before]
         public function setUp():void
@@ -47,17 +50,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
             facade.mock.method("findInstance").withArgs(String).returns(cache);
             facade.mock.method("getFabrication").withNoArgs.returns(fabrication);
 
-            dependenciesProvider1 = new DependenciesProvider();
+            dependenciesProvider1 = new DependencyProvider();
             dependenciesProvider1.addDependency("DP1", "string");
             dependenciesProvider1.addDependency([ 1,2,3,4], "array");
 
-            dependenciesProvider2 = new DependenciesProvider();
+            dependenciesProvider2 = new DependencyProvider();
             dependenciesProvider2.addDependency( Log.getLogger(), "logger");
 
             proxy = new FabricationDependencyProxy();
             proxy.initializeNotifier(instanceName + "_setup");
-            proxy.addDependencyProvider( dependenciesProvider1 );
-            proxy.addDependencyProvider( dependenciesProvider2 );
+            proxy.addDependecyProvider( dependenciesProvider1 );
+            proxy.addDependecyProvider( dependenciesProvider2 );
 
 
         }
