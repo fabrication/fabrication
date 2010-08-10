@@ -277,5 +277,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         {
             return false;
         }
+
+        /**
+         * @inheritDoc
+         */
+        public function get depnedencyProviders():Array
+        {
+            return [];
+        }
 	}
 }

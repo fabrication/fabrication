@@ -122,5 +122,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		 * </listing>
          */
         function get fabricationLoggerEnabled():Boolean;
+
+        /**
+         * returns array of dependency provideres ( Class objects or IDependecyProvider interfece implementations )
+         * @return
+         */
+        function get depnedencyProviders():Array;
 	}
 }
