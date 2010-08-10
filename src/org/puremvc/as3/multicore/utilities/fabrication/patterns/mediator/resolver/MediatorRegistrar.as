@@ -15,7 +15,8 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver {
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;	
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
+    import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
 	
 	import flash.events.EventDispatcher;
 	import flash.utils.describeType;
@@ -196,6 +197,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 */
 		private function registerMediator(mediator:FlexMediator, component:UIComponent):void {
 			if (getUseSuffix()) {
+
+                use namespace fabrication_internal;
 				mediator.setMediatorName(defaultMediatorName + "/" + component.id);
 			}
 			

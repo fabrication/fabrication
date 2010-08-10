@@ -17,13 +17,16 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent;
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentResolver;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.ComponentRouteMapper;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.MediatorRegistrar;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.CloneUtils;
-	
+
+    use namespace fabrication_internal;
+
 	import mx.core.UIComponent;
 	
 	import flash.utils.describeType;
@@ -167,7 +170,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * 
 		 * @param name The name of the mediator
 		 */
-		public function setMediatorName(name:String):void {
+		fabrication_internal function setMediatorName(name:String):void {
 			this.mediatorName = name;
 		}
 		

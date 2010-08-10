@@ -15,6 +15,7 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.injection {
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.FabricationDependencyProxy;
 
@@ -24,8 +25,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
      */
     public class DependencyInjector extends Injector {
 
-        private static const INJECT:String = "Inject";
+        use namespace fabrication_internal;
 
+        private static const INJECT:String = "Inject";
         private var _dependencyProxy:FabricationDependencyProxy;
 
         public function DependencyInjector(facade:FabricationFacade, context:*)
@@ -40,6 +42,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
          */
         override protected function elementExist(elementName:String):Boolean
         {
+
             return dependencyProxy.getDependency(elementName) != null;
 
         }
