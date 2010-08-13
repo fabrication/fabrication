@@ -127,6 +127,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
          * returns array of dependency provideres ( Class objects or IDependecyProvider interfece implementations )
          * @return
          */
-        function get depnedencyProviders():Array;
+        function get dependencyProviders():Array;
 	}
 }

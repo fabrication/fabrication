@@ -194,7 +194,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         /**
          * @inheritDoc
          */
-        public function get depnedencyProviders():Array
+        public function get dependencyProviders():Array
         {
             return [];
         }

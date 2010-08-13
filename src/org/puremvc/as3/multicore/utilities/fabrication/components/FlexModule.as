@@ -13,29 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package org.puremvc.as3.multicore.utilities.fabrication.components {
-	import flash.utils.getDefinitionByName;
-	
-	import mx.modules.Module;
-	
+    import flash.display.DisplayObject;
+    import flash.utils.getDefinitionByName;
+
+    import mx.core.UIComponent;
+    import mx.modules.Module;
+
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.ApplicationFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.components.fabricator.FlexModuleFabricator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IModuleAddress;
-	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;	
+	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouter;
 
 	/**
 	 * Dispatched when the flex module's fabrication is created.
-	 * 
+	 *
 	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_CREATED
 	 */
 	[Event(name="fabricationCreated", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
 
 	/**
 	 * Dispatched when the flex module's fabrication is removed.
-	 * 
+	 *
 	 * @eventType org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent.FABRICATION_REMOVED
 	 */
 	[Event(name="fabricationRemoved", type="org.puremvc.as3.multicore.utilities.fabrication.events.FabricatorEvent")]
@@ -44,7 +46,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 	 * FlexModule is the concrete fabrication for the flex module environment.
 	 * It uses the FlexModuleFabricator to provide a flex module environment
 	 * specific configuration.
-	 * 
+	 *
 	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FlexModule extends Module implements IFabrication {
@@ -58,7 +60,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 * Default route address assigned to this Module
 		 */
 		protected var _defaultRouteAddress:IModuleAddress;
-		
+
 		/**
 		 * Optional configuration object.
 		 */
@@ -69,7 +71,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */
 		public function FlexModule() {
 			super();
-			
+
 			initializeFabricator();
 		}
 
@@ -111,19 +113,19 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 
 		/**
 		 * The name of the current application module group for messaging.
-		 * 
+		 *
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule#moduleGroup
 		 */
 		public function get moduleGroup():String {
 			return fabricator.moduleGroup;
 		}
-		
+
 		public function set moduleGroup(moduleGroup:String):void {
 			fabricator.moduleGroup = moduleGroup;
 		}
-		
+
 		/**
-		 * The current application's message router. 
+		 * The current application's message router.
 		 */
 		public function get router():IRouter {
 			return fabricator.router;
@@ -142,14 +144,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		public function get config():Object {
 			return _config;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set config($config:Object):void {
 			_config = $config;
 		}
-		
+
 		/**
 		 * The default route address to be assigned to the child module.
 		 */
@@ -167,7 +169,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 */
 		public function initializeFabricator():void {
 			_fabricator = new FlexModuleFabricator(this);
-		} 
+		}
 
 		/**
 		 * Abstract method. Subclasses should provide their application
@@ -183,15 +185,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 * in addition to the base application class. It allows the Fabrication
 		 * apparatus to use reflection inside a module application swf from
 		 * the parent shell swf. The body of this method must be,
-		 * 
+		 *
 		 * @example The following code is the implementation of the fabrication
 		 * <listing>
 		 * 	public function getClassByName(classpath:String):Class {
 		 * 		return getDefinitionByName(classpath) as Class;
 		 * 	}
 		 * </listing>
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#getClassByName 
+		 *
+		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#getClassByName
 		 */
 		public function getClassByName(classpath:String):Class {
 			return getDefinitionByName(classpath) as Class;
@@ -201,14 +203,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationCreated
 		 */
 		public function notifyFabricationCreated():void {
-			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_CREATED));			
+			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_CREATED));
 		}
 
 		/**
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationRemoved
 		 */
 		public function notifyFabricationRemoved():void {
-			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_REMOVED));			
+			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_REMOVED));
 		}
 
         /**
@@ -216,15 +218,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
          */
         public function get fabricationLoggerEnabled():Boolean
         {
-            return false;
+            var parentFabrication:IFabrication = parentApplication as IFabrication;
+            return parentFabrication ? parentFabrication.fabricationLoggerEnabled : false;
         }
 
         /**
          * @inheritDoc
          */
-        public function get depnedencyProviders():Array
+        public function get dependencyProviders():Array
         {
-            return [];
+            var parentFabrication:IFabrication = parentApplication as IFabrication;
+            return parentFabrication ? parentFabrication.dependencyProviders : [];
         }
+
 	}
 }
