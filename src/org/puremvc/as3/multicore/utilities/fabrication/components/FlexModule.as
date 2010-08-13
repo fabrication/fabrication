@@ -218,7 +218,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
          */
         public function get fabricationLoggerEnabled():Boolean
         {
-            var parentFabrication:IFabrication = parentApplication as IFabrication;
+            var parentFabrication:IFabrication;
+            if( systemManager )
+                    parentFabrication = parentApplication as IFabrication;
             return parentFabrication ? parentFabrication.fabricationLoggerEnabled : false;
         }
 
@@ -227,7 +229,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
          */
         public function get dependencyProviders():Array
         {
-            var parentFabrication:IFabrication = parentApplication as IFabrication;
+            var parentFabrication:IFabrication;
+            if( systemManager )
+                    parentFabrication = parentApplication as IFabrication;
             return parentFabrication ? parentFabrication.dependencyProviders : [];
         }
 
