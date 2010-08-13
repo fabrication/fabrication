@@ -20,11 +20,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
     import flash.events.StatusEvent;
     import flash.net.LocalConnection;
     import flash.net.registerClassAlias;
+    import flash.utils.ByteArray;
     import flash.utils.getQualifiedClassName;
 
-    import org.as3commons.reflect.Accessor;
-    import org.as3commons.reflect.Field;
-    import org.as3commons.reflect.IMember;
     import org.as3commons.reflect.Type;
     import org.puremvc.as3.multicore.interfaces.IMediator;
     import org.puremvc.as3.multicore.interfaces.INotification;
@@ -81,7 +79,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var infoObject:Object = {};
             infoObject.fabrication = fabricationName;
             infoObject.id = fabrication.id;
-            infoObject.config = fabrication.config;
+            infoObject.config = parseObject( fabrication.config );
             action.infoObject = infoObject;
             logAction(action);
         }
@@ -121,8 +119,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             action.type = ActionType.PROXY_REGISTERD;
             var infoObject:Object = {};
             infoObject.proxyName = proxyName;
-            infoObject.data = proxy.getData();
-//            infoObject = retreieveProps(proxy, infoObject);
+            infoObject.data = parseObject( proxy.getData() );
             action.infoObject = infoObject;
             logAction(action);
         }
@@ -157,12 +154,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
                 var interceptorClassName:String = getClassName(interceptorClass);
                 var action:Action = new Action();
-                action.actorName =  "Interceptor: " + interceptorClassName; ;
+                action.actorName = "Interceptor: " + interceptorClassName;
+                ;
                 action.message = " [ " + interceptorClassName + " ] interceptor has been registered";
                 action.message += " for notification [ " + notificationName + " ]";
                 action.type = ActionType.INTERCEPTOR_REGISTERED;
                 if (parameters) {
-                    action.infoObject = { interceptorClass:interceptorClassName, parameters:parameters };
+                    action.infoObject = { interceptorClass:interceptorClassName, parameters:parseObject( parameters ) };
                 }
                 logAction(action);
             }
@@ -174,40 +172,39 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          * @param notification INotification instance
          * @param to notification reciever
          */
-        public function logRouteNotificationAction( notification:TransportNotification ):void
+        public function logRouteNotificationAction(notification:TransportNotification):void
         {
-//            var senderIsProxy:Boolean = sender is IProxy;
-//            var senderIsMediator:Boolean = sender is IMediator;
-//            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
+            //            var senderIsProxy:Boolean = sender is IProxy;
+            //            var senderIsMediator:Boolean = sender is IMediator;
+            //            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
             var action:Action = new Action();
             var notificationName:String = notification.getName();
             action.actorName = "Notification: " + notificationName;
-//            action.message = ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
-//            action.message += senderName + " ]";
+            //            action.message = ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
+            //            action.message += senderName + " ]";
             action.message = " Notification [ " + notificationName + " ] has been routed";
             if (notification.getTo())
                 action.message += " to [ " + notification.getTo() + " ]";
             action.type = ActionType.NOTIFICATION_ROUTE;
             var notificationObject:Object = {};
             notificationObject.name = notificationName;
-            notificationObject.body = notification.getBody();
+            notificationObject.body = parseObject(notification.getBody());
             notificationObject.type = notification.getType();
-//            notificationObject = retreieveProps(notificationObject, notificationObject);
             var flowInfoObject:Object = {};
-//            var senderObject:Object = {};
+            //            var senderObject:Object = {};
             /*if (senderIsProxy) {
-                var proxy:IProxy = sender as IProxy;
-                senderObject.proxyName = proxy.getProxyName();
-                senderObject.data = proxy.getData();
-                senderObject = retreieveProps(proxy, senderObject);
-                flowInfoObject.proxy = senderObject;
-            }
-            else if (senderIsMediator) {
-                var mediator:IMediator = sender as IMediator;
-                senderObject.mediatorName = mediator.getMediatorName();
-                senderObject.viewComponent = mediator.getViewComponent();
-                flowInfoObject.mediator = senderObject;
-            }*/
+             var proxy:IProxy = sender as IProxy;
+             senderObject.proxyName = proxy.getProxyName();
+             senderObject.data = proxy.getData();
+             senderObject = retreieveProps(proxy, senderObject);
+             flowInfoObject.proxy = senderObject;
+             }
+             else if (senderIsMediator) {
+             var mediator:IMediator = sender as IMediator;
+             senderObject.mediatorName = mediator.getMediatorName();
+             senderObject.viewComponent = mediator.getViewComponent();
+             flowInfoObject.mediator = senderObject;
+             }*/
             flowInfoObject = notificationObject;
             action.infoObject = flowInfoObject;
             logAction(action);
@@ -218,38 +215,38 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          * @param sender object that sends notification
          * @param notification INotification instance
          */
-        public function logSendNotificationAction( notification:INotification):void
+        public function logSendNotificationAction(notification:INotification):void
         {
-//            var senderIsProxy:Boolean = sender is IProxy;
-//            var senderIsMediator:Boolean = sender is IMediator;
-//            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
+            //            var senderIsProxy:Boolean = sender is IProxy;
+            //            var senderIsMediator:Boolean = sender is IMediator;
+            //            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
             var action:Action = new Action();
             var notificationName:String = notification.getName();
             action.actorName = "Notification: " + notificationName;
-//            action.message = " " + ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
-//            action.message += senderName + " ]";
+            //            action.message = " " + ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
+            //            action.message += senderName + " ]";
             action.message = " Notification [ " + notificationName + " ] has been sent";
             action.type = ActionType.NOTIFICATION_SENT;
             var notificationObject:Object = {};
             notificationObject.name = notificationName;
-            notificationObject.body = notification.getBody();
+            notificationObject.body = parseObject( notification.getBody() );
             notificationObject.type = notification.getType();
-//            notificationObject = retreieveProps(notificationObject, notificationObject);
+            //            notificationObject = retreieveProps(notificationObject, notificationObject);
             var flowInfoObject:Object = {};
-//            var senderObject:Object = {};
-//            if (senderIsProxy) {
-//                var proxy:IProxy = sender as IProxy;
-//                senderObject.proxyName = proxy.getProxyName();
-//                senderObject.data = proxy.getData();
-//                senderObject = retreieveProps(proxy, senderObject);
-//                flowInfoObject.proxy = senderObject;
-//            }
-//            else if (senderIsMediator) {
-//                var mediator:IMediator = sender as IMediator;
-//                senderObject.mediatorName = mediator.getMediatorName();
-//                senderObject.viewComponent = mediator.getViewComponent();
-//                flowInfoObject.mediator = senderObject;
-//            }
+            //            var senderObject:Object = {};
+            //            if (senderIsProxy) {
+            //                var proxy:IProxy = sender as IProxy;
+            //                senderObject.proxyName = proxy.getProxyName();
+            //                senderObject.data = proxy.getData();
+            //                senderObject = retreieveProps(proxy, senderObject);
+            //                flowInfoObject.proxy = senderObject;
+            //            }
+            //            else if (senderIsMediator) {
+            //                var mediator:IMediator = sender as IMediator;
+            //                senderObject.mediatorName = mediator.getMediatorName();
+            //                senderObject.viewComponent = mediator.getViewComponent();
+            //                flowInfoObject.mediator = senderObject;
+            //            }
             flowInfoObject = notificationObject;
             action.infoObject = flowInfoObject;
             logAction(action);
@@ -342,55 +339,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
         }
 
 
-        /*private function retreieveProps(object:Object, infoObject:Object, deepLevel:int = 0):Object
-        {
-
-
-            var type:Type = Type.forInstance(object);
-            var innerObject:Object;
-            var ob:Object;
-            // accesors
-            var accesors:Array = type.accessors;
-            var accesorssElement:Accessor;
-            for (var i:int = 0; i < accesors.length; ++i) {
-
-                accesorssElement = Accessor(accesors[ i ]);
-                if (accesorssElement.name == "prototype" || accesorssElement.isStatic || accesorssElement.isWriteable()) continue;
-                innerObject = {};
-                ob = object[ accesorssElement.name ];
-                if (deepLevel < 2 && ob != null && !isSimple(ob)) {
-
-                    innerObject = retreieveProps(ob, innerObject, deepLevel + 1);
-                    infoObject[ accesorssElement.name ] = innerObject;
-                }
-                else
-                    infoObject[ accesorssElement.name ] = ob;
-
-            }
-
-            var fields:Array = type.fields.filter(filterArrayForProxyProps);
-            var fieldElement:Field;
-            for (i = 0; i < fields.length; ++i) {
-
-                fieldElement = Field(fields[ i ]);
-                if (fieldElement.isStatic) continue;
-                innerObject = {};
-                ob = object[ fieldElement.name ];
-                if (deepLevel < 2 && ob != null && !isSimple(ob)) {
-
-                    innerObject = retreieveProps(ob, innerObject, deepLevel + 1);
-                    infoObject[ fieldElement.name ] = innerObject;
-                }
-                else
-                    infoObject[ fieldElement.name ] = ob;
-
-            }
-
-
-            return infoObject;
-        }*/
-
-
         private function getClassName(clazz:Class):String
         {
             return getQualifiedClassName(clazz).replace(/^[\w\.]*::/, "");
@@ -412,35 +360,49 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             error(event.toString());
         }
 
-
-        private function filterArrayForProxyProps(item:IMember, index:int, array:Array):Boolean
+        private function parseObject(input:*):Object
         {
 
-            var memberName:String = item.name;
-            return memberName != "expansion";
+            var output:Object;
+            if (input is Array) {
 
+                var inputArray:Array = input as Array;
+                var l:uint = inputArray.length;
+                for (var i:int = 0; i < l; ++i) {
 
-        }
+                    inputArray[ i ] = parseObject(inputArray[ i ]);
 
-        private function isSimple(value:Object):Boolean
-        {
-            var type:String = typeof(value);
-            switch (type) {
-                case "number":
-                case "string":
-                case "boolean":
-                {
-                    return true;
                 }
+                output = inputArray;
 
-                case "object":
-                {
-                    return (value is Date) || (value is Array);
-                }
-                default: return false;
             }
 
-            return false;
+            else if (input is DisplayObject) {
+
+                var ob:Object = {};
+                var inputDisplayObject:DisplayObject = input as DisplayObject;
+                ob["name"] = "" + inputDisplayObject.name;
+                ob["class"] = Type.forInstance(inputDisplayObject).name;
+                output = ob;
+
+            }
+
+            else {
+
+                for (var elementName:String in input) {
+
+                    input[elementName] = parseObject(input[elementName])
+
+                }
+
+                output = input;
+            }
+
+            var ba:ByteArray = new ByteArray();
+            ba.writeObject(output);
+            return ba.length > 40000 ? "object size exceeds 40K" : output;
+
+
         }
 
     }

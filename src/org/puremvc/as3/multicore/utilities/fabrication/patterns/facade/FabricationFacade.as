@@ -205,20 +205,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 			this.startupCommand = startupCommand; 
 			applicationName = calcApplicationName(startupCommand);
 
+            var fabrication:IFabrication = application as IFabrication;
+            if( fabrication ) {
+
+                registerProxy( new FabricationDependencyProxy() );
+                addDependencyProviders( fabrication.dependencyProviders );
+
+            }
+
 			registerCommand(FabricationNotification.STARTUP, startupCommand);
 			
 			sendNotification(FabricationNotification.STARTUP, application);
 			sendNotification(FabricationNotification.BOOTSTRAP, application);
 
-            var fabrication:IFabrication = application as IFabrication;
-            if( fabrication ) {
 
-                registerProxy( new FabricationDependencyProxy() );
-                addDependencyProviders( fabrication.depnedencyProviders );    
-                if( _fabricationLoggerEnabled )
-                    logger.logFabricatorStart( getFabrication(), calcApplicationName( startupCommand ) );
-
-            }
+            if( _fabricationLoggerEnabled )
+                logger.logFabricatorStart( getFabrication(), calcApplicationName( startupCommand ) );
 		}
 
 		/**
