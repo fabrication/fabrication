@@ -112,16 +112,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          */
         public function logProxyRegistration(proxy:IProxy):void
         {
-            var action:Action = new Action();
-            var proxyName:String = proxy.getProxyName();
-            action.actorName = "Proxy: " + proxyName;
-            action.message = " [ " + proxyName + " ] proxy has been registered";
-            action.type = ActionType.PROXY_REGISTERD;
-            var infoObject:Object = {};
-            infoObject.proxyName = proxyName;
-            infoObject.data = parseObject( proxy.getData() );
-            action.infoObject = infoObject;
-            logAction(action);
+            if (!isFrameworkInstanceFlow( proxy )) {
+                var action:Action = new Action();
+                var proxyName:String = proxy.getProxyName();
+                action.actorName = "Proxy: " + proxyName;
+                action.message = " [ " + proxyName + " ] proxy has been registered";
+                action.type = ActionType.PROXY_REGISTERD;
+                var infoObject:Object = {};
+                infoObject.proxyName = proxyName;
+                infoObject.data = parseObject(proxy.getData());
+                action.infoObject = infoObject;
+                logAction(action);
+            }
         }
 
         /**
@@ -350,6 +352,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             return getQualifiedClassName(clazz).indexOf("org.puremvc.as3.multicore.utilities.fabrication") != -1;
         }
 
+        private function isFrameworkInstanceFlow(instance:*):Boolean
+        {
+
+            return getQualifiedClassName(instance).indexOf("org.puremvc.as3.multicore.utilities.fabrication") != -1;
+        }
+
         private function _lc_securityStatusHandler(event:StatusEvent):void
         {
         }
@@ -362,8 +370,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private function parseObject(input:*):Object
         {
+            if( null == input ) return null;
 
-            var output:Object;
+            var output:Object = [];
             if (input is Array) {
 
                 var inputArray:Array = input as Array;
@@ -391,10 +400,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
                 for (var elementName:String in input) {
 
-                    input[elementName] = parseObject(input[elementName])
+                    output[elementName] = parseObject(input[elementName])
 
                 }
-
                 output = input;
             }
 

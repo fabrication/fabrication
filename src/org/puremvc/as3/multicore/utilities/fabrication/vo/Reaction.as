@@ -94,5 +94,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		public function fulfil(event:Event):void {
 			handler(event);
 		}
+
+        public function compare( reaction:Reaction ):Boolean {
+
+            var theSame:Boolean = true;
+            theSame &&= ( source == reaction.source );
+            theSame &&= ( eventType == reaction.eventType );
+
+            if( handler == null || reaction.handler == null )
+                return theSame;
+            theSame &&= ( handler == reaction.handler );
+            theSame &&= ( capture == reaction.capture );
+            return theSame;
+        }
 	}
 }

@@ -24,6 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import org.puremvc.as3.multicore.interfaces.INotification;
     import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+    import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.MediatorInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
@@ -132,6 +133,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
          */
         protected var injectionFieldsNames:Array;
 
+        /**
+         * holds info, if reactions initialization phase have been done
+         */
+        private var _reactionsRegistrationPhasePassed:Boolean = false;
+
 		/**
 		 * Creates a new FabricationMediator object.
 		 */
@@ -153,7 +159,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
                 }
                 injectionFieldsNames = null;
             }
-            
+
 			qualifiedNotifications = null;
 			notificationCache = null;
 
@@ -585,12 +591,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			accessorRegExp = null;
 			reactionRegExp = null;
 			clazzInfo = null;
+
 		}
 
         /**
          * Adds reaction to mediator
          * @param source reaction source
-         * @param type rection ( event ) type
+         * @param type reaction ( event ) type
          * @param handler reaction handler
          * @param useCapturePhase <b>true</b> if reaction has to be registered on capture phase, otherwise <b>true</b>
          */
@@ -602,6 +609,31 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		   currentReactions.push(reaction);
            reaction.start();
 
+        }
+
+        /**
+         * Checks if mediator has registered reaction with given props. Source adn type are always
+         * checked, handler is compared only if specified. If you don't specify handler reaction will
+         * be compared only by source and type
+         * @param source reaction source
+         * @param type reaction( event ) type
+         * @param handler reaction handler
+         * @param useCapturePhase <b>true</b> if reaction has to be registered on capture phase, otherwise <b>true</b>
+         * @return
+         */
+        public function hasReaction( source:IEventDispatcher, type:String,  handler:Function = null,  useCapturePhase:Boolean = false ):Boolean {
+
+            var reaction:Reaction = new Reaction( source, type, handler, useCapturePhase );
+            var currentReactionCount:uint = currentReactions.length;
+            for( var i:int = 0; i<currentReactionCount; ++i ) {
+
+                if( reaction.compare( currentReactions[ i ] as Reaction ) ) {
+
+                    return true;
+                }
+
+            }
+            return false;
         }
 
 		/**
@@ -665,11 +697,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			// additional mocks that are needed to support reactions
 			if (multitonKey != null) {
 				initializeReactions();
+                _reactionsRegistrationPhasePassed = true;
 			}
             performInjections();
+            
 		}
 
-		/**
+
+        override public function onRemove():void
+        {
+            super.onRemove();
+            _reactionsRegistrationPhasePassed = false;
+        }
+
+        /**
 		 * Helper function to invoke the notification handler if it exists.
 		 */
 		protected function invokeNotificationHandler(name:String, note:INotification):void {
@@ -772,6 +813,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             injectionFieldsNames = injectionFieldsNames.concat(( new ProxyInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new MediatorInjector(fabFacade, this) ).inject());
             injectionFieldsNames = injectionFieldsNames.concat(( new DependencyInjector(fabFacade, this) ).inject());
+        }
+
+        fabrication_internal function get passedReactionsRegistrationPhase():Boolean {
+
+            return _reactionsRegistrationPhasePassed;
+        }
+
+        fabrication_internal function get passedNotificationRegistrationPhase():Boolean {
+
+            return qualifiedNotifications != null;
         }
     }
 }

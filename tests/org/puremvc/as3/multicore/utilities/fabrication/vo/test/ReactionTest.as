@@ -38,7 +38,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
         }
 
         [After]
-        public function tearDown():void {
+        public function tearDown():void
+        {
 
             reaction = null;
 
@@ -68,7 +69,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
         public function reactionStoresEventHandler():void
         {
             assertProperty(reaction, "handler", Function, null, function():void
-            {
+                {
             });
         }
 
@@ -84,7 +85,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
             var expectedSource:IEventDispatcher = new EventDispatcher();
             var expectedEventType:String = "click";
             var expectedHandler:Function = function():void
-            {
+                {
             };
             var expectedCapturePhase:Boolean = true;
 
@@ -101,7 +102,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
         {
             var source:EventDispatcherMock = new EventDispatcherMock();
             var expectedHandler:Function = function(event:Event):void
-            {
+                {
             };
 
             source.mock.method("addEventListener").withArgs("fooEvent", expectedHandler, false).once;
@@ -119,7 +120,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
         {
             var source:EventDispatcherMock = new EventDispatcherMock();
             var expectedHandler:Function = function(event:Event):void
-            {
+                {
             };
 
             source.mock.method("addEventListener").withArgs("fooEvent", expectedHandler, false).once;
@@ -138,7 +139,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
             var source:EventDispatcher = new EventDispatcher();
             var execCount:int = 0;
             var expectedHandler:Function = function(event:Event):void
-            {
+                {
                 assertEquals("fooEvent", event.type);
                 execCount++;
             };
@@ -156,7 +157,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
             var source:EventDispatcher = new EventDispatcher();
             var execCount:int = 0;
             var expectedHandler:Function = function(event:Event):void
-            {
+                {
                 assertEquals("fooEvent", event.type);
                 execCount++;
             };
@@ -173,7 +174,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
         {
             var source:EventDispatcher = new EventDispatcher();
             var expectedHandler:Function = function(event:Event):void
-            {
+                {
             };
 
             reaction = new Reaction(source, "fooEvent", expectedHandler);
@@ -187,6 +188,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo.test {
             assertNull(reaction.eventType);
             assertFalse(source.hasEventListener("fooEvent"));
         }
+
+        [Test]
+        public function reactionCompare():void
+        {
+            var ed:EventDispatcher = new EventDispatcher();
+            var handler:Function = function():void
+                {
+            };
+            var r:Reaction = new Reaction(ed, "event", handler);
+
+            var r1:Reaction = new Reaction(ed, "event", handler );
+            var r2:Reaction = new Reaction(ed, "event", null);
+            var r3:Reaction = new Reaction(ed, "event", handler, true);
+            var r4:Reaction = new Reaction(ed, "event", null, true);
+
+            assertTrue( r.compare( r1 ) );
+            assertTrue( r.compare( r2 ) );
+            assertFalse( r.compare( r3 ) );
+            assertTrue( r.compare( r4 ) );
+
+        }
+
 
     }
 }
