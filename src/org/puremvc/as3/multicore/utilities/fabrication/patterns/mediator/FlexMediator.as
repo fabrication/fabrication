@@ -15,7 +15,9 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
-	import org.puremvc.as3.multicore.interfaces.IMediator;
+    import mx.events.StateChangeEvent;
+
+    import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.utilities.fabrication.events.MediatorRegistrarEvent;
     import org.puremvc.as3.multicore.utilities.fabrication.fabrication_internal;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.ICloneable;
@@ -214,12 +216,31 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			
 			return mediator;
 		}
-		
-		/**
+
+
+        public override function onRegister():void
+        {
+            super.onRegister();
+            var component:UIComponent = viewComponent as UIComponent;
+            if( component ) {
+
+                component.addEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, onViewComponentStateChangeListener );
+            }
+
+        }
+
+
+        /**
 		 * Disposes the mediator on removal from the facade. Subclasses
 		 * that override this should call super.dispose. 
 		 */
 		override public function onRemove():void {
+
+            var component:UIComponent = viewComponent as UIComponent;
+            if( component ) {
+
+                component.removeEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, onViewComponentStateChangeListener );
+            }
 			dispose();
 		}
 		
@@ -241,6 +262,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			//var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
 			//trace("AutoRegistration removed for mediator " + event.mediator.getMediatorName());
 		}
+
+        protected function onViewComponentStateChangeListener(event:StateChangeEvent):void
+        {
+            initializeReactions();
+        }
 
 	}
 }

@@ -490,6 +490,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Creates the reactions for the current mediator using reflection.
 		 */
 		public function initializeReactions():void {
+
 			var reactionPattern:String = "(" + reactionHandlerPrefix + "|" + captureHandlerPrefix + ")";
 			var reactionRegExp:RegExp = new RegExp("^" + reactionPattern + ".*$", "");
 			var qpath:String = getQualifiedClassName(this);
@@ -603,11 +604,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
          */
         public function addReaction( source:IEventDispatcher, type:String,  handler:Function,  useCapturePhase:Boolean = false ):void {
 
-           var reaction:Reaction = new Reaction( source, type, handler, useCapturePhase );
-           if( currentReactions == null )
-                currentReactions = [];
-		   currentReactions.push(reaction);
-           reaction.start();
+            if ( !hasReaction( source, type, handler, useCapturePhase ) ) {
+                var reaction:Reaction = new Reaction(source, type, handler, useCapturePhase);
+                if (currentReactions == null)
+                    currentReactions = [];
+                currentReactions.push(reaction);
+                reaction.start();
+            }
 
         }
 
@@ -623,15 +626,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
          */
         public function hasReaction( source:IEventDispatcher, type:String,  handler:Function = null,  useCapturePhase:Boolean = false ):Boolean {
 
-            var reaction:Reaction = new Reaction( source, type, handler, useCapturePhase );
-            var currentReactionCount:uint = currentReactions.length;
-            for( var i:int = 0; i<currentReactionCount; ++i ) {
+            if ( currentReactions ) {
+                
+                var reaction:Reaction = new Reaction(source, type, handler, useCapturePhase);
+                var currentReactionCount:uint = currentReactions.length;
+                for (var i:int = 0; i < currentReactionCount; ++i) {
 
-                if( reaction.compare( currentReactions[ i ] as Reaction ) ) {
+                    if (reaction.compare(currentReactions[ i ] as Reaction)) {
 
-                    return true;
+                        return true;
+                    }
+
                 }
-
             }
             return false;
         }
