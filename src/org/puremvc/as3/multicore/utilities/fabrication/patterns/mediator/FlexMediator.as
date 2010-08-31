@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
     import mx.events.StateChangeEvent;
 
@@ -26,19 +26,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.Expression;
 	import org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolver.MediatorRegistrar;
 	import org.puremvc.as3.multicore.utilities.fabrication.utils.CloneUtils;
+    import org.puremvc.as3.multicore.utilities.fabrication.vo.Reaction;
 
     use namespace fabrication_internal;
 
 	import mx.core.UIComponent;
-	
+
 	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;	
+	import flash.utils.getQualifiedClassName;
 
 	/**
 	 * FlexMediator is the base mediator class for all Flex based application
-	 * mediators. It provides automatic component resolution using the 
-	 * flex component resolver. 
-	 * 
+	 * mediators. It provides automatic component resolution using the
+	 * flex component resolver.
+	 *
 	 * @author Darshan Sawardekar, Rafał Szemraj
 	 */
 	public class FlexMediator extends FabricationMediator implements ICloneable {
@@ -52,16 +53,16 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * Stores the registrars used in this mediator
 		 */
 		protected var registrars:Array;
-		
+
 		/**
 		 * Flag indicates whether the mediator has been disposed
 		 */
 		public var disposed:Boolean = false;
-		
+
 		/**
-		 * Singleton key name for the component resolver within this facade. 
+		 * Singleton key name for the component resolver within this facade.
 		 */
-		static public var routeMapperKey:String = "routeMapper"; 
+		static public var routeMapperKey:String = "routeMapper";
 
 		/**
 		 * Reference to the component route mapper for this facade.
@@ -74,49 +75,49 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public function FlexMediator(name:String = null, viewComponent:Object = null) {
 			super(name, viewComponent);
-			
+
 			registrars = new Array();
 		}
 
         /**
 		 * Removes the registrars used by the mediator.
-		 * 
+		 *
 		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
 		 */
 		override public function dispose():void {
 			if (disposed) {
 				return;
 			}
-			
+
 			disposed = true;
 			var n:int = registrars.length;
 			var registrar:MediatorRegistrar;
-			
+
 			for (var i:int = 0; i < n; i++) {
 				registrar = registrars[i] as MediatorRegistrar;
 
 				registrar.removeEventListener(MediatorRegistrarEvent.REGISTRATION_COMPLETED, registrationCompletedListener);
 				registrar.removeEventListener(MediatorRegistrarEvent.REGISTRATION_CANCELED, registrationCanceledListener);
-				
+
 				registrar.dispose();
 				registrars[i] = null;
 			}
-			
+
 			registrars = null;
 			routeMapper = null;
 
 			super.dispose();
 		}
-		
+
 		/**
 		 * Overrides the initializeNotifier to initialize local references to the route mapper.
 		 */
 		override public function initializeNotifier(key:String):void {
 			super.initializeNotifier(key);
 
-			initializeRouteMapper();			
+			initializeRouteMapper();
 		}
-		
+
 		/**
 		 * Creates the singleton route mapper for the current facade.
 		 * @private
@@ -137,7 +138,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * This method needs to override if the mediator constructor
 		 * contains more than 2 required parameters that cannot take
 		 * explicit null values. The supported constructors are,
-		 * 
+		 *
 		 * <ul>
 		 * 	<li>Mediator(name:String, viewComponent:Object)</li>
 		 * 	<li>Mediator(viewComponent:Object)</li>
@@ -147,35 +148,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function clone():ICloneable {
 			var classpath:String = getQualifiedClassName(this);
 			classpath.replace("::", ".");
-			
+
 			var clazz:Class = fabrication.getClassByName(classpath);
 			var clazzInfo:XML = describeType(clazz);
-			var constructorNode:XMLList = clazzInfo..constructor as XMLList; 
-			var requiredParameters:XMLList = constructorNode.parameter.(@optional = "false"); 
+			var constructorNode:XMLList = clazzInfo..constructor as XMLList;
+			var requiredParameters:XMLList = constructorNode.parameter.(@optional = "false");
 			var requiredParametersCount:int = requiredParameters.length();
 			var mediator:FlexMediator = CloneUtils.newInstance(clazz, requiredParametersCount) as FlexMediator;
 
 			mediator.setMediatorName(getMediatorName());
 			mediator.setViewComponent(getViewComponent());
-			
+
 			requiredParameters = null;
 			constructorNode = null;
 			clazzInfo = null;
 			clazz = null;
-			
+
 			return mediator;
 		}
 
 		/**
-		 * Changes the mediator name. This is done when RegExp 
+		 * Changes the mediator name. This is done when RegExp
 		 * component resolvers are used.
-		 * 
+		 *
 		 * @param name The name of the mediator
 		 */
 		fabrication_internal function setMediatorName(name:String):void {
 			this.mediatorName = name;
 		}
-		
+
 		/**
 		 * Creates the base link of the component resolver chain. Additional
 		 * link can be added to this to indicate the path to your viewComponent.
@@ -195,25 +196,25 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 * created with a deferred creationPolicy or programmatically as the
 		 * result of an application state change, etc. The component
 		 * resolver supports all these cases.
-		 */		
+		 */
 		override public function registerMediator(mediator:IMediator):IMediator {
 			var registrar:MediatorRegistrar = new MediatorRegistrar(fabFacade);
 			var mediatorComponent:Object = mediator.getViewComponent();
-			
+
 			if (mediatorComponent is Expression) {
 				var expression:Expression = mediatorComponent as Expression;
 				var resolver:ComponentResolver = expression.root;
 				var flexMediator:FlexMediator = mediator as FlexMediator;
-	
+
 				registrar.addEventListener(MediatorRegistrarEvent.REGISTRATION_COMPLETED, registrationCompletedListener);
 				registrar.addEventListener(MediatorRegistrarEvent.REGISTRATION_CANCELED, registrationCanceledListener);
-				
+
 				registrars.push(registrar);
 				registrar.register(flexMediator, resolver);
 			} else {
 				super.registerMediator(mediator);
 			}
-			
+
 			return mediator;
 		}
 
@@ -224,7 +225,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             var component:UIComponent = viewComponent as UIComponent;
             if( component ) {
 
-                component.addEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, onViewComponentStateChangeListener );
+                component.addEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, stateChangeListener );
             }
 
         }
@@ -232,28 +233,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
         /**
 		 * Disposes the mediator on removal from the facade. Subclasses
-		 * that override this should call super.dispose. 
+		 * that override this should call super.dispose.
 		 */
 		override public function onRemove():void {
 
             var component:UIComponent = viewComponent as UIComponent;
             if( component ) {
 
-                component.removeEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, onViewComponentStateChangeListener );
+                component.removeEventListener( StateChangeEvent.CURRENT_STATE_CHANGE, stateChangeListener );
             }
 			dispose();
 		}
-		
+
 		/**
 		 * Hook method to listen for a specific mediator registration. Subclasses
-		 * can use this method to react to mediator registration as needed. 
+		 * can use this method to react to mediator registration as needed.
 		 */
 		protected function registrationCompletedListener(event:MediatorRegistrarEvent):void {
 			//var registrar:MediatorRegistrar = event.target as MediatorRegistrar;
 			//trace("AutoRegistration completed for mediator " + event.mediator.getMediatorName());
 			//trace("\tviewComponent = " + event.mediator.getViewComponent());
 		}
-		
+
 		/**
 		 * Hook method to listen for a specific mediator registration cancellation.
 		 * Subclasses can use this method to react to mediator cancellation as needed.
@@ -263,8 +264,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			//trace("AutoRegistration removed for mediator " + event.mediator.getMediatorName());
 		}
 
-        protected function onViewComponentStateChangeListener(event:StateChangeEvent):void
+        protected function stateChangeListener(event:StateChangeEvent):void
         {
+            if (currentReactions != null) {
+				var n:int = currentReactions.length;
+				var reaction:Reaction;
+				for (var i:int = 0;i < n; i++) {
+					reaction = currentReactions[i];
+					reaction.dispose();
+				}
+
+				currentReactions = null;
+			}
             initializeReactions();
         }
 
