@@ -412,9 +412,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
          */
         override public function registerProxy(proxy:IProxy):void
         {
-            super.registerProxy(proxy);
-            if (_fabricationLoggerEnabled)
+            if( _fabricationLoggerEnabled ) {
+
                 logger.logProxyRegistration(proxy);
+                if( hasProxy( proxy.getProxyName() ) )
+                    logger.warn( "Warning! Proxy [ " + proxy.getProxyName() + " ] has been just overwritten!" );
+
+            }
+            super.registerProxy(proxy);
+
         }
 
         /**
