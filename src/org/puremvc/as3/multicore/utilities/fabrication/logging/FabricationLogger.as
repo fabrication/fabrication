@@ -79,7 +79,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             var infoObject:Object = {};
             infoObject.fabrication = fabricationName;
             infoObject.id = fabrication.id;
-            infoObject.config = parseObject( fabrication.config );
+            infoObject.config = parseObject(fabrication.config);
             action.infoObject = infoObject;
             logAction(action);
         }
@@ -112,7 +112,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          */
         public function logProxyRegistration(proxy:IProxy):void
         {
-            if (!isFrameworkInstanceFlow( proxy )) {
+            if (!isFrameworkInstanceFlow(proxy)) {
                 var action:Action = new Action();
                 var proxyName:String = proxy.getProxyName();
                 action.actorName = "Proxy: " + proxyName;
@@ -157,12 +157,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
                 var interceptorClassName:String = getClassName(interceptorClass);
                 var action:Action = new Action();
                 action.actorName = "Interceptor: " + interceptorClassName;
-                ;
                 action.message = " [ " + interceptorClassName + " ] interceptor has been registered";
                 action.message += " for notification [ " + notificationName + " ]";
                 action.type = ActionType.INTERCEPTOR_REGISTERED;
                 if (parameters) {
-                    action.infoObject = { interceptorClass:interceptorClassName, parameters:parseObject( parameters ) };
+                    action.infoObject = { interceptorClass:interceptorClassName, parameters:parseObject(parameters) };
                 }
                 logAction(action);
             }
@@ -176,14 +175,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          */
         public function logRouteNotificationAction(notification:TransportNotification):void
         {
-            //            var senderIsProxy:Boolean = sender is IProxy;
-            //            var senderIsMediator:Boolean = sender is IMediator;
-            //            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
             var action:Action = new Action();
             var notificationName:String = notification.getName();
             action.actorName = "Notification: " + notificationName;
-            //            action.message = ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
-            //            action.message += senderName + " ]";
             action.message = " Notification [ " + notificationName + " ] has been routed";
             if (notification.getTo())
                 action.message += " to [ " + notification.getTo() + " ]";
@@ -193,20 +187,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
             notificationObject.body = parseObject(notification.getBody());
             notificationObject.type = notification.getType();
             var flowInfoObject:Object = {};
-            //            var senderObject:Object = {};
-            /*if (senderIsProxy) {
-             var proxy:IProxy = sender as IProxy;
-             senderObject.proxyName = proxy.getProxyName();
-             senderObject.data = proxy.getData();
-             senderObject = retreieveProps(proxy, senderObject);
-             flowInfoObject.proxy = senderObject;
-             }
-             else if (senderIsMediator) {
-             var mediator:IMediator = sender as IMediator;
-             senderObject.mediatorName = mediator.getMediatorName();
-             senderObject.viewComponent = mediator.getViewComponent();
-             flowInfoObject.mediator = senderObject;
-             }*/
             flowInfoObject = notificationObject;
             action.infoObject = flowInfoObject;
             logAction(action);
@@ -219,94 +199,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
          */
         public function logSendNotificationAction(notification:INotification):void
         {
-            //            var senderIsProxy:Boolean = sender is IProxy;
-            //            var senderIsMediator:Boolean = sender is IMediator;
-            //            var senderName:String = ( senderIsProxy ? ( sender as IProxy).getProxyName() : senderIsMediator ? ( sender as IMediator ).getMediatorName() : "command" );
             var action:Action = new Action();
             var notificationName:String = notification.getName();
             action.actorName = "Notification: " + notificationName;
-            //            action.message = " " + ( senderIsProxy ? " proxy" : " mediator" ) + " [ ";
-            //            action.message += senderName + " ]";
             action.message = " Notification [ " + notificationName + " ] has been sent";
             action.type = ActionType.NOTIFICATION_SENT;
             var notificationObject:Object = {};
             notificationObject.name = notificationName;
-            notificationObject.body = parseObject( notification.getBody() );
+            notificationObject.body = parseObject(notification.getBody());
             notificationObject.type = notification.getType();
-            //            notificationObject = retreieveProps(notificationObject, notificationObject);
             var flowInfoObject:Object = {};
-            //            var senderObject:Object = {};
-            //            if (senderIsProxy) {
-            //                var proxy:IProxy = sender as IProxy;
-            //                senderObject.proxyName = proxy.getProxyName();
-            //                senderObject.data = proxy.getData();
-            //                senderObject = retreieveProps(proxy, senderObject);
-            //                flowInfoObject.proxy = senderObject;
-            //            }
-            //            else if (senderIsMediator) {
-            //                var mediator:IMediator = sender as IMediator;
-            //                senderObject.mediatorName = mediator.getMediatorName();
-            //                senderObject.viewComponent = mediator.getViewComponent();
-            //                flowInfoObject.mediator = senderObject;
-            //            }
             flowInfoObject = notificationObject;
             action.infoObject = flowInfoObject;
             logAction(action);
         }
 
-        //        public function logServiceCall(proxy:IProxy, message:Object, eventArgs:Array = null):void
-        //        {
-        //            var action:Action = new Action();
-        //            action.actorName = proxy.getProxyName();
-        //            action.message = " service call by [ " + proxy.getProxyName() + " ]";
-        //            action.type = ActionType.SERVICE_CALL;
-        //            var callObject:Object = {};
-        //            var proxyObject:Object = {};
-        //            proxyObject.proxyName = proxy.getProxyName();
-        //            proxyObject.data = proxy.getData();
-        //            proxyObject = retreieveProps(proxy, proxy);
-        //            callObject.proxy = proxy;
-        //            callObject.callMessage = message;
-        //            if (eventArgs)
-        //                callObject.eventArgs = eventArgs;
-        //            action.infoObject = callObject;
-        //            logAction(action);
-        //        }
-
-        //        public function logServiceResponse(proxy:IProxy, result:Object):void
-        //        {
-        //            var action:Action = new Action();
-        //            action.actorName = proxy.getProxyName();
-        //            action.message = " response for call by [ " + proxy.getProxyName() + " ]";
-        //            action.type = ActionType.SERVICE_CALL;
-        //            var callObject:Object = {};
-        //            var proxyObject:Object = {};
-        //            proxyObject.proxyName = proxy.getProxyName();
-        //            proxyObject.data = proxy.getData();
-        //            proxyObject = retreieveProps(proxy, proxy);
-        //            callObject.proxy = proxy;
-        //            callObject.result = result;
-        //            action.infoObject = callObject;
-        //            logAction(action);
-        //        }
-
-        //        public function logServiceFault(proxy:IProxy, fault:Object):void
-        //        {
-        //            var action:Action = new Action();
-        //            action.actorName = proxy.getProxyName();
-        //            action.message = " fault for call by [ " + proxy.getProxyName() + " ]";
-        //            action.type = ActionType.SERVICE_CALL;
-        //            var callObject:Object = {};
-        //            var proxyObject:Object = {};
-        //            proxyObject.proxyName = proxy.getProxyName();
-        //            proxyObject.data = proxy.getData();
-        //            proxyObject = retreieveProps(proxy, proxy);
-        //            callObject.proxy = proxy;
-        //            callObject.fault = fault;
-        //            action.infoObject = callObject;
-        //            logAction(action);
-        //            frameworkError("fault on call for [ " + fault.toString() + " ]");
-        //        }
 
 
         /**
@@ -370,7 +277,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
         private function parseObject(input:*):Object
         {
-            if( null == input ) return null;
+            if (null == input) return null;
 
             var output:Object = [];
             if (input is Array) {
@@ -398,8 +305,17 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
             else {
 
+                var ob:Object;
                 for (var elementName:String in input) {
 
+                    ob = input[elementName];
+                    if (ob == input)
+                        continue;
+                    for (var elementName2:String in ob) {
+
+                        if (ob[elementName2] == input)
+                            continue;
+                    }
                     output[elementName] = parseObject(input[elementName])
 
                 }
