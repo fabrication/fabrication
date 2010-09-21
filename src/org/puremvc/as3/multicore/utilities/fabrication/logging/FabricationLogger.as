@@ -279,6 +279,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
         {
             if (null == input) return null;
 
+            var ob:Object;
             var output:Object = [];
             if (input is Array) {
 
@@ -295,7 +296,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
             else if (input is DisplayObject) {
 
-                var ob:Object = {};
+                ob = {};
                 var inputDisplayObject:DisplayObject = input as DisplayObject;
                 ob["name"] = "" + inputDisplayObject.name;
                 ob["class"] = Type.forInstance(inputDisplayObject).name;
@@ -305,7 +306,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
 
             else {
 
-                var ob:Object;
                 for (var elementName:String in input) {
 
                     ob = input[elementName];
