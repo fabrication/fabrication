@@ -44,7 +44,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
          * @param faultHandler fault handler [ optional ]. If not provided defaultFaultHandler
          * will be used ( if defined )
          */
-        public function excuteServiceCall(call:AsyncToken, resultHandler:Function, faultHandler:Function = null):void
+        public function executeServiceCall(call:AsyncToken, resultHandler:Function, faultHandler:Function = null):void
         {
             call.addResponder(new CallResponder( resultHandler, faultHandler || defaultFaultHandler ));
         }
