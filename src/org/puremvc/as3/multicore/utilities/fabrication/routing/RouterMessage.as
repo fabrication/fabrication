@@ -56,8 +56,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			setFrom(null);
 			setTo(null);
@@ -68,43 +68,43 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 
 		/**
-		 * Returns the source module address.
-		 */
+         * @inheritDoc
+         */
 		public function getFrom():String {
 			return from;
 		}
 
 		/**
-		 * Changes the source module address.
-		 */
+         * @inheritDoc
+         */
 		public function setFrom(from:String):void {
 			this.from = from;
 		}
 
 		/**
-		 * Returns the target module address.
-		 */
+         * @inheritDoc
+         */
 		public function getTo():String {
 			return to;
 		}
 
 		/**
-		 * Changes the target module address.
-		 */
+         * @inheritDoc
+         */
 		public function setTo(to:String):void {
 			this.to = to;
 		}
 		
 		/**
-		 * Returns the source notification that was the source of this message
-		 */
+         * @inheritDoc
+         */
 		public function getNotification():TransportNotification {
 			return notification;
 		}
 		
 		/**
-		 * Saves the source notification that was the source of this message.
-		 */
+         * @inheritDoc
+         */
 		public function setNotification(notification:TransportNotification):void {
 			this.notification = notification;
 		}

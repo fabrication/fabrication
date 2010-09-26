@@ -73,9 +73,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
 			super.dispose();
 		}
 		
-		/**
-		 * 
-		 */
 		protected function proceedAfterDelay(event:Event):void {
 			proceed();
 		}

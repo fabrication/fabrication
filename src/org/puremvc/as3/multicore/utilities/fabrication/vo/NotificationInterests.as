@@ -44,7 +44,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		 * Creates a new NotificationInterests object.
 		 * 
 		 * @param classpath The path to the mediator class
-		 * @param interests The notification interests of the meditor
+		 * @param interests The notification interests of the mediator
 		 * @param qualifications The qualification prefixes for the mediator's notifications
 		 */
 		public function NotificationInterests(classpath:String, interests:Array, qualifications:Object) {
@@ -52,7 +52,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			this.interests = interests;
 			this.qualifications = qualifications;
 		}
-		
+
+        /**
+         * @inheritDoc
+         */
 		public function dispose():void {
 			classpath = null;
 			interests = null;

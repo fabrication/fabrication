@@ -26,8 +26,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			var element:Object;
 			var key:String;
@@ -50,46 +50,30 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * Saves the object in the specified key in the hash map.
-		 * 
-		 * @param key The unique key to save the object in.
-		 * @param instance The object to save with the key.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IHashMap#put()
-		 */
+         * @inheritDoc
+         */
 		public function put(key:String, instance:Object):Object {
 			elements[key] = instance;
 			return instance;
 		}
 
 		/**
-		 * Retrieves the object for the key specified.
-		 * 
-		 * @param key The unique key whose object is to be retrieved.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IHashMap#find()
-		 */
+         * @inheritDoc
+         */
 		public function find(key:String):Object {
 			return elements[key];
 		}
 
 		/**
-		 * Returns a boolean indicating whether an object with the key exists.
-		 * 
-		 * @param key The unique key whose object is to be looked up.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IHashMap#exists()
-		 */
+         * @inheritDoc
+         */
 		public function exists(key:String):Boolean {
 			return find(key) != null;
 		}
 
 		/**
-		 * Removes the object stored in the specified key and returns it.
-		 * 
-		 * @param key The unique key whose object is to be removed.
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IHashMap#put()
-		 */
+         * @inheritDoc
+         */
 		public function remove(key:String):Object {
 			var instance:Object = find(key);
 			elements[key] = null;
@@ -99,8 +83,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * Clears the hashmap of all objects. 
-		 */
+         * @inheritDoc
+         */
 		public function clear():void {
 			elements = new Object();
 		}

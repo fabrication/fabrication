@@ -64,8 +64,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			stop();
 			
@@ -95,6 +95,12 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 			handler(event);
 		}
 
+        /**
+         * Compares current reaction with another one.
+         * If they are matched on specified conditions, return true, otherwise false.
+         * @param reaction Reaction objecto to compare against
+         * @return true or false
+         */
         public function compare( reaction:Reaction ):Boolean {
 
             var theSame:Boolean = true;

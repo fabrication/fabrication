@@ -58,15 +58,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		protected var rules:Array;
 
 		/**
-		 * Creates a new multirule firewal object.
+		 * Creates a new multirule firewall object.
 		 */
 		public function MultiRuleFirewall() {
 			rules = new Array();
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			rules.splice(0);
 			rules = null;
@@ -104,8 +104,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		}
 
 		/**
-		 * @see IRouterFirewall#process
-		 */
+         * @inheritDoc
+         */
 		public function process(message:IRouterMessage):IRouterMessage {
 			var n:int = rules.length;
 			var rule:IFirewallRule;

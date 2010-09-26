@@ -145,9 +145,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			super(name, viewComponent);
 		}
 
-		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+        /**
+         * @inheritDoc
+         */
 		public function dispose():void {
 
             if (injectionFieldsNames) {
@@ -262,7 +262,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			fabFacade.routeNotification(noteName, noteBody, noteType, to);
 		}
 
-/**
+        /**
          * Alias to facade.notifiObservers method. Also sends a NOTIFICATION_FROM_PROXY
 		 * system notification which can be used by mediators to listen
 		 * to a mediators notification using respondToProxyName methods.
@@ -672,7 +672,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		/**
 		 * Removes the specified reaction.
 		 *
-		 * @param handler The name of the handlerfunction or a reference to it.
+		 * @param handler The name of the handler or a reference to it.
 		 * @param action The name of the method to invoke on the reaction.
 		 */
 		public function actOnReaction(handler:Object, action:String):void {

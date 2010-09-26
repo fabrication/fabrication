@@ -23,7 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 
 	/**
 	 * MediatorRegistrarEvent represents the event object related to
-	 * mediator registration with the fabricaton facade.
+	 * mediator registration with the fabrication facade.
 	 * 
 	 * @author Darshan Sawardekar
 	 */

@@ -76,7 +76,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			_fabricator.dispose();
@@ -91,14 +91,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The current application's message module address.
+		 * @inheritDoc
 		 */
 		public function get moduleAddress():IModuleAddress {
 			return fabricator.moduleAddress;
 		}
 
 		/**
-		 * The current application's default route.
+		 * @inheritDoc
 		 */
 		public function get defaultRoute():String {
 			return fabricator.defaultRoute;
@@ -112,9 +112,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The name of the current application module group for messaging.
-		 *
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule#moduleGroup
+		 * @inheritDoc
 		 */
 		public function get moduleGroup():String {
 			return fabricator.moduleGroup;
@@ -125,7 +123,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The current application's message router.
+		 * @inheritDoc
 		 */
 		public function get router():IRouter {
 			return fabricator.router;
@@ -139,7 +137,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The configuration object of the current FlexApplication.
+		 * @inheritDoc
 		 */
 		public function get config():Object {
 			return _config;
@@ -165,49 +163,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * Instantiates the FlexModule environment specific fabricator.
+		 * @inheritDoc
 		 */
 		public function initializeFabricator():void {
 			_fabricator = new FlexModuleFabricator(this);
 		}
 
 		/**
-		 * Abstract method. Subclasses should provide their application
-		 * specific startup command class.
+		 * @inheritDoc
 		 */
 		public function getStartupCommand():Class {
 			return null;
 		}
 
 		/**
-		 * Returns the class reference for the specified qualified classpath.
-		 * This method must be implemented by each module's main class
-		 * in addition to the base application class. It allows the Fabrication
-		 * apparatus to use reflection inside a module application swf from
-		 * the parent shell swf. The body of this method must be,
-		 *
-		 * @example The following code is the implementation of the fabrication
-		 * <listing>
-		 * 	public function getClassByName(classpath:String):Class {
-		 * 		return getDefinitionByName(classpath) as Class;
-		 * 	}
-		 * </listing>
-		 *
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#getClassByName
+		 * @inheritDoc
 		 */
 		public function getClassByName(classpath:String):Class {
 			return getDefinitionByName(classpath) as Class;
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationCreated
+		 * @inheritDoc
 		 */
 		public function notifyFabricationCreated():void {
 			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_CREATED));
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationRemoved
+		 * @inheritDoc
 		 */
 		public function notifyFabricationRemoved():void {
 			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_REMOVED));

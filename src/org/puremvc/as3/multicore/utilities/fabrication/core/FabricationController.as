@@ -304,8 +304,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		/**
 		 * Checks if the command can be
 		 * merged into the last command on the undo stack. If the merge
-		 * is not successfull then the command is pushed to the undo stack.
-		 * Eitherwise a COMMAND_HISTORY_CHANGED notification is sent after
+		 * is not successful then the command is pushed to the undo stack.
+		 * Otherwise a COMMAND_HISTORY_CHANGED notification is sent after
 		 * adding/merging the command.
 		 * 
 		 * @param command The undoable command instance to add/merge 

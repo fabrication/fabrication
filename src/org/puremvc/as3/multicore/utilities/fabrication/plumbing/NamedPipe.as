@@ -51,22 +51,22 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		} 
 		
 		/**
-		 * Returns the pipe name.
-		 */
+         * @inheritDoc
+         */
 		public function getName():String {
 			return name;
 		}
 		
 		/**
-		 * Changes the pipe name.
-		 */
+         * @inheritDoc
+         */
 		public function setName(name:String):void {
 			this.name = name;
 		}
 		
 		/**
-		 * Optional name of the group that this pipe fitting's module belongs to.
-		 */
+         * @inheritDoc
+         */
 		public function get moduleGroup():String {
 			return _moduleGroup;
 		}
@@ -77,10 +77,10 @@ package org.puremvc.as3.multicore.utilities.fabrication.plumbing {
 		public function set moduleGroup(moduleGroup:String):void {
 			_moduleGroup = moduleGroup;
 		}
-		
-		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+
+        /**
+         * @inheritDoc
+         */
 		public function dispose():void {
 			name = null;
 			_moduleGroup = null;

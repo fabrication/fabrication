@@ -507,7 +507,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		}
 
 		/**
-		 * Calculates the path to the component uptil the baseComponent.
+		 * Calculates the path to the component.
 		 * @private
 		 */
 		private function calcPathFromComponent(component:UIComponent):String {

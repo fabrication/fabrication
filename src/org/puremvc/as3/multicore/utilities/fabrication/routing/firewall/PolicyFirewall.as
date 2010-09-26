@@ -51,8 +51,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			_policyFunction = null;
 		}
@@ -72,8 +72,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		}
 
 		/**
-		 * @see IRouterFirewall#process
-		 */
+         * @inheritDoc
+         */
 		public function process(message:IRouterMessage):IRouterMessage {
 			if (policyFunction != null) {
 				return policyFunction.apply(this, [message]);

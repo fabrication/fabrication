@@ -59,8 +59,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy.test {
 
             proxy = new FabricationDependencyProxy();
             proxy.initializeNotifier(instanceName + "_setup");
-            proxy.addDependecyProvider( dependenciesProvider1 );
-            proxy.addDependecyProvider( dependenciesProvider2 );
+            proxy.addDependencyProvider( dependenciesProvider1 );
+            proxy.addDependencyProvider( dependenciesProvider2 );
 
 
         }

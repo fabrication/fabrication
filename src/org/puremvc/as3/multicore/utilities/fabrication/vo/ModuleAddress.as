@@ -81,36 +81,36 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		}
 		
 		/**
-		 * Returns the name of the module.
-		 */
+         * @inheritDoc
+         */
 		public function getClassName():String {
 			return className;
 		}
 		
 		/**
-		 * Returns the name of the module instance.
-		 */
+         * @inheritDoc
+         */
 		public function getInstanceName():String {
 			return instanceName;
 		}		
 		
 		/**
-		 * Returns the name of the group that this module address is for.
-		 */
+         * @inheritDoc
+         */
 		public function getGroupName():String {
 			return groupName;
 		}
 		
 		/**
-		 * Returns the name of the input message pipe.
-		 */
+         * @inheritDoc
+         */
 		public function getInputName():String {
 			return getClassName() + "/" + getInstanceName() + INPUT_SUFFIX;
 		}
 		
 		/**
-		 * Returns the name of the output message pipe.
-		 */
+         * @inheritDoc
+         */
 		public function getOutputName():String {
 			return getClassName() + "/" + getInstanceName() + OUTPUT_SUFFIX;
 		}
@@ -147,8 +147,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.vo {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			className = null;
 			instanceName = null;

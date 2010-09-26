@@ -92,7 +92,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			module.dispose();
@@ -112,7 +112,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The FlexModuleLoader fabricator
+		 * @inheritDoc
 		 */
 		public function get fabricator():ApplicationFabricator {
 			return _fabricator;
@@ -142,21 +142,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The current application's module address
+		 * @inheritDoc
 		 */
 		public function get moduleAddress():IModuleAddress {
 			return fabricator.moduleAddress;
 		}
 
 		/**
-		 * The default route to be assigned to the child module.
+		 * @inheritDoc
 		 */
 		public function get defaultRoute():String {
 			return fabricator.defaultRoute;
 		}
 
 		/**
-		 * The configuration object of the current FlexApplication.
+		 * @inheritDoc
 		 */
 		public function get config():Object {
 			return _config;
@@ -201,7 +201,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The default route address to be assigned to the child module.
+		 * @inheritDoc
 		 */
 		public function get defaultRouteAddress():IModuleAddress {
 			return _defaultRouteAddress;
@@ -213,9 +213,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 
 		/**
-		 * The name of the current application module group for messaging.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IRouterAwareModule#moduleGroup
+		 * @inheritDoc
 		 */
 		public function get moduleGroup():String {
 			if (fabricator != null) {
@@ -241,30 +239,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		} 
 
 		/**
-		 * Returns null. This fabrication is a proxy to the FlexModule's fabrication.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#getStartupCommand
+		 * @inheritDoc
 		 */
 		public function getStartupCommand():Class {
 			return null;
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#getClassByName
+		 * @inheritDoc
 		 */
 		public function getClassByName(classpath:String):Class {
 			return getDefinitionByName(classpath) as Class;
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationCreated
+		 * @inheritDoc
 		 */
 		public function notifyFabricationCreated():void {
 			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_CREATED));			
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IFabrication#notifyFabricationRemoved
+		 * @inheritDoc
 		 */
 		public function notifyFabricationRemoved():void {
 			dispatchEvent(new FabricatorEvent(FabricatorEvent.FABRICATION_REMOVED));			

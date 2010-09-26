@@ -23,7 +23,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging.action {
 
         public static const COMMAND_REGISTERED:String = "Command registered";
         public static const INTERCEPTOR_REGISTERED:String = "Interceptor registered";
-        public static const PROXY_REGISTERD:String = "Proxy registered";
+        public static const PROXY_REGISTERED:String = "Proxy registered";
         public static const MEDIATOR_REGISTERED:String = "Mediator registered";
         public static const NOTIFICATION_SENT:String = "Notification sent";
         public static const NOTIFICATION_ROUTE:String = "Notification routed";

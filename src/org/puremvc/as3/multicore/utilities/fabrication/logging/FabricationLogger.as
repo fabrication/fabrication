@@ -117,7 +117,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
                 var proxyName:String = proxy.getProxyName();
                 action.actorName = "Proxy: " + proxyName;
                 action.message = " [ " + proxyName + " ] proxy has been registered";
-                action.type = ActionType.PROXY_REGISTERD;
+                action.type = ActionType.PROXY_REGISTERED;
                 var infoObject:Object = {};
                 infoObject.proxyName = proxyName;
                 infoObject.data = parseObject(proxy.getData());

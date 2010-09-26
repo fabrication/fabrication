@@ -16,6 +16,10 @@
 
 package org.puremvc.as3.multicore.utilities.fabrication {
 
+    /**
+     * Fabrication internal namespace
+     * @author Rafał Szemraj
+     */
     public namespace fabrication_internal = "fabrication_internal";
 
 

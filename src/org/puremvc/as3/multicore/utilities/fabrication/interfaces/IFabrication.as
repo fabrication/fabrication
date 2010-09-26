@@ -22,7 +22,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 	/**
 	 * The interface that an application's main class must implement to 
 	 * hook into the Fabrication apparatus. It allows different class
-	 * heirarchies to support fabrication without needing to duplicate code
+	 * hierarchies to support fabrication without needing to duplicate code
 	 * needed to hook into the Fabrication apparatus from scratch. 
 	 * 
 	 * The application's main class creates an instance of the concrete 
@@ -109,7 +109,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		function notifyFabricationRemoved():void;
 
         /**
-         * Returns info if current fabrication should send info to FabricationConsole
+         * Returns true if current fabrication should send info to FabricationConsole
          * application. You should override this method in your application base
          * class if you want to turn console logging on.
          * @return false by default
@@ -124,7 +124,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
         function get fabricationLoggerEnabled():Boolean;
 
         /**
-         * returns array of dependency provideres ( Class objects or IDependecyProvider interfece implementations )
+         * returns array of dependency providers ( Class objects or IDependencyProvider interface implementations )
          * @return
          */
         function get dependencyProviders():Array;

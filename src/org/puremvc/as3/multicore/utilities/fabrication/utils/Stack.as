@@ -38,30 +38,30 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */		
+         * @inheritDoc
+         */
 		public function dispose():void {
 			clear();
 			elements = null;
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#push
-		 */
+         * @inheritDoc
+         */
 		public function push(element:Object):void {
 			elements.push(element);
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#peek
-		 */
+         * @inheritDoc
+         */
 		public function peek():Object {
 			return elements[length() - 1];
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#pop
-		 */
+         * @inheritDoc
+         */
 		public function pop():Object {
 			var element:Object = peek();
 			elements.pop();
@@ -70,8 +70,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#clear
-		 */
+         * @inheritDoc
+         */
 		public function clear():void {
 			var n:int = elements.length;
 			var element:Object;
@@ -86,15 +86,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.utils {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#isEmpty
-		 */
+         * @inheritDoc
+         */
 		public function isEmpty():Boolean {
 			return length() == 0;
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IStack#length
-		 */
+         * @inheritDoc
+         */
 		public function length():int {
 			return elements.length;
 		}

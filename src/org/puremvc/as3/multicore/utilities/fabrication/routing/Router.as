@@ -69,8 +69,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			if (junction is IDisposable) (junction as IDisposable).dispose(); 
 			junction = null;
@@ -82,8 +82,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 		
 		/**
-		 * @see IRouter#connect
-		 */
+         * @inheritDoc
+         */
 		public function connect(cable:IRouterCable):void {
 			var input:INamedPipeFitting = cable.getInput();
 			var output:INamedPipeFitting = cable.getOutput();
@@ -94,8 +94,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 		
 		/**
-		 * @see IRouter#disconnect
-		 */
+         * @inheritDoc
+         */
 		public function disconnect(cable:IRouterCable):void {
 			var input:INamedPipeFitting = cable.getInput();
 			var output:INamedPipeFitting = cable.getOutput();
@@ -106,8 +106,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 
 		/**
-		 * @see IRouter#install
-		 */
+         * @inheritDoc
+         */
 		public function install(firewall:IRouterFirewall):void {
 			if (!firewallLocked) {
 				this.firewall = firewall;

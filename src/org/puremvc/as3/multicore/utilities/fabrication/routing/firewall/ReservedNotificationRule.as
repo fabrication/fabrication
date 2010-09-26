@@ -51,8 +51,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			this.reservedNotifications.splice(0);
 			this.reservedNotifications = null;
@@ -100,8 +100,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing.firewall {
 		}
 		
 		/**
-		 * @see IFirewallRule#process
-		 */
+         * @inheritDoc
+         */
 		public function process(notification:String, from:String, to:String, message:IRouterMessage):Boolean {
 			return !hasNotification(notification);
 		}

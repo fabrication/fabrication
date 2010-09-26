@@ -94,7 +94,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 		
 		/**
 		 * Calculates the presentation name using reflection and returns it.
-		 * This is a resonable initial approximation for most commands named
+		 * This is an initial approximation for most commands named
 		 * using camel case syntax.
 		 * 
 		 * @example ChangeCustomPropertyCommand becomes Change Custom Property

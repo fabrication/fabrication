@@ -40,7 +40,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         /**
          * Returns name of element to be injected. Because here we are looking for registered mediator
-         * we can ommit metadata "name" param and try to retrieve mediator by static NAME property of
+         * we can omit metadata "name" param and try to retrieve mediator by static NAME property of
          * field class
          * @param field field instance to process
          * @param tagName name of injection tag

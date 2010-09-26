@@ -50,23 +50,23 @@ package org.puremvc.as3.multicore.utilities.fabrication.routing {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			input = null;
 			output = null;
 		}
 
 		/**
-		 * Returns the input message pipe fitting
-		 */
+         * @inheritDoc
+         */
 		public function getInput():INamedPipeFitting {
 			return input;
 		}
 
 		/**
-		 * Returns the output message pipe fitting
-		 */
+         * @inheritDoc
+         */
 		public function getOutput():INamedPipeFitting {
 			return output;
 		}

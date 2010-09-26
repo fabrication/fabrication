@@ -19,8 +19,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
     import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependencyProvider;
 
     /**
-     * FabricationDependencyProxy is internal framwork class for
-     * hanling multi dependencies providers
+     * FabricationDependencyProxy is internal framework class for
+     * handling multi dependencies providers
      *
      * @author Darshan Sawardekar, Rafał Szemraj
      */
@@ -30,7 +30,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         static public const NAME:String = "FabricationDependencyProxy";
 
         [ArrayElementType( "org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependencyProvider" )]
-        private var _dependenciesyProviders:Array = [];
+        private var _dependenciesProviders:Array = [];
 
         public function FabricationDependencyProxy()
         {
@@ -42,30 +42,30 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
          */
         override public function dispose():void
         {
-            for each(var dependenciesProvider:IDependencyProvider in _dependenciesyProviders) {
+            for each(var dependenciesProvider:IDependencyProvider in _dependenciesProviders) {
 
                 dependenciesProvider.dispose();
 
             }
-            _dependenciesyProviders = null;
+            _dependenciesProviders = null;
             super.dispose();
         }
 
         /**
-         * adds dependency provider ( class or instance ) to proxy
+         * Adds dependency provider ( class or instance ) to proxy
          * @param dependenciesProvider class or instance of IDependenciesProvider
          */
-        public function addDependecyProvider(dependenciesProvider:*):void
+        public function addDependencyProvider(dependenciesProvider:*):void
         {
 
             if (dependenciesProvider is IDependencyProvider)
-                _dependenciesyProviders.push(dependenciesProvider);
+                _dependenciesProviders.push(dependenciesProvider);
             else if (dependenciesProvider is Class) {
 
                 var dependenciesProviderClass:Class = dependenciesProvider as Class;
                 var dProvider:IDependencyProvider = ( new dependenciesProviderClass ) as IDependencyProvider;
                 if (dProvider)
-                    _dependenciesyProviders.push(dProvider);
+                    _dependenciesProviders.push(dProvider);
 
 
             }
@@ -74,7 +74,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         }
 
         /**
-         * returns dependency object by its name (id) or null if object cannot be found.
+         * Returns dependency object by its name (id) or null if object cannot be found.
          * @param name name of dependency object
          * @return dependency object
          */
@@ -82,7 +82,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         {
 
             var dependency:Object;
-            for each(var dependenciesProvider:IDependencyProvider in _dependenciesyProviders) {
+            for each(var dependenciesProvider:IDependencyProvider in _dependenciesProviders) {
 
                 dependency = dependenciesProvider.getDependency(name);
                 if (dependency)

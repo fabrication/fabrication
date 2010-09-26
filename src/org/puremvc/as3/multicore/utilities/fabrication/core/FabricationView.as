@@ -91,25 +91,14 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		
 
 		/**
-		 * TODO : improve this using HashMap to store the mediators. 
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			for each(var mediator:IMediator in mediatorMap) {
 				if (mediator is IDisposable) {
 					(mediator as IDisposable).dispose();
 				}
-				// check if mediator still exists or it was removed in the dispose call
-				/* *
-				if (hasMediator(mediator.getMediatorName())) {
-					// removing the mediator also removes it's observerMap references, good to call
-					removeMediator(mediator.getMediatorName());
-				}
-				 * 
-				 */
 			}
-			
 			mediatorMap = null;
 			removeView(multitonKey);
 			allowedNote = null;

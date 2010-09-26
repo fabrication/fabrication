@@ -469,7 +469,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
 
             var dependencyProxy:FabricationDependencyProxy = retrieveProxy(FabricationDependencyProxy.NAME) as FabricationDependencyProxy;
             for each(var provider:* in dependencyProviders)
-                dependencyProxy.addDependecyProvider(provider);
+                dependencyProxy.addDependencyProvider(provider);
 
         }
 

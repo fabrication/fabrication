@@ -55,7 +55,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
             var injectionField:InjectionField;
             var contextInjectionDataMarkup:String = getQualifiedClassName(context) + "_" + injectionMetadataTagName;
             var contextInjectionData:Array = CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] as Array;
-            // chek if there is already cached injection data for given context type
+            // check if there is already cached injection data for given context type
             if (!contextInjectionData) {
 
                 // there is no cached injection data, so process current class
@@ -66,11 +66,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
                     contextInjectionData[ contextInjectionData.length ] = injectionField;
                 }
-                // save processsed injection data in cache
+                // save processed injection data in cache
                 CACHED_CONTEXT_INJECTION_DATA[ contextInjectionDataMarkup ] = contextInjectionData;
             }
 
-            // make injection on conext
+            // make injection on context
             var injectionDataLength:int = contextInjectionData.length;
             for (var i:int = 0; i < injectionDataLength; ++i) {
 
@@ -152,7 +152,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
 
         /**
          * Function handler invoked when filed for injection is typed as interface
-         * and there is no given name for injection elelement
+         * and there is no given name for injection element
          * @param fieldName name of filed typed as interface
          */
         protected function onUnambiguousPatternElementName(fieldName:String):void

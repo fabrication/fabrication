@@ -39,7 +39,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command {
 	public class SimpleFabricationCommand extends SimpleCommand implements ICommandProcessor, IDisposable {
 
         /**
-         * Names of injected properites
+         * Names of injected properties
          */
         protected var injectionFieldsNames:Array;
 

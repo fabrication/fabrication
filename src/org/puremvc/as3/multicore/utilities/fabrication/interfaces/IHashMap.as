@@ -13,7 +13,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.interfaces {
 		function put(key:String, value:Object):Object
 		
 		/**
-		 * Retrives the value for the specified key in this hash map.
+		 * Retrieves the value for the specified key in this hash map.
 		 */
 		function find(key:String):Object;
 		

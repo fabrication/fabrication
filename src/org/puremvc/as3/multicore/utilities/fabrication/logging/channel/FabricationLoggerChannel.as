@@ -48,11 +48,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging.channel {
         }
 
         /**
-         * Logs given message at given log level, loggingObject is threaten as source of message
-         * @param message messafge to log
-         * @param logLevel level at wich message will be logged
-         * @param loggingObject source of message <strong>[ optional ]</strong>
-         */
+		 * @inheritDoc
+		 */
         public function log(message:*, logLevel:LogLevel, loggingObject:String):void
         {
 
@@ -60,14 +57,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging.channel {
         }
 
         /**
-         * Inspects object ( eg. shows its structure in tree, datagrid etc ). How this method works
-         * depends on log channel inspectObject method implementation. <b>Important</b> - remember, it shows only dynamic
-         * properties of object. To show whole information use as3 flash.utils.describeType.
-         * @param object object to inspect
-         * @param objectName name of object. You can pass any string that distinguish current object from others,
-         * if ommit "object" is set. <strong>[ optional ]</strong>
-         * @see Logger
-         */
+		 * @inheritDoc
+		 */
         public function inspectObject(object:*, objectName:String = "object"):void
         {
 
