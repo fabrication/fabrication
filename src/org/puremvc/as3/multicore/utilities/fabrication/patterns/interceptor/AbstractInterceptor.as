@@ -17,7 +17,8 @@
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IInterceptor;
-	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;	
+	import org.puremvc.as3.multicore.utilities.fabrication.patterns.command.SimpleFabricationCommand;	
+
 	/**
 	 * The AbstractInterceptor is the base class for creating interceptors. It provides
 	 * most of the implementation of the IInterceptor interface. Subclasses only need to
@@ -51,7 +52,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose();
+		 * @inheritDoc;
 		 */
 		override public function dispose():void {
 			notification = null;

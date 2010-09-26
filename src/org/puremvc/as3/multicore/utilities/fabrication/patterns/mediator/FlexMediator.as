@@ -82,7 +82,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
         /**
 		 * Removes the registrars used by the mediator.
 		 *
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		override public function dispose():void {
 			if (disposed) {

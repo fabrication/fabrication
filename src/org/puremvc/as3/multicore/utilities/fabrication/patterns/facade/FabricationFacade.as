@@ -131,7 +131,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
          * perform any cleanup prior to removal and deletes external
          * referenced objects.
          *
-         * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+         * @inheritDoc
          */
         public function dispose():void
         {

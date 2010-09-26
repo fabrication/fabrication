@@ -69,7 +69,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.observer {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			customNotification = null;

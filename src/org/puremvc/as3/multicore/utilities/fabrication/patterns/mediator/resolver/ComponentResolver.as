@@ -172,7 +172,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator.resolv
 		 * Deletes the base component and expression and clears and
 		 * resolved component references.
 		 *
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		public function dispose():void {
 			baseComponent.removeEventListener(createEventName, handleCreateEvent, true);

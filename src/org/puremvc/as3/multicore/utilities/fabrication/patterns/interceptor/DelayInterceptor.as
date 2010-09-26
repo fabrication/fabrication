@@ -61,7 +61,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose();
+		 * @inheritDoc;
 		 */
 		override public function dispose():void {
 			if (intervalID >= 0) {

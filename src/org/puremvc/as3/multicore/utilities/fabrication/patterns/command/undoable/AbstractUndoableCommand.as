@@ -132,7 +132,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.command.undoabl
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
+		 * @inheritDoc
 		 */
 		override public function dispose():void {
 			super.dispose();
