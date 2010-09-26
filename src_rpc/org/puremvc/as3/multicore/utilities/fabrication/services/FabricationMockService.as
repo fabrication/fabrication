@@ -118,6 +118,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             return null;
         }
 
+        /**
+         * @inheritDoc
+         */
         public function dispose():void
         {
             for each( var uniqueId:String in _calls ) {

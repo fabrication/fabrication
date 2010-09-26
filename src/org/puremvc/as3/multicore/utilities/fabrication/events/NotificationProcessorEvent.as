@@ -62,8 +62,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.events {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose();
-		 */		
+         * @inheritDoc
+         */
 		public function dispose():void {
 			notification = null;
 		}

@@ -69,8 +69,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			_fabricator.dispose();
 			_fabricator = null;

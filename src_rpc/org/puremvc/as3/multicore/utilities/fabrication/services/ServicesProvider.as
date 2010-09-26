@@ -36,6 +36,9 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             }
         }
 
+        /**
+         * @inheritDoc
+         */
         public function getDependency(name:String):Object
         {
             if (hasOwnProperty(name)) {
@@ -45,17 +48,28 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             return null;
         }
 
+        /**
+         * @inheritDoc
+         */
         public function dispose():void
         {
             _services = null;
         }
 
+        /**
+         * Returns array of services ( mx.rpc.AbstractService implementations )
+         * @return
+         */
         public function get services():Array
         {
             return _services;
         }
 
+
         [ArrayElementType("mx.rpc.AbstractService")]
+        /**
+         * Sets array of services
+         */
         public function set services(value:Array):void
         {
             _services = value;

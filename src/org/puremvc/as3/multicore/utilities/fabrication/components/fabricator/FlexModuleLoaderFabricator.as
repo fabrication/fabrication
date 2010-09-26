@@ -46,8 +46,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		}
 		
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		override public function dispose():void {
 			if (module != null) {
 				module.removeEventListener(FabricatorEvent.FABRICATION_CREATED, moduleFabricationCreated);

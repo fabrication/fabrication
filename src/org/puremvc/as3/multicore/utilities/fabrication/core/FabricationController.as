@@ -92,8 +92,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.core {
 		}
 
 		/**
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			groupsHashMap.dispose();
 			groupsHashMap = null;

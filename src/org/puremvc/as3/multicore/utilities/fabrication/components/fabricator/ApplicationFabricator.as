@@ -139,11 +139,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.components.fabricator {
 		}
 
 		/**
-		 * Disposes the current application's facade and sends a
-		 * fabrication removed event.
-		 * 
-		 * @see org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable#dispose()
-		 */
+         * @inheritDoc
+         */
 		public function dispose():void {
 			if (_facade != null) {
 				_facade.dispose();
