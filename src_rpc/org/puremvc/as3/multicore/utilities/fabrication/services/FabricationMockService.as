@@ -55,6 +55,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
 
             var token:MockAsyncToken = createToken( delay );
             token.data = mockData;
+
+            var uniqueId:String = UIDUtil.getUID(token);
+            setTimeout(sendMockResult, delay, uniqueId);
+            _calls[ uniqueId  ] = token;
+
             return token;
         }
 
@@ -62,6 +67,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
         {
             var token:AsyncToken = createToken( delay);
             token.data = fault;
+
+            var uniqueId:String = UIDUtil.getUID(token);
+            setTimeout(sendMockFault, delay, uniqueId);
+            _calls[ uniqueId  ] = token;
+
             return token;
         }
 
@@ -82,10 +92,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
         private function createToken( delay:int):MockAsyncToken
         {
             var token:MockAsyncToken = new MockAsyncToken();
-
-            var uniqueId:String = UIDUtil.getUID(token);
-            setTimeout(sendMockResult, delay, uniqueId);
-            _calls[ uniqueId  ] = token;
 
             if (showBusyCursor) {
                 CursorManager.setBusyCursor();

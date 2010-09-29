@@ -18,6 +18,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
     import mx.rpc.AsyncToken;
 
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ServiceInjector;
+    import org.puremvc.as3.multicore.utilities.fabrication.services.calls.ServiceCallStack;
 
     /**
 	 * FabricationRemoteProxy proxy empowered with service injections
@@ -47,6 +48,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
         public function executeServiceCall(call:AsyncToken, resultHandler:Function, faultHandler:Function = null):void
         {
             call.addResponder(new CallResponder( resultHandler, faultHandler || defaultFaultHandler ));
+        }
+
+        public function executeServiceCallStack( serviceCallStack:ServiceCallStack ):void {
+
+            serviceCallStack.start();
+        }
+
+
+        override public function dispose():void
+        {
+            super.dispose();
+            defaultFaultHandler = null;
         }
 
         /**

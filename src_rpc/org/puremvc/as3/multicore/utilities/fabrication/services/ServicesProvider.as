@@ -17,7 +17,6 @@
 package org.puremvc.as3.multicore.utilities.fabrication.services {
     import mx.rpc.AbstractService;
 
-    import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.DependencyProvider;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependencyProvider;
 
     [DefaultProperty("services")]
