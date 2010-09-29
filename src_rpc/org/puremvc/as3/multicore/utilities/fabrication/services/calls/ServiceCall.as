@@ -24,7 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
      * ServiceCall is class for crating separate calls in call stack.
      * @see ServiceCallStack
      */
-    public class ServiceCall extends Process {
+    public class ServiceCall extends Process implements IServiceCall {
 
 
         private var _callFunction:Function;

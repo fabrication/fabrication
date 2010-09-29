@@ -24,7 +24,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
      * by setting maximumParallelCalls in class constructor
      * @author Rafał Szemraj
      */
-    public class ServiceCallStack extends ProcessGroup {
+    public class ServiceCallStack extends ProcessGroup implements IServiceCall {
 
         private var _resultHandler:Function;
 
@@ -39,7 +39,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
          * Adds service call to call stack
          * @param serviceCall instance of ServiceCall to add
          */
-        public function addServiceCall(serviceCall:ServiceCall):void
+        public function addServiceCall(serviceCall:IServiceCall):void
         {
             super.addProcess(serviceCall);
         }
