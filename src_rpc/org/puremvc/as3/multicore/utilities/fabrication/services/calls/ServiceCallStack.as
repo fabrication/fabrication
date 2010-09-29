@@ -55,7 +55,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
         override protected function onComplete():void
         {
             super.onComplete();
-            if (_resultHandler)
+            if ( null != _resultHandler)
                 _resultHandler();
         }
 
