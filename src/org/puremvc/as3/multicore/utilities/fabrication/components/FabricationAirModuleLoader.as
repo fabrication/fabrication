@@ -78,10 +78,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.components {
         }
 
         /**
-         *
          * @inheritDoc
-         * @see FabricationModuleLoader#retrieveModuleFactory
-         * 
          */
         override protected function retrieveModuleFactory( event:Event ):IFlexModuleFactory {
 

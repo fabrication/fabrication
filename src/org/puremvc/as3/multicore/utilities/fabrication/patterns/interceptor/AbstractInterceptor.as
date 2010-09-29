@@ -52,7 +52,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.interceptor {
 		}
 
 		/**
-		 * @inheritDoc;
+		 * @inheritDoc
 		 */
 		override public function dispose():void {
 			notification = null;

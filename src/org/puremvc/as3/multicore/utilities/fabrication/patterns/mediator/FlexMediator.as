@@ -15,6 +15,9 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
+    import flash.display.DisplayObject;
+
+    import mx.core.IVisualElementContainer;
     import mx.events.StateChangeEvent;
 
     import org.puremvc.as3.multicore.interfaces.IMediator;
@@ -278,6 +281,29 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			}
             initializeReactions();
         }
+
+        /**
+         * @inheritDoc
+         */
+        override protected function disposeView():void
+        {
+            super.disposeView();
+            if( viewComponent && viewComponent is DisplayObject ) {
+
+                var viewDisplayObject:DisplayObject = viewComponent as DisplayObject;
+                if( viewDisplayObject.parent ) {
+
+                    if( viewDisplayObject.parent["removeElement"] != null )
+                        viewDisplayObject.parent["removeElement"]( viewDisplayObject );
+                    else
+                        viewDisplayObject.parent.removeChild( viewDisplayObject );
+
+                }
+
+            }
+            viewComponent = null;
+        }
+
 
 	}
 }

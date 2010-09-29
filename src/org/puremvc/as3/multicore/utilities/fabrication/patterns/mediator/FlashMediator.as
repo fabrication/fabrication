@@ -15,8 +15,9 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
+    import flash.display.DisplayObject;
 
-	/**
+    /**
 	 * FlashMediator is the base mediator class for all flash environment
 	 * specific application mediators.
 	 * 
@@ -29,6 +30,24 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		public function FlashMediator(name:String, viewComponent:Object) {
 			super(name, viewComponent);
 		}
-		
-	}
+
+        /**
+         * @inheritDoc
+         */
+        override protected function disposeView():void
+        {
+            super.disposeView();
+            if( viewComponent && viewComponent is DisplayObject ) {
+
+                var viewDisplayObject:DisplayObject = viewComponent as DisplayObject;
+                if( viewDisplayObject.parent ) {
+
+                    viewDisplayObject.parent.removeChild( viewDisplayObject );
+
+                }
+
+            }
+            viewComponent = null;
+        }
+    }
 }

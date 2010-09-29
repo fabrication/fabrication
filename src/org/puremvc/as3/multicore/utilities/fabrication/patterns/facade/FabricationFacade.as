@@ -130,8 +130,6 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.facade {
          * Sends a SHUTDOWN notification to allow the application to
          * perform any cleanup prior to removal and deletes external
          * referenced objects.
-         *
-         * @inheritDoc
          */
         public function dispose():void
         {

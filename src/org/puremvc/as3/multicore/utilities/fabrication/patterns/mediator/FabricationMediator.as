@@ -821,6 +821,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
             injectionFieldsNames = injectionFieldsNames.concat(( new DependencyInjector(fabFacade, this) ).inject());
         }
 
+        /**
+         * Disposes view of this mediator ( removes it from display list )
+         */
+        protected function disposeView():void {
+
+        }
+
         fabrication_internal function get passedReactionsRegistrationPhase():Boolean {
 
             return _reactionsRegistrationPhasePassed;
