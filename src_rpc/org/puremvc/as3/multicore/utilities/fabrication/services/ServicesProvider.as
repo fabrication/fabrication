@@ -20,7 +20,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
     import org.puremvc.as3.multicore.utilities.fabrication.injection.provider.IDependencyProvider;
 
     [DefaultProperty("services")]
-    public class ServicesProvider implements IDependencyProvider {
+    dynamic public class ServicesProvider implements IDependencyProvider {
 
         private var _services:Array = [];
 

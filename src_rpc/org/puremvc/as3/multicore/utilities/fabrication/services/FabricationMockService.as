@@ -16,7 +16,6 @@
 
 package org.puremvc.as3.multicore.utilities.fabrication.services {
     import flash.utils.Dictionary;
-
     import flash.utils.setTimeout;
 
     import mx.core.mx_internal;
@@ -28,32 +27,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
     import mx.rpc.events.ResultEvent;
     import mx.utils.UIDUtil;
 
+    import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.interfaces.IDisposable;
+    import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
 
     /**
-	 * FabricationMockService is service for testing purposes.
+     * FabricationMockService is service for testing purposes.
      * You can define call duration and result object when creting
-	 * @author Rafał Szemraj
-	 */
+     * @author Rafał Szemraj
+     */
     public class FabricationMockService extends AbstractService implements IDisposable {
 
 
-        private var _calls:Dictionary;
-
         public var showBusyCursor:Boolean = true;
+
+        private var _calls:Dictionary;
+        private var injectionFieldsNames:Array;
 
         public function FabricationMockService()
         {
             super();
             this.showBusyCursor = showBusyCursor;
-            _calls = new Dictionary( true );
+            _calls = new Dictionary(true);
         }
 
 
         public function createMockResult(mockData:Object, delay:int = 10):AsyncToken
         {
 
-            var token:MockAsyncToken = createToken( delay );
+            var token:MockAsyncToken = createToken(delay);
             token.data = mockData;
 
             var uniqueId:String = UIDUtil.getUID(token);
@@ -65,7 +67,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
 
         public function createMockFault(fault:Fault = null, delay:int = 10):AsyncToken
         {
-            var token:AsyncToken = createToken( delay);
+            var token:AsyncToken = createToken(delay);
             token.data = fault;
 
             var uniqueId:String = UIDUtil.getUID(token);
@@ -75,21 +77,20 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             return token;
         }
 
-        protected function sendMockResult( uniqueId:String ):void
+        protected function sendMockResult(uniqueId:String):void
         {
-            var token:MockAsyncToken = getToken( uniqueId );
-            if( token ) {
+            var token:MockAsyncToken = getToken(uniqueId);
+            if (token) {
 
                 var mockData:Object = token.data ? token.data : {};
-                token.mx_internal::applyResult( ResultEvent.createEvent( mockData, token ));
+                token.mx_internal::applyResult(ResultEvent.createEvent(mockData, token));
 
             }
 
         }
 
 
-
-        private function createToken( delay:int):MockAsyncToken
+        private function createToken(delay:int):MockAsyncToken
         {
             var token:MockAsyncToken = new MockAsyncToken();
 
@@ -99,13 +100,13 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             return token;
         }
 
-        protected function sendMockFault( uniqueId:String ):void
+        protected function sendMockFault(uniqueId:String):void
         {
             var token:MockAsyncToken = getToken(uniqueId);
-            if( token ) {
+            if (token) {
 
                 var fault:Fault = token.data ? token.data as Fault : null;
-                token.mx_internal::applyFault( FaultEvent.createEvent( fault, token ));
+                token.mx_internal::applyFault(FaultEvent.createEvent(fault, token));
 
             }
         }
@@ -124,17 +125,35 @@ package org.puremvc.as3.multicore.utilities.fabrication.services {
             return null;
         }
 
+        public function performInjections(facade:FabricationFacade):void
+        {
+            injectionFieldsNames = ( new DependencyInjector(facade, this) ).inject();
+        }
+
         /**
          * @inheritDoc
          */
         public function dispose():void
         {
-            for each( var uniqueId:String in _calls ) {
+            for each(var uniqueId:String in _calls) {
 
                 delete _calls[ uniqueId ];
 
             }
             _calls = null;
+
+            if (injectionFieldsNames) {
+                var injectedFieldsNum:uint = injectionFieldsNames.length;
+                for (var i:int = 0; i < injectedFieldsNum; i++) {
+
+                    var fieldName:String = "" + injectionFieldsNames[i];
+                    var ob:Object = this[ fieldName ];
+                    if (ob is IDisposable)
+                        ( ob as IDisposable ).dispose();
+                    this[ fieldName ] = null;
+                }
+                injectionFieldsNames = null;
+            }
 
         }
     }

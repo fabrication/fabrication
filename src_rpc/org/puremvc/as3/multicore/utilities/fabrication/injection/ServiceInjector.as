@@ -18,6 +18,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
     import mx.rpc.AbstractService;
 
     import org.puremvc.as3.multicore.utilities.fabrication.patterns.facade.FabricationFacade;
+    import org.puremvc.as3.multicore.utilities.fabrication.services.FabricationMockService;
 
     /**
      * DependencyInjector for RPC services
@@ -38,12 +39,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.injection {
         override protected function getPatternElementForInjection(elementName:String, elementClass:Class):Object
         {
 
-            var element:Object = super.getPatternElementForInjection( elementName, elementClass );
-            if( element is AbstractService )
-                return element;
-            else
-                return null;
-
+            var service:AbstractService = super.getPatternElementForInjection( elementName, elementClass ) as AbstractService;
+            if (service is FabricationMockService) {
+                ( service as FabricationMockService).performInjections(facade);
+            }
+            return service;
         }
 
 

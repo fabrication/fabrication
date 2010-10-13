@@ -97,14 +97,16 @@
     <macrodef name="flex.compile.test.module">
         <attribute name="module.src.path"/>
         <sequential>
+            <echo message="@{module.src.path}"/>
+            <echo message="${test.module.layouts.src.dir}"/>
             <path location="@{module.src.path}" id="moduleSrcPath"/>
             <pathconvert property="module.src.file" refid="moduleSrcPath">
                 <chainedmapper>
-                    <globmapper from="${test.module.layouts.src.dir}${file.separator}" to=""/>
-                    <globmapper from="*.mxml" to="*"/>
+                    <globmapper from="${test.module.layouts.src.dir}*.mxml" to="*"/>
                 </chainedmapper>
             </pathconvert>
-            <flex.compile main.class="${test.module.layouts.src.dir}/${module.src.file}.mxml"
+            <echo message="${module.src.file}"/>
+            <flex.compile main.class="@{module.src.path}"
                           output.swf="${tests.bin.dir}/modules/${module.src.file}.swf">
                 <args>
                     <arg line="-sp+=${src.dir}"/>
@@ -117,7 +119,7 @@
                 </args>
             </flex.compile>
             <echo file="${tests.bin.dir}/moduleLayouts.xml" append="true"
-                  message="&lt;module path='modules/${module.src.file}.swf'/&gt;"/>
+                  message="&lt;module path='modules${module.src.file}.swf'/&gt;"/>
         </sequential>
     </macrodef>
 

@@ -15,6 +15,7 @@
  */
 
 package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
+    import mx.managers.CursorManager;
     import mx.rpc.AsyncToken;
     import mx.rpc.events.ResultEvent;
 
@@ -27,18 +28,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
     public class ServiceCall extends Process implements IServiceCall {
 
 
-        private var _callFunction:Function;
-        private var _resultHandler:Function;
-        private var _faultHandler:Function;
-        private var _params:Array;
+        public var callFunction:Function;
+        public var resultHandler:Function;
+        public var faultHandler:Function;
+        public var params:Array;
+        public var showBusyCursor:Boolean = true;
 
-
-        public function ServiceCall(callFunction:Function, params:Array = null, resultHandler:Function = null, faultHandler:Function = null):void
+        public function ServiceCall(callFunction:Function = null, params:Array = null, resultHandler:Function = null, faultHandler:Function = null):void
         {
-            _callFunction = callFunction;
-            _params = params ? params.concat() : [];
-            _resultHandler = resultHandler;
-            _faultHandler = faultHandler;
+            this.callFunction = callFunction;
+            this.params = params ? params.concat() : [];
+            this.resultHandler = resultHandler;
+            this.faultHandler = faultHandler;
 
         }
 
@@ -47,9 +48,11 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
          */
         override public function start():void
         {
-            var token:AsyncToken = _callFunction.apply(null, _params);
-            token.addResponder(new CallResponder(_resultHandler, _faultHandler));
-            token.addResponder(new CallResponder(onCallComplete, _faultHandler));
+            var token:AsyncToken = callFunction.apply(null, params);
+            token.addResponder(new CallResponder(resultHandler, faultHandler));
+            token.addResponder(new CallResponder(onCallComplete, faultHandler));
+            if( showBusyCursor )
+                CursorManager.setBusyCursor();
             super.start();
 
         }
@@ -59,16 +62,18 @@ package org.puremvc.as3.multicore.utilities.fabrication.services.calls {
          */
         override public function dispose():void
         {
-            _callFunction = null;
-            _params = null
-            _resultHandler = null;
-            _faultHandler = null;
+            callFunction = null;
+            params = null
+            resultHandler = null;
+            faultHandler = null;
             super.dispose();
         }
 
         private function onCallComplete(event:ResultEvent):void
         {
             onComplete();
+            if( showBusyCursor )
+                CursorManager.removeBusyCursor();
         }
     }
 }
@@ -78,25 +83,25 @@ import mx.rpc.IResponder;
 class CallResponder implements IResponder {
 
 
-    private var resultHandler:Function;
-    private var faultHandler:Function;
+        private var resultHandler:Function;
+        private var faultHandler:Function;
 
 
-    public function CallResponder(resultHandler:Function, faultHandler:Function = null)
-    {
-        this.faultHandler = faultHandler;
-        this.resultHandler = resultHandler;
+        public function CallResponder(resultHandler:Function, faultHandler:Function = null)
+        {
+            this.faultHandler = faultHandler;
+            this.resultHandler = resultHandler;
+        }
+
+        public function result(data:Object):void
+        {
+            if (resultHandler != null)
+                resultHandler.apply(null, [data]);
+        }
+
+        public function fault(info:Object):void
+        {
+            if (faultHandler != null)
+                faultHandler.apply(null, [info]);
+        }
     }
-
-    public function result(data:Object):void
-    {
-        if (resultHandler != null)
-            resultHandler.apply(null, [data]);
-    }
-
-    public function fault(info:Object):void
-    {
-        if (faultHandler != null)
-            faultHandler.apply(null, [info]);
-    }
-}

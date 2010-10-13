@@ -152,7 +152,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 
             if (injectionFieldsNames) {
                 var injectedFieldsNum:uint = injectionFieldsNames.length;
-                for ( i = 0; i < injectedFieldsNum; i++) {
+                for ( var i:int = 0; i < injectedFieldsNum; i++) {
 
                     var fieldName:String = ""+injectionFieldsNames[i];
                     this[ fieldName ] = null;
@@ -163,17 +163,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 			qualifiedNotifications = null;
 			notificationCache = null;
 
-			if (currentReactions != null) {
-				var n:int = currentReactions.length;
-				var reaction:Reaction;
-				for (var i:int = 0;i < n; i++) {
-					reaction = currentReactions[i];
-					reaction.dispose();
-				}
-
-				currentReactions = null;
-			}
-
+			disposeReactions();
 
 		}
 
@@ -491,6 +481,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
 		 */
 		public function initializeReactions():void {
 
+            disposeReactions();
 			var reactionPattern:String = "(" + reactionHandlerPrefix + "|" + captureHandlerPrefix + ")";
 			var reactionRegExp:RegExp = new RegExp("^" + reactionPattern + ".*$", "");
 			var qpath:String = getQualifiedClassName(this);
@@ -825,6 +816,21 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.mediator {
          * Disposes view of this mediator ( removes it from display list )
          */
         protected function disposeView():void {
+
+        }
+
+        protected function disposeReactions():void {
+
+            if (currentReactions != null) {
+				var n:int = currentReactions.length;
+				var reaction:Reaction;
+				for (var i:int = 0;i < n; i++) {
+					reaction = currentReactions[i];
+					reaction.dispose();
+				}
+
+				currentReactions = null;
+			}
 
         }
 
