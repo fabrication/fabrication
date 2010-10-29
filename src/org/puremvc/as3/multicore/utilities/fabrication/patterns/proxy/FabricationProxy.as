@@ -15,6 +15,7 @@
  */
  
 package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
+    import org.puremvc.as3.multicore.interfaces.IProxy;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.DependencyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.injection.ProxyInjector;
     import org.puremvc.as3.multicore.utilities.fabrication.utils.HashMap;
@@ -176,6 +177,15 @@ package org.puremvc.as3.multicore.utilities.fabrication.patterns.proxy {
 			
 			return proxyName;
 		}
+
+
+        /**
+		 * Alias to facade.retrieveProxy
+		 */
+        public function retrieveProxy( proxyName:String ):IProxy {
+
+            return fabFacade.retrieveProxy( proxyName );
+        }
 		
 		/**
 		 * Overrides the default send notification to qualify the notification
