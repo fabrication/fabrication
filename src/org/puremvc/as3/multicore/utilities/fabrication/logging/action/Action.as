@@ -26,6 +26,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging.action {
         public var type:String;
         public var actorName:String;
         public var infoObject:Object = null;
+        public var timestamp:Number;
 
     }
 }

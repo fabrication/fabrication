@@ -23,6 +23,8 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
     import flash.utils.ByteArray;
     import flash.utils.getQualifiedClassName;
 
+    import flash.utils.getTimer;
+
     import org.as3commons.reflect.Type;
     import org.puremvc.as3.multicore.interfaces.IMediator;
     import org.puremvc.as3.multicore.interfaces.INotification;
@@ -243,6 +245,7 @@ package org.puremvc.as3.multicore.utilities.fabrication.logging {
         private function logAction(action:Action):void
         {
             action.index = ++_flowActionsCounter;
+            action.timestamp = new Date().time;
             _lc.send(LOGGER_ID, "logAction", action);
 
         }
